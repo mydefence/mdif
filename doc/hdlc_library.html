@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HDLC Reference Library &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="General API" href="api_general.html" />
+    <link rel="prev" title="HDLC" href="hdlc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MDIF
+              <img src="_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc.html">HDLC</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">HDLC Reference Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#application-interface">Application Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#os-abstraction-interface">OS Abstraction Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">HDLC Reference Library</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hdlc-reference-library">
+<span id="hdlc-library"></span><h1>HDLC Reference Library<a class="headerlink" href="#hdlc-reference-library" title="Permalink to this heading"></a></h1>
+<p>This documentation package includes a full HDLC implementation in C in
+<code class="file docutils literal notranslate"><span class="pre">src/hdlc/</span></code>, that we recommend using. <code class="file docutils literal notranslate"><span class="pre">src/linux_c_serial_demo</span></code>
+contains a complete demo application ready to communicate with any MyDefence
+serial device.</p>
+<a class="reference internal image-reference" href="_images/lib.png"><img alt="_images/lib.png" class="align-center" src="_images/lib.png" style="width: 600px;" /></a>
+<p>To integrate the HDLC library into your own application, you need to implement
+an <a class="reference internal" href="#osal"><span class="std std-ref">OS Abstraction Interface</span></a> for your platform.</p>
+<section id="application-interface">
+<h2>Application Interface<a class="headerlink" href="#application-interface" title="Permalink to this heading"></a></h2>
+<p>The application interface to send and receive HDLC frames is defined in the
+header file <code class="file docutils literal notranslate"><span class="pre">src/hdlc/include/hdlc.h</span></code>.</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HDLC_MAX_FRAME_LEN">
+<span class="target" id="hdlc_8h_1a660da6223410f263a9b46ba67cf93ab7"></span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_MAX_FRAME_LEN</span></span></span><a class="headerlink" href="#c.HDLC_MAX_FRAME_LEN" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Maximum length of HDLC data frame. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv413hdlc_result_t">
+<span id="_CPPv313hdlc_result_t"></span><span id="_CPPv213hdlc_result_t"></span><span class="target" id="hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_result_t</span></span></span><a class="headerlink" href="#_CPPv413hdlc_result_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13hdlc_result_t12HDLC_SUCCESSE">
+<span id="_CPPv3N13hdlc_result_t12HDLC_SUCCESSE"></span><span id="_CPPv2N13hdlc_result_t12HDLC_SUCCESSE"></span><span class="target" id="hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759a12047525c0513307a695cf9e61bf6a55"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N13hdlc_result_t12HDLC_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13hdlc_result_t13HDLC_OS_ERRORE">
+<span id="_CPPv3N13hdlc_result_t13HDLC_OS_ERRORE"></span><span id="_CPPv2N13hdlc_result_t13HDLC_OS_ERRORE"></span><span class="target" id="hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759a9b3e4292ef9f3a5816a0472a7b32884a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_OS_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N13hdlc_result_t13HDLC_OS_ERRORE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Call to hdlc_os_*() function in OS Abstraction Layer failed. </p>
+<p>On some OS more information may be available, e.g. in errno. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13hdlc_result_t18HDLC_NOT_CONNECTEDE">
+<span id="_CPPv3N13hdlc_result_t18HDLC_NOT_CONNECTEDE"></span><span id="_CPPv2N13hdlc_result_t18HDLC_NOT_CONNECTEDE"></span><span class="target" id="hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759a22c62ef95422e1a125c32a0d814597d6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_NOT_CONNECTED</span></span></span><a class="headerlink" href="#_CPPv4N13hdlc_result_t18HDLC_NOT_CONNECTEDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HDLC layer is not connected, i.e. wait for <a class="reference internal" href="#hdlc_8h_1a71893b40975f693afd8ea77be881f885"><span class="std std-ref">hdlc_connected_cb()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13hdlc_result_t19HDLC_FRAME_TOO_LONGE">
+<span id="_CPPv3N13hdlc_result_t19HDLC_FRAME_TOO_LONGE"></span><span id="_CPPv2N13hdlc_result_t19HDLC_FRAME_TOO_LONGE"></span><span class="target" id="hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759aaf7e5079c452689974b38467ac72be3c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_FRAME_TOO_LONG</span></span></span><a class="headerlink" href="#_CPPv4N13hdlc_result_t19HDLC_FRAME_TOO_LONGE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Frame is too long. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415hdlc_send_frameP11hdlc_data_tPK7uint8_t8uint32_t">
+<span id="_CPPv315hdlc_send_frameP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="_CPPv215hdlc_send_frameP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="hdlc_send_frame__hdlc_data_tP.uint8_tCP.uint32_t"></span><span class="target" id="hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"></span><a class="reference internal" href="#_CPPv413hdlc_result_t" title="hdlc_result_t"><span class="n"><span class="pre">hdlc_result_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_send_frame</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415hdlc_send_frameP11hdlc_data_tPK7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Reliable transmission of one data frame. </p>
+<p>This function is used to send one data frame. The frame is queued for transmission and the function returns immediately. When the frame has been successfully sent, the callback function <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a> is called with the same parameters. If frame transmission times out, <a class="reference internal" href="#hdlc_8h_1a23d4e51490a17944875b13c0795dfd73"><span class="std std-ref">hdlc_reset_cb()</span></a> is called followed by <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> – HDLC instance data allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a></p></li>
+<li><p><strong>frame</strong> – Pointer to data to send. The pointer must be valid until <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a> is called </p></li>
+<li><p><strong>len</strong> – Length of data. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>0 in case of success. Success means the data was correctly queued for transmission, not that it has been sent. See <a class="reference internal" href="#hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759"><span class="std std-ref">hdlc_result_t</span></a> for error codes. In case of error, <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a> is not called. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418hdlc_frame_sent_cbP11hdlc_data_tPK7uint8_t8uint32_t">
+<span id="_CPPv318hdlc_frame_sent_cbP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="_CPPv218hdlc_frame_sent_cbP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="hdlc_frame_sent_cb__hdlc_data_tP.uint8_tCP.uint32_t"></span><span class="target" id="hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_frame_sent_cb</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418hdlc_frame_sent_cbP11hdlc_data_tPK7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Callback function called when a frame has been sent, or otherwise discarded. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> – HDLC instance data allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a></p></li>
+<li><p><strong>frame</strong> – parameter from <a class="reference internal" href="#hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"><span class="std std-ref">hdlc_send_frame()</span></a></p></li>
+<li><p><strong>len</strong> – parameter from <a class="reference internal" href="#hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"><span class="std std-ref">hdlc_send_frame()</span></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430hdlc_send_frame_unacknowledgedP11hdlc_data_tPK7uint8_t8uint32_t">
+<span id="_CPPv330hdlc_send_frame_unacknowledgedP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="_CPPv230hdlc_send_frame_unacknowledgedP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="hdlc_send_frame_unacknowledged__hdlc_data_tP.uint8_tCP.uint32_t"></span><span class="target" id="hdlc_8h_1ae9295dbb4ea78f87be1563c2994d7c7f"></span><a class="reference internal" href="#_CPPv413hdlc_result_t" title="hdlc_result_t"><span class="n"><span class="pre">hdlc_result_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_send_frame_unacknowledged</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430hdlc_send_frame_unacknowledgedP11hdlc_data_tPK7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Unreliable transmission of one data frame. </p>
+<p>This function is used to send one HDLC UI frame. The frame is attempted transmitted immediately. There is no way of knowing whether the frame has been delivered. frame may be freed immediately after return. <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a> is not called.</p>
+<p>This frame may be dropped, delivered before, or delivered after unacknowledged frames already queued with <a class="reference internal" href="#hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"><span class="std std-ref">hdlc_send_frame()</span></a>. Data queued with <a class="reference internal" href="#hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"><span class="std std-ref">hdlc_send_frame()</span></a> or <a class="reference internal" href="#hdlc_8h_1ae9295dbb4ea78f87be1563c2994d7c7f"><span class="std std-ref">hdlc_send_frame_unacknowledged()</span></a> after this frame, will always be delivered after this frame was delivered (if it is delivered).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> – HDLC instance data allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a></p></li>
+<li><p><strong>frame</strong> – Pointer to data to send </p></li>
+<li><p><strong>len</strong> – Length of data. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>0 in case of success. Success means the data was correctly queued for transmission, not that it has been sent. See <a class="reference internal" href="#hdlc_8h_1a18ed9fe9caafee255cf8752df2f69759"><span class="std std-ref">hdlc_result_t</span></a> for error codes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418hdlc_recv_frame_cbP11hdlc_data_tP7uint8_t8uint32_t">
+<span id="_CPPv318hdlc_recv_frame_cbP11hdlc_data_tP7uint8_t8uint32_t"></span><span id="_CPPv218hdlc_recv_frame_cbP11hdlc_data_tP7uint8_t8uint32_t"></span><span id="hdlc_recv_frame_cb__hdlc_data_tP.uint8_tP.uint32_t"></span><span class="target" id="hdlc_8h_1a44a2e8b1eff352cd0d0729d96cb55750"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_recv_frame_cb</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">h</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418hdlc_recv_frame_cbP11hdlc_data_tP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Callback function called when a frame (data or UI) has been received. </p>
+<p>This function is called when a frame has been received. Frames are always delivered in the same order they are sent, with the exception that UI frames may overtake data frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> – HDLC instance data allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a></p></li>
+<li><p><strong>frame</strong> – Pointer to a received HDLC frame. The pointer is invalid after this function returns. </p></li>
+<li><p><strong>len</strong> – Length of the frame </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413hdlc_reset_cbP11hdlc_data_t">
+<span id="_CPPv313hdlc_reset_cbP11hdlc_data_t"></span><span id="_CPPv213hdlc_reset_cbP11hdlc_data_t"></span><span id="hdlc_reset_cb__hdlc_data_tP"></span><span class="target" id="hdlc_8h_1a23d4e51490a17944875b13c0795dfd73"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_reset_cb</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413hdlc_reset_cbP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This is called when HDLC sequence number are reset, which happens either. </p>
+<p><ol class="loweralpha simple">
+<li><p>In case of retransmission timeout (see HDLC_RETRANSMIT_CNT in hdlc_os.h)</p></li>
+<li><p>If sequence numbers are out of sync</p></li>
+<li><p>If HDLC SABM frame is received from peer</p></li>
+</ol>
+</p>
+<p>This is followed by cleanup of the current TX queue including calling <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a>. <a class="reference internal" href="#hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"><span class="std std-ref">hdlc_send_frame()</span></a> and hdcl_send_frame_unacknowledged() will fail until <a class="reference internal" href="#hdlc_8h_1a71893b40975f693afd8ea77be881f885"><span class="std std-ref">hdlc_connected_cb()</span></a> is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>h</strong> – HDLC instance data allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417hdlc_connected_cbP11hdlc_data_t">
+<span id="_CPPv317hdlc_connected_cbP11hdlc_data_t"></span><span id="_CPPv217hdlc_connected_cbP11hdlc_data_t"></span><span id="hdlc_connected_cb__hdlc_data_tP"></span><span class="target" id="hdlc_8h_1a71893b40975f693afd8ea77be881f885"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_connected_cb</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417hdlc_connected_cbP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This is called when HDLC is connected, i.e. </p>
+<p>when the HDLC SABM frame is acknowledged by peer. All frames sent between system startup OR <a class="reference internal" href="#hdlc_8h_1a23d4e51490a17944875b13c0795dfd73"><span class="std std-ref">hdlc_reset_cb()</span></a> and this are discarded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>h</strong> – HDLC instance data allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv49hdlc_stat">
+<span id="_CPPv39hdlc_stat"></span><span id="_CPPv29hdlc_stat"></span><span id="hdlc_stat__hdlc_stat_t"></span><span class="target" id="hdlc_8h_1a89823b3a65197255ab11913c2d959310"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411hdlc_stat_t" title="hdlc_stat_t"><span class="n"><span class="pre">hdlc_stat_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_stat</span></span></span><a class="headerlink" href="#_CPPv49hdlc_stat" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Various statistics about the HDLC layer, that may be useful for diagnosing link performance. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411hdlc_stat_t">
+<span id="_CPPv311hdlc_stat_t"></span><span id="_CPPv211hdlc_stat_t"></span><span id="hdlc_stat_t"></span><span class="target" id="structhdlc__stat__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_stat_t</span></span></span><a class="headerlink" href="#_CPPv411hdlc_stat_t" title="Permalink to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;hdlc.h&gt;</em></div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t2rxE">
+<span id="_CPPv3N11hdlc_stat_t2rxE"></span><span id="_CPPv2N11hdlc_stat_t2rxE"></span><span id="hdlc_stat_t::rx__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a89ef384e844f35a8cb0ab853c0d450a6"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t2rxE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Data frames received (not including retransmissions) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t5ui_rxE">
+<span id="_CPPv3N11hdlc_stat_t5ui_rxE"></span><span id="_CPPv2N11hdlc_stat_t5ui_rxE"></span><span id="hdlc_stat_t::ui_rx__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a53c7442b8fe79ee68b78d5856ff2c5ab"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ui_rx</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t5ui_rxE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>UI frames received (not including retransmissions) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t10rx_retransE">
+<span id="_CPPv3N11hdlc_stat_t10rx_retransE"></span><span id="_CPPv2N11hdlc_stat_t10rx_retransE"></span><span id="hdlc_stat_t::rx_retrans__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a6e24ca3123980cf88320e397a2e90fdb"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_retrans</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t10rx_retransE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Out-of-sequence rx frames. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t6rx_errE">
+<span id="_CPPv3N11hdlc_stat_t6rx_errE"></span><span id="_CPPv2N11hdlc_stat_t6rx_errE"></span><span id="hdlc_stat_t::rx_err__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a50caf8428b0736f4cccc3a46d5fab3b3"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_err</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t6rx_errE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Failure to decode HDLC frame. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t6rx_ackE">
+<span id="_CPPv3N11hdlc_stat_t6rx_ackE"></span><span id="_CPPv2N11hdlc_stat_t6rx_ackE"></span><span id="hdlc_stat_t::rx_ack__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a7f16dfd700b4f2eb3783caf374366c3d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_ack</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t6rx_ackE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Ack frames received. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t7rx_nackE">
+<span id="_CPPv3N11hdlc_stat_t7rx_nackE"></span><span id="_CPPv2N11hdlc_stat_t7rx_nackE"></span><span id="hdlc_stat_t::rx_nack__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a5c514873b33ecff7f42e9a7e43a199c7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_nack</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t7rx_nackE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Nack frames received. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t2txE">
+<span id="_CPPv3N11hdlc_stat_t2txE"></span><span id="_CPPv2N11hdlc_stat_t2txE"></span><span id="hdlc_stat_t::tx__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a834d0a7e13e7b7501f2e372f30b60c7f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t2txE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Data frames transmitted (not including retransmissions) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t5ui_txE">
+<span id="_CPPv3N11hdlc_stat_t5ui_txE"></span><span id="_CPPv2N11hdlc_stat_t5ui_txE"></span><span id="hdlc_stat_t::ui_tx__uint32_t"></span><span class="target" id="structhdlc__stat__t_1abed55b15d6cce37169561be423e4a102"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ui_tx</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t5ui_txE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>UI frames transmitted (not including retransmissions) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t6tx_errE">
+<span id="_CPPv3N11hdlc_stat_t6tx_errE"></span><span id="_CPPv2N11hdlc_stat_t6tx_errE"></span><span id="hdlc_stat_t::tx_err__uint32_t"></span><span class="target" id="structhdlc__stat__t_1af1cc41ca1be8fb63166786d2d3edb6a0"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_err</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t6tx_errE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Failure of <a class="reference internal" href="#hdlc__os_8h_1aad9bd34d52aeae860ca34a7f2eb22be9"><span class="std std-ref">hdlc_os_tx()</span></a></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t10tx_retransE">
+<span id="_CPPv3N11hdlc_stat_t10tx_retransE"></span><span id="_CPPv2N11hdlc_stat_t10tx_retransE"></span><span id="hdlc_stat_t::tx_retrans__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a2c67babda6bd20e3b4385730a1db9611"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_retrans</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t10tx_retransE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Data frames retransmitted (including retransmission frames) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t6tx_ackE">
+<span id="_CPPv3N11hdlc_stat_t6tx_ackE"></span><span id="_CPPv2N11hdlc_stat_t6tx_ackE"></span><span id="hdlc_stat_t::tx_ack__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a60dbc390f1fba9b3218d224f6c1e0dfe"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_ack</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t6tx_ackE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Ack frames transmitted. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t7tx_nackE">
+<span id="_CPPv3N11hdlc_stat_t7tx_nackE"></span><span id="_CPPv2N11hdlc_stat_t7tx_nackE"></span><span id="hdlc_stat_t::tx_nack__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a35e3c0496aca16601277dfbaa7b2cf0c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_nack</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t7tx_nackE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Nack frames transmitted. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t13tx_keep_aliveE">
+<span id="_CPPv3N11hdlc_stat_t13tx_keep_aliveE"></span><span id="_CPPv2N11hdlc_stat_t13tx_keep_aliveE"></span><span id="hdlc_stat_t::tx_keep_alive__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a36503db4abc3b004fe19e20ef776a4bb"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_keep_alive</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t13tx_keep_aliveE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Number of keep alive frames transmitted (not including retransmissions) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_stat_t5resetE">
+<span id="_CPPv3N11hdlc_stat_t5resetE"></span><span id="_CPPv2N11hdlc_stat_t5resetE"></span><span id="hdlc_stat_t::reset__uint32_t"></span><span class="target" id="structhdlc__stat__t_1a9872a3f0ff1e80b64f12ee709d1f47ec"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_stat_t5resetE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Number of times sequence number handling has been reset. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="os-abstraction-interface">
+<span id="osal"></span><h2>OS Abstraction Interface<a class="headerlink" href="#os-abstraction-interface" title="Permalink to this heading"></a></h2>
+<p>The HDLC implementation is attempted to be generic, and requires integration
+into the OS as specified in <code class="file docutils literal notranslate"><span class="pre">src/hdlc/include/hdlc_os.h</span></code>.</p>
+<p>Some reference integrations are available in <code class="file docutils literal notranslate"><span class="pre">src/hdlc/ports/</span></code>.</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HDLC_RETRANSMIT_CNT">
+<span class="target" id="hdlc__os_8h_1ae8acf3f22cb2d28fadd1c65257446fce"></span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_RETRANSMIT_CNT</span></span></span><a class="headerlink" href="#c.HDLC_RETRANSMIT_CNT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Number of retransmissions to attempt before resetting the link. </p>
+<p>Thus the timeout is this value times the <a class="reference internal" href="#hdlc__os_8h_1a893d262f73ac965ec69af30da3c511fb"><span class="std std-ref">hdlc_os_start_timer()</span></a> time. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HDLC_KEEP_ALIVE_CNT">
+<span class="target" id="hdlc__os_8h_1a3da3f45fc9e28ad5e71e85d5d622f3c7"></span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_KEEP_ALIVE_CNT</span></span></span><a class="headerlink" href="#c.HDLC_KEEP_ALIVE_CNT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Number of timeouts with no data transmission before sending keep-alive packet. </p>
+<p>Thus detection of broken link takes <code class="docutils literal notranslate"><span class="pre">(HDLC_KEEP_ALIVE_CNT</span> <span class="pre">+</span> <span class="pre">HDLC_RETRANSMIT_CNT)</span></code> * <a class="reference internal" href="#hdlc__os_8h_1a893d262f73ac965ec69af30da3c511fb"><span class="std std-ref">hdlc_os_start_timer()</span></a> time </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.log_trace">
+<span class="target" id="hdlc__os_8h_1af89cb876e6e1d43cfeacdd58a7c9b78c"></span><span class="sig-name descname"><span class="n"><span class="pre">log_trace</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.log_trace" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Define log_ macros to enable logging. </p>
+<p>The integration may omit this. Default no logging is enabled. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.log_debug">
+<span class="target" id="hdlc__os_8h_1aa77e596ef13d2f0f75d0ac9540ed358d"></span><span class="sig-name descname"><span class="n"><span class="pre">log_debug</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.log_debug" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.log_info">
+<span class="target" id="hdlc__os_8h_1aa1cfe5444875c8eca0ea6f6993977d6d"></span><span class="sig-name descname"><span class="n"><span class="pre">log_info</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.log_info" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.log_warn">
+<span class="target" id="hdlc__os_8h_1a04af09851c431d178f16b24fa1aac1e9"></span><span class="sig-name descname"><span class="n"><span class="pre">log_warn</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.log_warn" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.log_error">
+<span class="target" id="hdlc__os_8h_1a6ae72553ea9805dd87a463d6f710364d"></span><span class="sig-name descname"><span class="n"><span class="pre">log_error</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.log_error" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.log_fatal">
+<span class="target" id="hdlc__os_8h_1a704a43b1e2ff3bb554aff101efdbeecf"></span><span class="sig-name descname"><span class="n"><span class="pre">log_fatal</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.log_fatal" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49hdlc_initPv">
+<span id="_CPPv39hdlc_initPv"></span><span id="_CPPv29hdlc_initPv"></span><span id="hdlc_init__voidP"></span><span class="target" id="hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"></span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49hdlc_initPv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by integration to initialize an hdlc instance. </p>
+<p>May be called multiple times if more than one HDLC device is connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_data</strong> – pointer to user data. The pointer will be copied to <a class="reference internal" href="#structhdlc__data__t"><span class="std std-ref">hdlc_data_t</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49hdlc_freeP11hdlc_data_t">
+<span id="_CPPv39hdlc_freeP11hdlc_data_t"></span><span id="_CPPv29hdlc_freeP11hdlc_data_t"></span><span id="hdlc_free__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1abbf3209220745f0ad63c61289762c830"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49hdlc_freeP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by integration to free resources allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a>. </p>
+<p>The integration is responsible for cleanup of anything in hdlc-&gt;user_data. After call to this, no other <code class="docutils literal notranslate"><span class="pre">hdlc_*()</span></code>/<code class="docutils literal notranslate"><span class="pre">hdlc_os_*()</span></code> functions may be called and <code class="docutils literal notranslate"><span class="pre">hdlc</span></code> must not be accessed. Note: This function uses various <code class="docutils literal notranslate"><span class="pre">hdlc_os_*()</span></code> callbacks, so do not free any instance resources until AFTER this call. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410hdlc_os_txP11hdlc_data_tPK7uint8_t8uint32_t">
+<span id="_CPPv310hdlc_os_txP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="_CPPv210hdlc_os_txP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="hdlc_os_tx__hdlc_data_tP.uint8_tCP.uint32_t"></span><span class="target" id="hdlc__os_8h_1aad9bd34d52aeae860ca34a7f2eb22be9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_tx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410hdlc_os_txP11hdlc_data_tPK7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by hdlc to transmit raw serial data. </p>
+<p>This function should be implemented by the integration. <code class="docutils literal notranslate"><span class="pre">buf</span></code> pointer is valid until function returns. The function is expected to send the entire <code class="docutils literal notranslate"><span class="pre">buf</span></code> or nothing, hdlc does not explicitly handle partial writes, but the underlying error handling will recover from it.</p>
+<p>Beware, that if this blocks, that will also cause blocking of receive handling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buf</strong> – data </p></li>
+<li><p><strong>count</strong> – length of data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>&lt; 0 in case of error, otherwise number of bytes sent (== count). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410hdlc_os_rxP11hdlc_data_tPK7uint8_t8uint32_t">
+<span id="_CPPv310hdlc_os_rxP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="_CPPv210hdlc_os_rxP11hdlc_data_tPK7uint8_t8uint32_t"></span><span id="hdlc_os_rx__hdlc_data_tP.uint8_tCP.uint32_t"></span><span class="target" id="hdlc__os_8h_1af749b3438fbbeefcf09a5fdaada1b98a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_rx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410hdlc_os_rxP11hdlc_data_tPK7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by integration when new raw serial data is received. </p>
+<p>This function called from the integration. data pointed to by <code class="docutils literal notranslate"><span class="pre">buf</span></code> may be freed or overwritten after the function call returns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buf</strong> – data</p></li>
+<li><p><strong>count</strong> – length of data </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419hdlc_os_start_timerP11hdlc_data_t">
+<span id="_CPPv319hdlc_os_start_timerP11hdlc_data_t"></span><span id="_CPPv219hdlc_os_start_timerP11hdlc_data_t"></span><span id="hdlc_os_start_timer__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1a893d262f73ac965ec69af30da3c511fb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_start_timer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419hdlc_os_start_timerP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by hdlc to (re)start retransmission timer. </p>
+<p>Integration must provide a single-shot timer for retransmission handling. This function is called after transmission of the first outstanding packet. Integration must select an appropriate timeout value for the time it is expected to receive an ACK, i.e. the round trip time of the largest frame plus ack.</p>
+<p>This function will also be called to restart timer when an ACK is received, and there are still outstanding frames. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418hdlc_os_stop_timerP11hdlc_data_t">
+<span id="_CPPv318hdlc_os_stop_timerP11hdlc_data_t"></span><span id="_CPPv218hdlc_os_stop_timerP11hdlc_data_t"></span><span id="hdlc_os_stop_timer__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1a917ddf864559a42f663cb27b831e8aa8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_stop_timer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418hdlc_os_stop_timerP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by hdlc to stop retransmission timer started by <a class="reference internal" href="#hdlc__os_8h_1a893d262f73ac965ec69af30da3c511fb"><span class="std std-ref">hdlc_os_start_timer()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415hdlc_os_timeoutP11hdlc_data_t">
+<span id="_CPPv315hdlc_os_timeoutP11hdlc_data_t"></span><span id="_CPPv215hdlc_os_timeoutP11hdlc_data_t"></span><span id="hdlc_os_timeout__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1a0616341c7ee5cd996fd8f2843f26a947"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_timeout</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415hdlc_os_timeoutP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by integration when retransmission timer expires. </p>
+<p>Note, that the function will call <a class="reference internal" href="#hdlc__os_8h_1a6a64ff7c8f5209b3162077dc42a8096b"><span class="std std-ref">hdlc_os_exit_critical_section()</span></a>, <a class="reference internal" href="#hdlc__os_8h_1a6a64ff7c8f5209b3162077dc42a8096b"><span class="std std-ref">hdlc_os_exit_critical_section()</span></a>, <a class="reference internal" href="#hdlc__os_8h_1a893d262f73ac965ec69af30da3c511fb"><span class="std std-ref">hdlc_os_start_timer()</span></a> and <a class="reference internal" href="#hdlc__os_8h_1aad9bd34d52aeae860ca34a7f2eb22be9"><span class="std std-ref">hdlc_os_tx()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417hdlc_os_link_lostP11hdlc_data_t">
+<span id="_CPPv317hdlc_os_link_lostP11hdlc_data_t"></span><span id="_CPPv217hdlc_os_link_lostP11hdlc_data_t"></span><span id="hdlc_os_link_lost__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1ae15e96064b67c252f853b9a7b80b11d4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_link_lost</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417hdlc_os_link_lostP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by integration to indicate link loss. </p>
+<p>This will reset HDLC. <a class="reference internal" href="#hdlc_8h_1a23d4e51490a17944875b13c0795dfd73"><span class="std std-ref">hdlc_reset_cb()</span></a> and later <a class="reference internal" href="#hdlc_8h_1a71893b40975f693afd8ea77be881f885"><span class="std std-ref">hdlc_connected_cb()</span></a> will be called. The integration may omit this. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430hdlc_os_enter_critical_sectionP11hdlc_data_t">
+<span id="_CPPv330hdlc_os_enter_critical_sectionP11hdlc_data_t"></span><span id="_CPPv230hdlc_os_enter_critical_sectionP11hdlc_data_t"></span><span id="hdlc_os_enter_critical_section__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1a97707cf8dc02204538aa55872232a594"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_enter_critical_section</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430hdlc_os_enter_critical_sectionP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by hdlc lock a mutex. </p>
+<p>If integration does not use multi-threading it may provide empty functions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429hdlc_os_exit_critical_sectionP11hdlc_data_t">
+<span id="_CPPv329hdlc_os_exit_critical_sectionP11hdlc_data_t"></span><span id="_CPPv229hdlc_os_exit_critical_sectionP11hdlc_data_t"></span><span id="hdlc_os_exit_critical_section__hdlc_data_tP"></span><span class="target" id="hdlc__os_8h_1a6a64ff7c8f5209b3162077dc42a8096b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_os_exit_critical_section</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411hdlc_data_t" title="hdlc_data_t"><span class="n"><span class="pre">hdlc_data_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">hdlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429hdlc_os_exit_critical_sectionP11hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Called by hdlc unlock a mutex. </p>
+<p>If integration does not use multi-threading it may provide empty functions </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411hdlc_data_t">
+<span id="_CPPv311hdlc_data_t"></span><span id="_CPPv211hdlc_data_t"></span><span id="hdlc_data_t"></span><span class="target" id="structhdlc__data__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_data_t</span></span></span><a class="headerlink" href="#_CPPv411hdlc_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;hdlc_os.h&gt;</em></div>
+<p>HDLC instance data, allocated by <a class="reference internal" href="#hdlc__os_8h_1a1f4c5f301117f80f89cc425bb0e76ef6"><span class="std std-ref">hdlc_init()</span></a>. </p>
+<p>The actual struct allocated by HDLC is larger than this and contains internal data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_data_t9user_dataE">
+<span id="_CPPv3N11hdlc_data_t9user_dataE"></span><span id="_CPPv2N11hdlc_data_t9user_dataE"></span><span id="hdlc_data_t::user_data__voidP"></span><span class="target" id="structhdlc__data__t_1af32d45caddfe319d99a9a8cdcdf7a83c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user_data</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_data_t9user_dataE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The user data field is a pointer the application may use to refer to any data it needs. </p>
+<p>The integration may set it to anything it wishes including NULL. It will not be touched by hdlc. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11hdlc_data_t18hdlc_tx_queue_sizeE">
+<span id="_CPPv3N11hdlc_data_t18hdlc_tx_queue_sizeE"></span><span id="_CPPv2N11hdlc_data_t18hdlc_tx_queue_sizeE"></span><span id="hdlc_data_t::hdlc_tx_queue_size__unsigned-i"></span><span class="target" id="structhdlc__data__t_1a249cda77a3b4f966d9a0883e7e0d2cf8"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdlc_tx_queue_size</span></span></span><a class="headerlink" href="#_CPPv4N11hdlc_data_t18hdlc_tx_queue_sizeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Number of frames in the TX queue. </p>
+<p>Can be used to throttle the sender. Alternatively a sender may use <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a> for throttling. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hdlc.html" class="btn btn-neutral float-left" title="HDLC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_general.html" class="btn btn-neutral float-right" title="General API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

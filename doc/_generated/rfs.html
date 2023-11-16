@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Table of Contents &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MDIF
+              <img src="../_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Table of Contents</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!--
+Markdown tempalte for use with protoc-gen-doc.
+
+Based on markdown.tmpl from the protoc-gen-doc github repo:
+https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
+
+- Removed the top H1 heading
+- Increased the heading level of all other headings by one (H3->H2, H2->H1)
+- Removed the "top" anchor and its use
+- Print services first instead of last
+ -->
+<section id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mdif_common-proto"><span class="xref myst">mdif/common.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">Status</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mdif_rfs_rfs-proto"><span class="xref myst">mdif/rfs/rfs.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-rfs-RfsService"><span class="xref myst">RfsService</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-DroneInfo"><span class="xref myst">DroneInfo</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoReq"><span class="xref myst">GetDroneInfoReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-GetDronelistReq"><span class="xref myst">GetDronelistReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-GetDronelistRes"><span class="xref myst">GetDronelistRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RfsMsg"><span class="xref myst">RfsMsg</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd"><span class="xref myst">RfsThreatInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd-RelativeBearing"><span class="xref myst">RfsThreatInd.RelativeBearing</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StartReq"><span class="xref myst">StartReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StartRes"><span class="xref myst">StartRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StopReq"><span class="xref myst">StopReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StopRes"><span class="xref myst">StopRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-ThreatStoppedInd"><span class="xref myst">ThreatStoppedInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-WifiThreatInd"><span class="xref myst">WifiThreatInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StartMode"><span class="xref myst">StartMode</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#scalar-value-types"><span class="xref myst">Scalar Value Types</span></a></p></li>
+</ul>
+<p><a name="mdif_common-proto"></a></p>
+</section>
+<section id="mdif-common-proto">
+<h1>mdif/common.proto<a class="headerlink" href="#mdif-common-proto" title="Permalink to this heading"></a></h1>
+<p>Common to all mdif protobuffers.</p>
+ <!-- end services -->
+ <!-- end messages -->
+<p><a name="mdif-common-Status"></a></p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
+<p>Defines the status of a request</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SUCCESS</p></td>
+<td><p>0</p></td>
+<td><p>The request was successful</p></td>
+</tr>
+<tr class="row-odd"><td><p>FAILURE</p></td>
+<td><p>1</p></td>
+<td><p>The request failed</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_INVALID</p></td>
+<td><p>2</p></td>
+<td><p>The request was invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_SUPPORTED</p></td>
+<td><p>3</p></td>
+<td><p>The request is not supported</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_NOT_IMPLEMENTED</p></td>
+<td><p>4</p></td>
+<td><p>The request is not implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_READY</p></td>
+<td><p>5</p></td>
+<td><p>The device is not ready to process the request</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_SIZE</p></td>
+<td><p>6</p></td>
+<td><p>The device cannot process the size</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+<p><a name="mdif_rfs_rfs-proto"></a></p>
+</section>
+</section>
+<section id="mdif-rfs-rfs-proto">
+<h1>mdif/rfs/rfs.proto<a class="headerlink" href="#mdif-rfs-rfs-proto" title="Permalink to this heading"></a></h1>
+<p>Message allocation for the RFS component are in the range:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Start</p></th>
+<th class="head"><p>End</p></th>
+<th class="head"><p>Radix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x80</p></td>
+<td><p>0x9F</p></td>
+<td><p>Hex</p></td>
+</tr>
+<tr class="row-odd"><td><p>128</p></td>
+<td><p>159</p></td>
+<td><p>Dec</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsService"></a></p>
+<section id="rfsservice">
+<h2>RfsService<a class="headerlink" href="#rfsservice" title="Permalink to this heading"></a></h2>
+<p>Defines the relationship between requests and responses in the RFS component</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method Name</p></th>
+<th class="head"><p>Request Type</p></th>
+<th class="head"><p>Response Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Start</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StartReq"><span class="xref myst">StartReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StartRes"><span class="xref myst">StartRes</span></a></p></td>
+<td><p>Use to start the RFS detection algorithms</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stop</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StopReq"><span class="xref myst">StopReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StopRes"><span class="xref myst">StopRes</span></a></p></td>
+<td><p>Use to stop the RFS detection algorithms</p></td>
+</tr>
+<tr class="row-even"><td><p>GetDroneInfo</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoReq"><span class="xref myst">GetDroneInfoReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></td>
+<td><p>Use to get individual drone info</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end services -->
+<p><a name="mdif-rfs-DroneInfo"></a></p>
+</section>
+<section id="droneinfo">
+<h2>DroneInfo<a class="headerlink" href="#droneinfo" title="Permalink to this heading"></a></h2>
+<p>Description of a drone.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Identifier for detection filter</p></td>
+</tr>
+<tr class="row-odd"><td><p>type_id_name</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Name of RF protocol/Family (e.g Lightbridge)</p></td>
+</tr>
+<tr class="row-even"><td><p>drone_name</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Name of drone(s) (e.g Phantom 3)</p></td>
+</tr>
+<tr class="row-odd"><td><p>vendor_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Identifier to rf emitter vendor (e.g 1)</p></td>
+</tr>
+<tr class="row-even"><td><p>vendor_id_name</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Name of rf emitter vendor (e.g DJI)</p></td>
+</tr>
+<tr class="row-odd"><td><p>category_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Identifier of rf emitter category drone/controller/wifi (e.g 1)</p></td>
+</tr>
+<tr class="row-even"><td><p>category_id_name</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Name of rf emitter category (e.g Drone)</p></td>
+</tr>
+<tr class="row-odd"><td><p>band</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></td>
+<td><p>Bands where detector looks (e.g 2G4 and 5G8)</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-GetDroneInfoReq"></a></p>
+</section>
+<section id="getdroneinforeq">
+<h2>GetDroneInfoReq<a class="headerlink" href="#getdroneinforeq" title="Permalink to this heading"></a></h2>
+<p>Get individual drone description, just in time or loop through and build library.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Id of detection filter associated with drone. 0 is first in library.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-GetDroneInfoRes"></a></p>
+</section>
+<section id="getdroneinfores">
+<h2>GetDroneInfoRes<a class="headerlink" href="#getdroneinfores" title="Permalink to this heading"></a></h2>
+<p>Response to GetDroneInfoReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>drone_info</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-DroneInfo"><span class="xref myst">DroneInfo</span></a></p></td>
+<td><p>Description of drone.</p></td>
+</tr>
+<tr class="row-even"><td><p>next_drone_type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Id to next drone, 0 indicates end of library.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-GetDronelistReq"></a></p>
+</section>
+<section id="getdronelistreq">
+<h2>GetDronelistReq<a class="headerlink" href="#getdronelistreq" title="Permalink to this heading"></a></h2>
+<p>Get drone descriptions for all drones in target device library.
+Deprecated, use GetDroneInfoReq instead</p>
+<p><a name="mdif-rfs-GetDronelistRes"></a></p>
+</section>
+<section id="getdronelistres">
+<h2>GetDronelistRes<a class="headerlink" href="#getdronelistres" title="Permalink to this heading"></a></h2>
+<p>Response to GetDronelistReq
+Deprecated</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>drone_info</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-DroneInfo"><span class="xref myst">DroneInfo</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsMsg"></a></p>
+</section>
+<section id="rfsmsg">
+<h2>RfsMsg<a class="headerlink" href="#rfsmsg" title="Permalink to this heading"></a></h2>
+<p>Rfs wire format messages</p>
+<p>This message dictates the final format on the wire for rfs messages. It is a
+oneof construct to wrap a single message at a time.</p>
+<p>Every request (req) has a corresponding response (res). The req/res pairs are
+defined in the RfsService below through RPC patterns.</p>
+<p>Indications (ind) are pushed without a request at any time</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>start_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StartReq"><span class="xref myst">StartReq</span></a></p></td>
+<td><p>Request RFS start</p></td>
+</tr>
+<tr class="row-odd"><td><p>start_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StartRes"><span class="xref myst">StartRes</span></a></p></td>
+<td><p>RFS start response</p></td>
+</tr>
+<tr class="row-even"><td><p>stop_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StopReq"><span class="xref myst">StopReq</span></a></p></td>
+<td><p>Request RFS stop</p></td>
+</tr>
+<tr class="row-odd"><td><p>stop_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StopRes"><span class="xref myst">StopRes</span></a></p></td>
+<td><p>RFS stop response</p></td>
+</tr>
+<tr class="row-even"><td><p>get_dronelist_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetDronelistReq"><span class="xref myst">GetDronelistReq</span></a></p></td>
+<td><p><strong>Deprecated.</strong> use GetDroneInfoReq instead</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_dronelist_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetDronelistRes"><span class="xref myst">GetDronelistRes</span></a></p></td>
+<td><p><strong>Deprecated.</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>get_drone_info_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoReq"><span class="xref myst">GetDroneInfoReq</span></a></p></td>
+<td><p>Get individual drone info</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_drone_info_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></td>
+<td><p>Individual drone info response</p></td>
+</tr>
+<tr class="row-even"><td><p>rfs_threat_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd"><span class="xref myst">RfsThreatInd</span></a></p></td>
+<td><p>RFS threat indication</p></td>
+</tr>
+<tr class="row-odd"><td><p>wifi_threat_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-WifiThreatInd"><span class="xref myst">WifiThreatInd</span></a></p></td>
+<td><p>Wifi threat indication</p></td>
+</tr>
+<tr class="row-even"><td><p>threat_stopped_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-ThreatStoppedInd"><span class="xref myst">ThreatStoppedInd</span></a></p></td>
+<td><p>Threat stopped indication</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd"></a></p>
+</section>
+<section id="rfsthreatind">
+<h2>RfsThreatInd<a class="headerlink" href="#rfsthreatind" title="Permalink to this heading"></a></h2>
+<p>Post rfs threat indication.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Instance of detection thread.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Detection type id.</p></td>
+</tr>
+<tr class="row-even"><td><p>start_time</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Start time of detection thread.</p></td>
+</tr>
+<tr class="row-odd"><td><p>power</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Power at time of reporting.</p></td>
+</tr>
+<tr class="row-even"><td><p>current_band</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></td>
+<td><p>Band(s) where detected occurs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>relative_bearing</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd-RelativeBearing"><span class="xref myst">RfsThreatInd.RelativeBearing</span></a></p></td>
+<td><p>Relative bearing of rfs at time of reporting.</p></td>
+</tr>
+<tr class="row-even"><td><p>last_seen</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Last time of detection</p></td>
+</tr>
+<tr class="row-odd"><td><p>msg_timestamp</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Time message is compiled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-RelativeBearing"></a></p>
+</section>
+<section id="rfsthreatind-relativebearing">
+<h2>RfsThreatInd.RelativeBearing<a class="headerlink" href="#rfsthreatind-relativebearing" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>valid</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Valid when applicable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>bearing</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Calculated Bearing.</p></td>
+</tr>
+<tr class="row-even"><td><p>var_bearing</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Variance in bearing.</p></td>
+</tr>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Time bearing is calculated.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-StartReq"></a></p>
+</section>
+<section id="startreq">
+<h2>StartReq<a class="headerlink" href="#startreq" title="Permalink to this heading"></a></h2>
+<p>Request RFS start detection.</p>
+<p><a name="mdif-rfs-StartRes"></a></p>
+</section>
+<section id="startres">
+<h2>StartRes<a class="headerlink" href="#startres" title="Permalink to this heading"></a></h2>
+<p>Response to StartReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-StopReq"></a></p>
+</section>
+<section id="stopreq">
+<h2>StopReq<a class="headerlink" href="#stopreq" title="Permalink to this heading"></a></h2>
+<p>Request RFS stop detection.</p>
+<p><a name="mdif-rfs-StopRes"></a></p>
+</section>
+<section id="stopres">
+<h2>StopRes<a class="headerlink" href="#stopres" title="Permalink to this heading"></a></h2>
+<p>Response to StopReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-ThreatStoppedInd"></a></p>
+</section>
+<section id="threatstoppedind">
+<h2>ThreatStoppedInd<a class="headerlink" href="#threatstoppedind" title="Permalink to this heading"></a></h2>
+<p>Post stop of threat indication.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Instance of detection thread.</p></td>
+</tr>
+<tr class="row-odd"><td><p>msg_timestamp</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Time message is compiled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-WifiThreatInd"></a></p>
+</section>
+<section id="wifithreatind">
+<h2>WifiThreatInd<a class="headerlink" href="#wifithreatind" title="Permalink to this heading"></a></h2>
+<p>Post wifi threat indication.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Instance of detection thread.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Detection type id.</p></td>
+</tr>
+<tr class="row-even"><td><p>start_time</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Start time of detection thread.</p></td>
+</tr>
+<tr class="row-odd"><td><p>power</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Power at time of reporting.</p></td>
+</tr>
+<tr class="row-even"><td><p>channel</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Wifi channel as per international standards.</p></td>
+</tr>
+<tr class="row-odd"><td><p>mac_adr</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>Mac address of wifi threat.</p></td>
+</tr>
+<tr class="row-even"><td><p>msg_timestamp</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Time message is compiled.</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end messages -->
+<p><a name="mdif-rfs-ScanBand"></a></p>
+</section>
+<section id="scanband">
+<h2>ScanBand<a class="headerlink" href="#scanband" title="Permalink to this heading"></a></h2>
+<p>Enumeration of frequncies bands scanned.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Invalid</p></td>
+<td><p>0</p></td>
+<td><p>Default, before overwriting with detection band.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MHz433</p></td>
+<td><p>1</p></td>
+<td><p>ISM band ~433</p></td>
+</tr>
+<tr class="row-even"><td><p>MHz900</p></td>
+<td><p>2</p></td>
+<td><p>ISM band ~900</p></td>
+</tr>
+<tr class="row-odd"><td><p>MHz1200</p></td>
+<td><p>3</p></td>
+<td><p>ISM band 1G2</p></td>
+</tr>
+<tr class="row-even"><td><p>MHz2400</p></td>
+<td><p>4</p></td>
+<td><p>ISM band 2G4</p></td>
+</tr>
+<tr class="row-odd"><td><p>MHz5800</p></td>
+<td><p>5</p></td>
+<td><p>ISM band 5G8</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-StartMode"></a></p>
+</section>
+<section id="startmode">
+<h2>StartMode<a class="headerlink" href="#startmode" title="Permalink to this heading"></a></h2>
+<p>Enumeration of possible start-modes.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Default</p></td>
+<td><p>0</p></td>
+<td><p>RFS runs on internal antenna and external if present</p></td>
+</tr>
+<tr class="row-odd"><td><p>ExtAntOnly</p></td>
+<td><p>1</p></td>
+<td><p>RFS runs on external antenna only. Will signal errer if not present</p></td>
+</tr>
+<tr class="row-even"><td><p>IntAntOnly</p></td>
+<td><p>2</p></td>
+<td><p>RFS runs on internal antenna only, even if external is present</p></td>
+</tr>
+<tr class="row-odd"><td><p>UAVModeSearch</p></td>
+<td><p>3</p></td>
+<td><p>RFS runs on internal antenna in search/direction finding mode</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+</section>
+</section>
+<section id="scalar-value-types">
+<h1>Scalar Value Types<a class="headerlink" href="#scalar-value-types" title="Permalink to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>.proto Type</p></th>
+<th class="head"><p>Notes</p></th>
+<th class="head"><p>C++</p></th>
+<th class="head"><p>Java</p></th>
+<th class="head"><p>Python</p></th>
+<th class="head"><p>Go</p></th>
+<th class="head"><p>C#</p></th>
+<th class="head"><p>PHP</p></th>
+<th class="head"><p>Ruby</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a name="double" /> double</p></td>
+<td><p></p></td>
+<td><p>double</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>float64</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="float" /> float</p></td>
+<td><p></p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float32</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="int32" /> int32</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="int64" /> int64</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="uint32" /> uint32</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int/long</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="uint64" /> uint64</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sint32" /> sint32</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sint64" /> sint64</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="fixed32" /> fixed32</p></td>
+<td><p>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="fixed64" /> fixed64</p></td>
+<td><p>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sfixed32" /> sfixed32</p></td>
+<td><p>Always four bytes.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sfixed64" /> sfixed64</p></td>
+<td><p>Always eight bytes.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bool" /> bool</p></td>
+<td><p></p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>boolean</p></td>
+<td><p>bool</p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>TrueClass/FalseClass</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="string" /> string</p></td>
+<td><p>A string must always contain UTF-8 encoded or 7-bit ASCII text.</p></td>
+<td><p>string</p></td>
+<td><p>String</p></td>
+<td><p>str/unicode</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>String (UTF-8)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bytes" /> bytes</p></td>
+<td><p>May contain any arbitrary sequence of bytes.</p></td>
+<td><p>string</p></td>
+<td><p>ByteString</p></td>
+<td><p>str</p></td>
+<td><p>[]byte</p></td>
+<td><p>ByteString</p></td>
+<td><p>string</p></td>
+<td><p>String (ASCII-8BIT)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

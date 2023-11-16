@@ -1,0 +1,8 @@
+node_modules
+
+/src/docker/.docker_builder
+
+/src/linux_rfs_demo/rfs_demo
+
+/src/**/_generated
+

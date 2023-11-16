@@ -1,0 +1,220 @@
+/*******************************************************************************
+ *                                                                             *
+ *                                                 ,,                          *
+ *                                                       ,,,,,                 *
+ *                                                           ,,,,,             *
+ *           ,,,,,,,,,,,,,,,,,,,,,,,,,,,,                        ,,,,          *
+ *          ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,            ,,,,          ,,,,        *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,,,,        ,,,       *
+ *          ,,,,,       ,,,,,      ,,,,,,                   ,,,        ,,,     *
+ *          ,,,,,       ,,,,,      ,,,,,,       ,,,           ,,,        ,     *
+ *          ,,,,,       ,,,,,      ,,,,,,           ,,,         ,,        ,    *
+ *          ,,,,,       ,,,,,      ,,,,,,              ,,        ,,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,        ,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                 ,                    *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *                                       ,,,,,                  ,,,,,,         *
+ *                     ,                 ,,,,,                  ,,,,,,         *
+ *             ,        ,,               ,,,,,                  ,,,,,,         *
+ *    ,        ,,        ,,,             ,,,,,                  ,,,,,,         *
+ *     ,        ,,,         ,,,          ,,,,,                  ,,,,,,         *
+ *     ,,,       ,,,                     ,,,,,                  ,,,,,,         *
+ *      ,,,        ,,,,                  ,,,,,                  ,,,,,,         *
+ *        ,,,         ,,,,               ,,,,,                  ,,,,,,         *
+ *         ,,,,,            ,,,,         ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *            ,,,,                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *               ,,,,,                                                         *
+ *                    ,,,,,                                                    *
+ *                                                                             *
+ * Program/file : rfs.proto                                                    *
+ *                                                                             *
+ * Description  : This protobuf file describes messages associated with the    *
+ *              : rf sensor (rfs) functionality.                               *
+ *                                                                             *
+ * Copyright 2023 MyDefence A/S.                                               *
+ *                                                                             *
+ * Licensed under the Apache License, Version 2.0 (the "License");             *
+ * you may not use this file except in compliance with the License.            *
+ * You may obtain a copy of the License at                                     *
+ *                                                                             *
+ * http://www.apache.org/licenses/LICENSE-2.0                                  *
+ *                                                                             *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.                                              *
+ *                                                                             *
+ *                                                                             *
+ *                                                                             *
+ *******************************************************************************/
+
+/*
+  Message allocation for the RFS component are in the range:
+
+  | Start | End  | Radix |
+  |-------|------|-------|
+  | 0x80  | 0x9F | Hex   |
+  | 128   |  159 | Dec   |
+
+ */
+syntax = "proto3";
+
+package mdif.rfs;
+
+import "mdif/common.proto";
+
+// Defines the relationship between requests and responses in the RFS component
+service RfsService {
+    // Use to start the RFS detection algorithms
+    rpc Start (StartReq) returns (StartRes);
+    // Use to stop the RFS detection algorithms
+    rpc Stop (StopReq) returns (StopRes);
+    // Use to get individual drone info
+    rpc GetDroneInfo (GetDroneInfoReq) returns (GetDroneInfoRes);
+}
+
+// Rfs wire format messages
+//
+// This message dictates the final format on the wire for rfs messages. It is a
+// oneof construct to wrap a single message at a time.
+//
+// Every request (req) has a corresponding response (res). The req/res pairs are
+// defined in the RfsService below through RPC patterns.
+//
+// Indications (ind) are pushed without a request at any time
+message RfsMsg {
+    oneof msg {
+        // Request RFS start
+        StartReq start_req=0x0080;
+        // RFS start response
+        StartRes start_res=0x0081;
+        // Request RFS stop
+        StopReq stop_req=0x0082;
+        // RFS stop response
+        StopRes stop_res=0x0083;
+        // use GetDroneInfoReq instead
+        GetDronelistReq get_dronelist_req=0x0084 [deprecated=true];
+        GetDronelistRes get_dronelist_res=0x0085 [deprecated=true];
+        // Get individual drone info
+        GetDroneInfoReq get_drone_info_req=0x0086;
+        // Individual drone info response
+        GetDroneInfoRes get_drone_info_res=0x0087;
+        // RFS threat indication
+        RfsThreatInd rfs_threat_ind=0x0088;
+        // Wifi threat indication
+        WifiThreatInd wifi_threat_ind=0x0089;
+        // Threat stopped indication
+        ThreatStoppedInd threat_stopped_ind=0x008A;
+    }
+}
+
+/*************************************
+ ************* Sub types *************
+ ************************************/
+
+// Enumeration of possible start-modes.
+enum StartMode {
+    Default = 0; // RFS runs on internal antenna and external if present
+    ExtAntOnly = 1; // RFS runs on external antenna only. Will signal errer if not present
+    IntAntOnly = 2; // RFS runs on internal antenna only, even if external is present
+    UAVModeSearch = 3; // RFS runs on internal antenna in search/direction finding mode
+}
+
+// Enumeration of frequncies bands scanned.
+enum ScanBand {
+    Invalid = 0; // Default, before overwriting with detection band.
+    MHz433 = 1; // ISM band ~433
+    MHz900 = 2; // ISM band ~900
+    MHz1200 = 3; // ISM band 1G2
+    MHz2400 = 4; // ISM band 2G4
+    MHz5800 = 5; // ISM band 5G8
+}
+
+/*************************************
+ ******** Message definitions ********
+ ************************************/
+// Description of a drone.
+message DroneInfo {
+    uint32 type_id = 1; // Identifier for detection filter
+    string type_id_name = 2; // Name of RF protocol/Family (e.g Lightbridge)
+    string drone_name = 3; // Name of drone(s) (e.g Phantom 3)
+    uint32 vendor_id = 4; // Identifier to rf emitter vendor (e.g 1)
+    string vendor_id_name = 5; // Name of rf emitter vendor (e.g DJI)
+    uint32 category_id = 6; // Identifier of rf emitter category drone/controller/wifi (e.g 1)
+    string category_id_name = 7; // Name of rf emitter category (e.g Drone)
+    repeated ScanBand band = 8; // Bands where detector looks (e.g 2G4 and 5G8)
+}
+// Get individual drone description, just in time or loop through and build library.
+message GetDroneInfoReq {
+    // Id of detection filter associated with drone. 0 is first in library.
+    uint32 type_id = 1;
+}
+// Response to GetDroneInfoReq
+message GetDroneInfoRes {
+    common.Status status = 1;
+    // Description of drone.
+    DroneInfo drone_info = 2;
+    // Id to next drone, 0 indicates end of library.
+    uint32 next_drone_type_id = 3;
+}
+// Get drone descriptions for all drones in target device library.
+// Deprecated, use GetDroneInfoReq instead
+message GetDronelistReq{
+    option deprecated = true;
+}
+// Response to GetDronelistReq
+// Deprecated
+message GetDronelistRes{
+    option deprecated = true;
+    common.Status status = 1;
+    repeated DroneInfo drone_info = 2;
+}
+// Request RFS start detection.
+message StartReq {}
+// Response to StartReq
+message StartRes {
+    common.Status status = 1;
+}
+// Request RFS stop detection.
+message StopReq {}
+// Response to StopReq
+message StopRes {
+    common.Status status = 1;
+}
+// Post rfs threat indication.
+message RfsThreatInd {
+    message RelativeBearing {
+        bool valid = 1; // Valid when applicable.
+        float bearing = 2; // Calculated Bearing.
+        float var_bearing = 3; // Variance in bearing.
+        float timestamp = 4; // Time bearing is calculated.
+    }
+    uint32 id = 1; // Instance of detection thread.
+    uint32 type_id = 2; // Detection type id.
+    uint32 start_time = 3; // Start time of detection thread.
+    float power = 4; // Power at time of reporting.
+    repeated ScanBand current_band = 5; // Band(s) where detected occurs.
+    RelativeBearing relative_bearing = 6; // Relative bearing of rfs at time of reporting.
+    uint32 last_seen = 7; // Last time of detection
+    float msg_timestamp = 8; // Time message is compiled.
+}
+// Post wifi threat indication.
+message WifiThreatInd {
+    reserved 5;
+    uint32 id = 1; // Instance of detection thread.
+    uint32 type_id = 2; // Detection type id.
+    uint32 start_time = 3; // Start time of detection thread.
+    float power = 4; // Power at time of reporting.
+    uint32 channel = 6; // Wifi channel as per international standards.
+    bytes mac_adr = 7; // Mac address of wifi threat.
+    float msg_timestamp = 8; // Time message is compiled.
+}
+// Post stop of threat indication.
+message ThreatStoppedInd {
+    uint32 id = 1; // Instance of detection thread.
+    float msg_timestamp = 2; // Time message is compiled.
+}

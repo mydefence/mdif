@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Table of Contents &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MDIF
+              <img src="../_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Table of Contents</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!--
+Markdown tempalte for use with protoc-gen-doc.
+
+Based on markdown.tmpl from the protoc-gen-doc github repo:
+https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
+
+- Removed the top H1 heading
+- Increased the heading level of all other headings by one (H3->H2, H2->H1)
+- Removed the "top" anchor and its use
+- Print services first instead of last
+ -->
+<section id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mdif_common-proto"><span class="xref myst">mdif/common.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">Status</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mdif_fwu_fwu-proto"><span class="xref myst">mdif/fwu/fwu.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuService"><span class="xref myst">FwuService</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuAbortReq"><span class="xref myst">FwuAbortReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuAbortRes"><span class="xref myst">FwuAbortRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuChunkReq"><span class="xref myst">FwuChunkReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuChunkRes"><span class="xref myst">FwuChunkRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuInitReq"><span class="xref myst">FwuInitReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuInitRes"><span class="xref myst">FwuInitRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuMsg"><span class="xref myst">FwuMsg</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-FwuStateInd"><span class="xref myst">FwuStateInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-fwu-State"><span class="xref myst">State</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#scalar-value-types"><span class="xref myst">Scalar Value Types</span></a></p></li>
+</ul>
+<p><a name="mdif_common-proto"></a></p>
+</section>
+<section id="mdif-common-proto">
+<h1>mdif/common.proto<a class="headerlink" href="#mdif-common-proto" title="Permalink to this heading"></a></h1>
+<p>Common to all mdif protobuffers.</p>
+ <!-- end services -->
+ <!-- end messages -->
+<p><a name="mdif-common-Status"></a></p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
+<p>Defines the status of a request</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SUCCESS</p></td>
+<td><p>0</p></td>
+<td><p>The request was successful</p></td>
+</tr>
+<tr class="row-odd"><td><p>FAILURE</p></td>
+<td><p>1</p></td>
+<td><p>The request failed</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_INVALID</p></td>
+<td><p>2</p></td>
+<td><p>The request was invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_SUPPORTED</p></td>
+<td><p>3</p></td>
+<td><p>The request is not supported</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_NOT_IMPLEMENTED</p></td>
+<td><p>4</p></td>
+<td><p>The request is not implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_READY</p></td>
+<td><p>5</p></td>
+<td><p>The device is not ready to process the request</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_SIZE</p></td>
+<td><p>6</p></td>
+<td><p>The device cannot process the size</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+<p><a name="mdif_fwu_fwu-proto"></a></p>
+</section>
+</section>
+<section id="mdif-fwu-fwu-proto">
+<h1>mdif/fwu/fwu.proto<a class="headerlink" href="#mdif-fwu-fwu-proto" title="Permalink to this heading"></a></h1>
+<p>Message allocation for the FWU component are in the range:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Start</p></th>
+<th class="head"><p>End</p></th>
+<th class="head"><p>Radix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x20</p></td>
+<td><p>0x2F</p></td>
+<td><p>Hex</p></td>
+</tr>
+<tr class="row-odd"><td><p>32</p></td>
+<td><p>47</p></td>
+<td><p>Dec</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuService"></a></p>
+<section id="fwuservice">
+<h2>FwuService<a class="headerlink" href="#fwuservice" title="Permalink to this heading"></a></h2>
+<p>Defines the relationship between requests and responses in the FWU component</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method Name</p></th>
+<th class="head"><p>Request Type</p></th>
+<th class="head"><p>Response Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FwuInit</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuInitReq"><span class="xref myst">FwuInitReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuInitRes"><span class="xref myst">FwuInitRes</span></a></p></td>
+<td><p>Used to initialize FWU</p></td>
+</tr>
+<tr class="row-odd"><td><p>FwuAbort</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuAbortReq"><span class="xref myst">FwuAbortReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuAbortRes"><span class="xref myst">FwuAbortRes</span></a></p></td>
+<td><p>Used to abort an active FWU</p></td>
+</tr>
+<tr class="row-even"><td><p>FwuChunk</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuChunkReq"><span class="xref myst">FwuChunkReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuChunkRes"><span class="xref myst">FwuChunkRes</span></a></p></td>
+<td><p>Used to transmit a chunk with firmware data</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end services -->
+<p><a name="mdif-fwu-FwuAbortReq"></a></p>
+</section>
+<section id="fwuabortreq">
+<h2>FwuAbortReq<a class="headerlink" href="#fwuabortreq" title="Permalink to this heading"></a></h2>
+<p>Abort FWU process</p>
+<p><a name="mdif-fwu-FwuAbortRes"></a></p>
+</section>
+<section id="fwuabortres">
+<h2>FwuAbortRes<a class="headerlink" href="#fwuabortres" title="Permalink to this heading"></a></h2>
+<p>Response on FwuAbortReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+<tr class="row-odd"><td><p>state</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-State"><span class="xref myst">State</span></a></p></td>
+<td><p>FWU state of the device</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuChunkReq"></a></p>
+</section>
+<section id="fwuchunkreq">
+<h2>FwuChunkReq<a class="headerlink" href="#fwuchunkreq" title="Permalink to this heading"></a></h2>
+<p>Chunk data contains part of FWU image</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>data</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>Section of firmware image</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuChunkRes"></a></p>
+</section>
+<section id="fwuchunkres">
+<h2>FwuChunkRes<a class="headerlink" href="#fwuchunkres" title="Permalink to this heading"></a></h2>
+<p>Response on FwuChunkReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuInitReq"></a></p>
+</section>
+<section id="fwuinitreq">
+<h2>FwuInitReq<a class="headerlink" href="#fwuinitreq" title="Permalink to this heading"></a></h2>
+<p>Initialize Firmware Update with size of firmware image.</p>
+<p>‘force’ flag will skip any update guards in code making it possible to up/downgrade using
+firmware which is not directly supported by the device. Note this will void warranty if
+used without written approval from MyDefence.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>size</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Size of FWU image</p></td>
+</tr>
+<tr class="row-odd"><td><p>force</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Note using this flag could brik the device</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuInitRes"></a></p>
+</section>
+<section id="fwuinitres">
+<h2>FwuInitRes<a class="headerlink" href="#fwuinitres" title="Permalink to this heading"></a></h2>
+<p>Response on FwuInitReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+<tr class="row-odd"><td><p>state</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-State"><span class="xref myst">State</span></a></p></td>
+<td><p>If in State.RECEIVING_DATA the device is ready to proceed</p></td>
+</tr>
+<tr class="row-even"><td><p>max_chunk_size</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Max chunk size in bytes</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuMsg"></a></p>
+</section>
+<section id="fwumsg">
+<h2>FwuMsg<a class="headerlink" href="#fwumsg" title="Permalink to this heading"></a></h2>
+<p>FWU wire format message</p>
+<p>This message dictates the final format on the wire for FWU messages. It is a
+oneof construct to wrap a single message at a time.</p>
+<p>Every request (req) has a corresponding response (res). The req/res pairs are
+defined in the FwuService below through RPC patterns.</p>
+<p>Indications (ind) are pushed without a request at any time</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fwu_init_req</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuInitReq"><span class="xref myst">FwuInitReq</span></a></p></td>
+<td><p>Request FWU initialization</p></td>
+</tr>
+<tr class="row-odd"><td><p>fwu_init_res</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuInitRes"><span class="xref myst">FwuInitRes</span></a></p></td>
+<td><p>FWU init response</p></td>
+</tr>
+<tr class="row-even"><td><p>fwu_chunk_req</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuChunkReq"><span class="xref myst">FwuChunkReq</span></a></p></td>
+<td><p>Request with FWU image chunk of data</p></td>
+</tr>
+<tr class="row-odd"><td><p>fwu_chunk_res</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuChunkRes"><span class="xref myst">FwuChunkRes</span></a></p></td>
+<td><p>FWU chunk data response</p></td>
+</tr>
+<tr class="row-even"><td><p>fwu_state_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuStateInd"><span class="xref myst">FwuStateInd</span></a></p></td>
+<td><p>FWU state indication</p></td>
+</tr>
+<tr class="row-odd"><td><p>fwu_abort_req</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuAbortReq"><span class="xref myst">FwuAbortReq</span></a></p></td>
+<td><p>Request FWU to abort</p></td>
+</tr>
+<tr class="row-even"><td><p>fwu_abort_res</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-FwuAbortRes"><span class="xref myst">FwuAbortRes</span></a></p></td>
+<td><p>FWU abort response</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-fwu-FwuStateInd"></a></p>
+</section>
+<section id="fwustateind">
+<h2>FwuStateInd<a class="headerlink" href="#fwustateind" title="Permalink to this heading"></a></h2>
+<p>Indication with current FWU state of the device</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>state</p></td>
+<td><p><a class="reference internal" href="#mdif-fwu-State"><span class="xref myst">State</span></a></p></td>
+<td><p>FWU state of the device</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end messages -->
+<p><a name="mdif-fwu-State"></a></p>
+</section>
+<section id="state">
+<h2>State<a class="headerlink" href="#state" title="Permalink to this heading"></a></h2>
+<p>Enumeration of possible states of FWU</p>
+<p>End-states means the FWU process has terminated</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IDLE</p></td>
+<td><p>0</p></td>
+<td><p>FWU not started (end-state)</p></td>
+</tr>
+<tr class="row-odd"><td><p>RECEIVING_DATA</p></td>
+<td><p>1</p></td>
+<td><p>Data is being transfered to the device</p></td>
+</tr>
+<tr class="row-even"><td><p>PROCESSING_IMAGE</p></td>
+<td><p>2</p></td>
+<td><p>Processing received firmware data</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERASING_FLASH</p></td>
+<td><p>3</p></td>
+<td><p>Flash is being erased</p></td>
+</tr>
+<tr class="row-even"><td><p>WRITING_FLASH</p></td>
+<td><p>4</p></td>
+<td><p>Firmware is being written to flash</p></td>
+</tr>
+<tr class="row-odd"><td><p>VERIFYING_FLASH</p></td>
+<td><p>5</p></td>
+<td><p>Written firmware is verified in flash</p></td>
+</tr>
+<tr class="row-even"><td><p>FWU_COMPLETE</p></td>
+<td><p>6</p></td>
+<td><p>FWU is successfully completed (end-state)</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERROR</p></td>
+<td><p>7</p></td>
+<td><p>An error has occured and FWU was not completed (end-state)</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+</section>
+</section>
+<section id="scalar-value-types">
+<h1>Scalar Value Types<a class="headerlink" href="#scalar-value-types" title="Permalink to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>.proto Type</p></th>
+<th class="head"><p>Notes</p></th>
+<th class="head"><p>C++</p></th>
+<th class="head"><p>Java</p></th>
+<th class="head"><p>Python</p></th>
+<th class="head"><p>Go</p></th>
+<th class="head"><p>C#</p></th>
+<th class="head"><p>PHP</p></th>
+<th class="head"><p>Ruby</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a name="double" /> double</p></td>
+<td><p></p></td>
+<td><p>double</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>float64</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="float" /> float</p></td>
+<td><p></p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float32</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="int32" /> int32</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="int64" /> int64</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="uint32" /> uint32</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int/long</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="uint64" /> uint64</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sint32" /> sint32</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sint64" /> sint64</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="fixed32" /> fixed32</p></td>
+<td><p>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="fixed64" /> fixed64</p></td>
+<td><p>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sfixed32" /> sfixed32</p></td>
+<td><p>Always four bytes.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sfixed64" /> sfixed64</p></td>
+<td><p>Always eight bytes.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bool" /> bool</p></td>
+<td><p></p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>boolean</p></td>
+<td><p>bool</p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>TrueClass/FalseClass</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="string" /> string</p></td>
+<td><p>A string must always contain UTF-8 encoded or 7-bit ASCII text.</p></td>
+<td><p>string</p></td>
+<td><p>String</p></td>
+<td><p>str/unicode</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>String (UTF-8)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bytes" /> bytes</p></td>
+<td><p>May contain any arbitrary sequence of bytes.</p></td>
+<td><p>string</p></td>
+<td><p>ByteString</p></td>
+<td><p>str</p></td>
+<td><p>[]byte</p></td>
+<td><p>ByteString</p></td>
+<td><p>string</p></td>
+<td><p>String (ASCII-8BIT)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Table of Contents &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MDIF
+              <img src="../_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Table of Contents</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!--
+Markdown tempalte for use with protoc-gen-doc.
+
+Based on markdown.tmpl from the protoc-gen-doc github repo:
+https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
+
+- Removed the top H1 heading
+- Increased the heading level of all other headings by one (H3->H2, H2->H1)
+- Removed the "top" anchor and its use
+- Print services first instead of last
+ -->
+<section id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mdif_common-proto"><span class="xref myst">mdif/common.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">Status</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mdif_core_core-proto"><span class="xref myst">mdif/core/core.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-core-CoreService"><span class="xref myst">CoreService</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-ApiErrorInd"><span class="xref myst">ApiErrorInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-CoreMsg"><span class="xref myst">CoreMsg</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetBatteryStatusReq"><span class="xref myst">GetBatteryStatusReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetBatteryStatusRes"><span class="xref myst">GetBatteryStatusRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetDeviceInfoReq"><span class="xref myst">GetDeviceInfoReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetDeviceInfoRes"><span class="xref myst">GetDeviceInfoRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetIpConfigReq"><span class="xref myst">GetIpConfigReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetIpConfigRes"><span class="xref myst">GetIpConfigRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-IpConfig"><span class="xref myst">IpConfig</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-PingReq"><span class="xref myst">PingReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-PingRes"><span class="xref myst">PingRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-ResetReq"><span class="xref myst">ResetReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-ResetRes"><span class="xref myst">ResetRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-SetIpConfigReq"><span class="xref myst">SetIpConfigReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-DeviceType"><span class="xref myst">DeviceType</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-DhcpEnable"><span class="xref myst">DhcpEnable</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#scalar-value-types"><span class="xref myst">Scalar Value Types</span></a></p></li>
+</ul>
+<p><a name="mdif_common-proto"></a></p>
+</section>
+<section id="mdif-common-proto">
+<h1>mdif/common.proto<a class="headerlink" href="#mdif-common-proto" title="Permalink to this heading"></a></h1>
+<p>Common to all mdif protobuffers.</p>
+ <!-- end services -->
+ <!-- end messages -->
+<p><a name="mdif-common-Status"></a></p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
+<p>Defines the status of a request</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SUCCESS</p></td>
+<td><p>0</p></td>
+<td><p>The request was successful</p></td>
+</tr>
+<tr class="row-odd"><td><p>FAILURE</p></td>
+<td><p>1</p></td>
+<td><p>The request failed</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_INVALID</p></td>
+<td><p>2</p></td>
+<td><p>The request was invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_SUPPORTED</p></td>
+<td><p>3</p></td>
+<td><p>The request is not supported</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_NOT_IMPLEMENTED</p></td>
+<td><p>4</p></td>
+<td><p>The request is not implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_READY</p></td>
+<td><p>5</p></td>
+<td><p>The device is not ready to process the request</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_SIZE</p></td>
+<td><p>6</p></td>
+<td><p>The device cannot process the size</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+<p><a name="mdif_core_core-proto"></a></p>
+</section>
+</section>
+<section id="mdif-core-core-proto">
+<h1>mdif/core/core.proto<a class="headerlink" href="#mdif-core-core-proto" title="Permalink to this heading"></a></h1>
+<p>Message allocation for the Core component are in the range:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Start</p></th>
+<th class="head"><p>End</p></th>
+<th class="head"><p>Radix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x01</p></td>
+<td><p>0x1F</p></td>
+<td><p>Hex</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>31</p></td>
+<td><p>Dec</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-CoreService"></a></p>
+<section id="coreservice">
+<h2>CoreService<a class="headerlink" href="#coreservice" title="Permalink to this heading"></a></h2>
+<p>Defines the relationship between requests and responses in the Core component</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method Name</p></th>
+<th class="head"><p>Request Type</p></th>
+<th class="head"><p>Response Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Ping</p></td>
+<td><p><a class="reference internal" href="#mdif-core-PingReq"><span class="xref myst">PingReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-PingRes"><span class="xref myst">PingRes</span></a></p></td>
+<td><p>Used to ping the target device</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reset</p></td>
+<td><p><a class="reference internal" href="#mdif-core-ResetReq"><span class="xref myst">ResetReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-ResetRes"><span class="xref myst">ResetRes</span></a></p></td>
+<td><p>Used to reset the device</p></td>
+</tr>
+<tr class="row-even"><td><p>GetDeviceInfo</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetDeviceInfoReq"><span class="xref myst">GetDeviceInfoReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetDeviceInfoRes"><span class="xref myst">GetDeviceInfoRes</span></a></p></td>
+<td><p>Used to get the device info</p></td>
+</tr>
+<tr class="row-odd"><td><p>GetBatteryStatus</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetBatteryStatusReq"><span class="xref myst">GetBatteryStatusReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetBatteryStatusRes"><span class="xref myst">GetBatteryStatusRes</span></a></p></td>
+<td><p>Used to get the battery status</p></td>
+</tr>
+<tr class="row-even"><td><p>GetIpConfig</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetIpConfigReq"><span class="xref myst">GetIpConfigReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetIpConfigRes"><span class="xref myst">GetIpConfigRes</span></a></p></td>
+<td><p>Used to get the IP configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p>SetIpConfig</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetIpConfigReq"><span class="xref myst">SetIpConfigReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></td>
+<td><p>Used to set the IP configuration</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end services -->
+<p><a name="mdif-core-ApiErrorInd"></a></p>
+</section>
+<section id="apierrorind">
+<h2>ApiErrorInd<a class="headerlink" href="#apierrorind" title="Permalink to this heading"></a></h2>
+<p>Api Error indication</p>
+<p>This message is used to indicate an error in the API. E.g if a request is not
+properly decoded.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>error</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-CoreMsg"></a></p>
+</section>
+<section id="coremsg">
+<h2>CoreMsg<a class="headerlink" href="#coremsg" title="Permalink to this heading"></a></h2>
+<p>Core wire format message</p>
+<p>This message dictates the final format on the wire for core messages. It is a
+oneof construct to wrap a single message at a time.</p>
+<p>Every request (req) has a corresponding response (res). The req/res pairs are
+defined in the CoreService through RPC patterns.</p>
+<p>Indications (ind) are pushed without a request at any time</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ping_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-PingReq"><span class="xref myst">PingReq</span></a></p></td>
+<td><p>Request Ping response</p></td>
+</tr>
+<tr class="row-odd"><td><p>ping_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-PingRes"><span class="xref myst">PingRes</span></a></p></td>
+<td><p>Ping response</p></td>
+</tr>
+<tr class="row-even"><td><p>reset_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-ResetReq"><span class="xref myst">ResetReq</span></a></p></td>
+<td><p>Request reset of device</p></td>
+</tr>
+<tr class="row-odd"><td><p>reset_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-ResetRes"><span class="xref myst">ResetRes</span></a></p></td>
+<td><p>Reset response</p></td>
+</tr>
+<tr class="row-even"><td><p>get_device_info_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetDeviceInfoReq"><span class="xref myst">GetDeviceInfoReq</span></a></p></td>
+<td><p>Request device info</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_device_info_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetDeviceInfoRes"><span class="xref myst">GetDeviceInfoRes</span></a></p></td>
+<td><p>Device info response</p></td>
+</tr>
+<tr class="row-even"><td><p>get_battery_status_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetBatteryStatusReq"><span class="xref myst">GetBatteryStatusReq</span></a></p></td>
+<td><p>Request battery status</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_battery_status_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetBatteryStatusRes"><span class="xref myst">GetBatteryStatusRes</span></a></p></td>
+<td><p>Battery status response</p></td>
+</tr>
+<tr class="row-even"><td><p>get_ip_config_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetIpConfigReq"><span class="xref myst">GetIpConfigReq</span></a></p></td>
+<td><p>Request IP configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_ip_config_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetIpConfigRes"><span class="xref myst">GetIpConfigRes</span></a></p></td>
+<td><p>IP configuration response</p></td>
+</tr>
+<tr class="row-even"><td><p>set_ip_config_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetIpConfigReq"><span class="xref myst">SetIpConfigReq</span></a></p></td>
+<td><p>Set IP configuration request</p></td>
+</tr>
+<tr class="row-odd"><td><p>set_ip_config_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></td>
+<td><p>Set IP configuration response</p></td>
+</tr>
+<tr class="row-even"><td><p>api_error_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-ApiErrorInd"><span class="xref myst">ApiErrorInd</span></a></p></td>
+<td><p>Api Error indication</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GetBatteryStatusReq"></a></p>
+</section>
+<section id="getbatterystatusreq">
+<h2>GetBatteryStatusReq<a class="headerlink" href="#getbatterystatusreq" title="Permalink to this heading"></a></h2>
+<p>Request battery status</p>
+<p>The device will respond with a GetBatteryStatusRes message.</p>
+<p><a name="mdif-core-GetBatteryStatusRes"></a></p>
+</section>
+<section id="getbatterystatusres">
+<h2>GetBatteryStatusRes<a class="headerlink" href="#getbatterystatusres" title="Permalink to this heading"></a></h2>
+<p>Battery status response</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+<tr class="row-odd"><td><p>bat_low</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Is the battery low</p></td>
+</tr>
+<tr class="row-even"><td><p>bat_charging</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Is the battery charging</p></td>
+</tr>
+<tr class="row-odd"><td><p>bat_volt</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>The battery voltage</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GetDeviceInfoReq"></a></p>
+</section>
+<section id="getdeviceinforeq">
+<h2>GetDeviceInfoReq<a class="headerlink" href="#getdeviceinforeq" title="Permalink to this heading"></a></h2>
+<p>Request device info</p>
+<p>The device will respond with a GetDeviceInfoRes message.</p>
+<p><a name="mdif-core-GetDeviceInfoRes"></a></p>
+</section>
+<section id="getdeviceinfores">
+<h2>GetDeviceInfoRes<a class="headerlink" href="#getdeviceinfores" title="Permalink to this heading"></a></h2>
+<p>Device info response</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>serial_number</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Serial number of the device</p></td>
+</tr>
+<tr class="row-odd"><td><p>device_type</p></td>
+<td><p><a class="reference internal" href="#mdif-core-DeviceType"><span class="xref myst">DeviceType</span></a></p></td>
+<td><p>The type of device</p></td>
+</tr>
+<tr class="row-even"><td><p>device_version</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>The version of the device</p></td>
+</tr>
+<tr class="row-odd"><td><p>sw_version</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>The version of the software</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GetIpConfigReq"></a></p>
+</section>
+<section id="getipconfigreq">
+<h2>GetIpConfigReq<a class="headerlink" href="#getipconfigreq" title="Permalink to this heading"></a></h2>
+<p>Request IP configuration</p>
+<p>The device will respond with a GetIpConfigRes message.</p>
+<p><a name="mdif-core-GetIpConfigRes"></a></p>
+</section>
+<section id="getipconfigres">
+<h2>GetIpConfigRes<a class="headerlink" href="#getipconfigres" title="Permalink to this heading"></a></h2>
+<p>IP configuration response</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+<tr class="row-odd"><td><p>current_ip_config</p></td>
+<td><p><a class="reference internal" href="#mdif-core-IpConfig"><span class="xref myst">IpConfig</span></a></p></td>
+<td><p>The current IP configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_ip_config</p></td>
+<td><p><a class="reference internal" href="#mdif-core-IpConfig"><span class="xref myst">IpConfig</span></a></p></td>
+<td><p>The IP configuration set in NVM and used on boot</p></td>
+</tr>
+<tr class="row-odd"><td><p>mac_address</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>The MAC address of the device</p></td>
+</tr>
+<tr class="row-even"><td><p>dhcp_enabled</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Is DHCP enabled</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-IpConfig"></a></p>
+</section>
+<section id="ipconfig">
+<h2>IpConfig<a class="headerlink" href="#ipconfig" title="Permalink to this heading"></a></h2>
+<p>Defines the IP configuration</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ip</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>The IP address of the device. 4 bytes. 192.168.0.13 is encoded as ip[0]=192, ip[1]=168, ip[2]=0, ip[3]=13</p></td>
+</tr>
+<tr class="row-odd"><td><p>netmask</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>The netmask of the device. 4 bytes. 255.255.255.0 is encoded as netmask[0]=255, netmask[1]=255, netmask[2]=255, netmask[3]=0</p></td>
+</tr>
+<tr class="row-even"><td><p>gateway</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>The gateway of the device. 4 bytes. 192.168.0.1 is encoded as gateway[0]=192, gateway[1]=168, gateway[2]=0, gateway[3]=1</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-PingReq"></a></p>
+</section>
+<section id="pingreq">
+<h2>PingReq<a class="headerlink" href="#pingreq" title="Permalink to this heading"></a></h2>
+<p>Request Ping response</p>
+<p>The device will respond with a PingRes message.</p>
+<p><a name="mdif-core-PingRes"></a></p>
+</section>
+<section id="pingres">
+<h2>PingRes<a class="headerlink" href="#pingres" title="Permalink to this heading"></a></h2>
+<p>Ping response</p>
+<p><a name="mdif-core-ResetReq"></a></p>
+</section>
+<section id="resetreq">
+<h2>ResetReq<a class="headerlink" href="#resetreq" title="Permalink to this heading"></a></h2>
+<p>Request reset of device.</p>
+<p>The device will respond with a ResetRes message, and
+the device will reset.</p>
+<p><a name="mdif-core-ResetRes"></a></p>
+</section>
+<section id="resetres">
+<h2>ResetRes<a class="headerlink" href="#resetres" title="Permalink to this heading"></a></h2>
+<p>Reset response</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the reset request</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-SetIpConfigReq"></a></p>
+</section>
+<section id="setipconfigreq">
+<h2>SetIpConfigReq<a class="headerlink" href="#setipconfigreq" title="Permalink to this heading"></a></h2>
+<p>Set IP configuration request</p>
+<p>The device will respond with a SetIpConfigRes message. Depending on the
+connection used to send the request and the IP configuration set, the
+response may not be received.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>persist</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Persist the IP configuration to NVM</p></td>
+</tr>
+<tr class="row-odd"><td><p>ip_config</p></td>
+<td><p><a class="reference internal" href="#mdif-core-IpConfig"><span class="xref myst">IpConfig</span></a></p></td>
+<td><p>The IP configuration to set</p></td>
+</tr>
+<tr class="row-even"><td><p>dhcp_enable</p></td>
+<td><p><a class="reference internal" href="#mdif-core-DhcpEnable"><span class="xref myst">DhcpEnable</span></a></p></td>
+<td><p>Enable DHCP</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-SetIpConfigRes"></a></p>
+</section>
+<section id="setipconfigres">
+<h2>SetIpConfigRes<a class="headerlink" href="#setipconfigres" title="Permalink to this heading"></a></h2>
+<p>Set IP configuration response</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end messages -->
+<p><a name="mdif-core-DeviceType"></a></p>
+</section>
+<section id="devicetype">
+<h2>DeviceType<a class="headerlink" href="#devicetype" title="Permalink to this heading"></a></h2>
+<p>Defines the type of device</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NOTSET</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>WINGMAN</p></td>
+<td><p>1</p></td>
+<td><p>Wingman man-borne RF sensor</p></td>
+</tr>
+<tr class="row-even"><td><p>WATCHDOG</p></td>
+<td><p>2</p></td>
+<td><p>Watchdog fixed RF direction finding sensor</p></td>
+</tr>
+<tr class="row-odd"><td><p>WOLFPACK</p></td>
+<td><p>3</p></td>
+<td><p>Wolfpack fixed 360 degree RF direction finding sensor</p></td>
+</tr>
+<tr class="row-even"><td><p>PITBULL</p></td>
+<td><p>8</p></td>
+<td><p>Pitbull man-borne RF effector</p></td>
+</tr>
+<tr class="row-odd"><td><p>DOBERMANN</p></td>
+<td><p>9</p></td>
+<td><p>Dobermann fixed RF effector</p></td>
+</tr>
+<tr class="row-even"><td><p>DOBERMANN_DUAL</p></td>
+<td><p>12</p></td>
+<td><p>Dobermann dual fixed 90 degree RF effector</p></td>
+</tr>
+<tr class="row-odd"><td><p>DOBERMANN360</p></td>
+<td><p>13</p></td>
+<td><p>Dobermann 360 degree RF effector</p></td>
+</tr>
+<tr class="row-even"><td><p>FALCON</p></td>
+<td><p>14</p></td>
+<td><p>Falcon air-borne RF direction finding sensor</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-DhcpEnable"></a></p>
+</section>
+<section id="dhcpenable">
+<h2>DhcpEnable<a class="headerlink" href="#dhcpenable" title="Permalink to this heading"></a></h2>
+<p>Defines the DHCP enable options</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DHCP_NO_CHANGE</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>DHCP_DISABLE</p></td>
+<td><p>1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>DHCP_ENABLE</p></td>
+<td><p>2</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+</section>
+</section>
+<section id="scalar-value-types">
+<h1>Scalar Value Types<a class="headerlink" href="#scalar-value-types" title="Permalink to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>.proto Type</p></th>
+<th class="head"><p>Notes</p></th>
+<th class="head"><p>C++</p></th>
+<th class="head"><p>Java</p></th>
+<th class="head"><p>Python</p></th>
+<th class="head"><p>Go</p></th>
+<th class="head"><p>C#</p></th>
+<th class="head"><p>PHP</p></th>
+<th class="head"><p>Ruby</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a name="double" /> double</p></td>
+<td><p></p></td>
+<td><p>double</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>float64</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="float" /> float</p></td>
+<td><p></p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float32</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="int32" /> int32</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="int64" /> int64</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="uint32" /> uint32</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int/long</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="uint64" /> uint64</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sint32" /> sint32</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sint64" /> sint64</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="fixed32" /> fixed32</p></td>
+<td><p>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="fixed64" /> fixed64</p></td>
+<td><p>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sfixed32" /> sfixed32</p></td>
+<td><p>Always four bytes.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sfixed64" /> sfixed64</p></td>
+<td><p>Always eight bytes.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bool" /> bool</p></td>
+<td><p></p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>boolean</p></td>
+<td><p>bool</p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>TrueClass/FalseClass</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="string" /> string</p></td>
+<td><p>A string must always contain UTF-8 encoded or 7-bit ASCII text.</p></td>
+<td><p>string</p></td>
+<td><p>String</p></td>
+<td><p>str/unicode</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>String (UTF-8)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bytes" /> bytes</p></td>
+<td><p>May contain any arbitrary sequence of bytes.</p></td>
+<td><p>string</p></td>
+<td><p>ByteString</p></td>
+<td><p>str</p></td>
+<td><p>[]byte</p></td>
+<td><p>ByteString</p></td>
+<td><p>string</p></td>
+<td><p>String (ASCII-8BIT)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

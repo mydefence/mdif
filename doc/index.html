@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyDefence Device Interface - MDIF &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Framing" href="framing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            MDIF
+              <img src="_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MyDefence Device Interface - MDIF</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mydefence-device-interface-mdif">
+<h1>MyDefence Device Interface - MDIF<a class="headerlink" href="#mydefence-device-interface-mdif" title="Permalink to this heading"></a></h1>
+<p>MDIF is the Interface to all MyDefence embedded devices over both serial and
+network.</p>
+<p>This interface is <em>not</em> used with MyDefence ARGOS C2.</p>
+</section>
+<section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
+<a class="reference internal image-reference" href="_images/mdif.png"><img alt="_images/mdif.png" class="align-center" src="_images/mdif.png" style="width: 550px;" /></a>
+<p>MDIF consists of multiple layers. On top are multiple APIs for the different
+types of MyDefence devices. All devices support the Core API. The APIs are
+defined using <a class="reference external" href="https://protobuf.dev/">Protocol Buffers</a>. The MDIF protocol
+buffer specifications can be found in <code class="file docutils literal notranslate"><span class="pre">src/protobuf</span></code>.</p>
+<p>Protocol buffers can be used with most OS’s and programming languages to
+automatically pack and unpack efficient binary representations of the API
+messages.</p>
+<p>A simple <a class="reference internal" href="framing.html#framing"><span class="std std-ref">Framing</span></a> with length information is added to the binary protocol
+buffers before sending it using TCP for network links. For <a class="reference external" href="https://en.wikipedia.org/wiki/High-Level_Data_Link_Control">HDLC</a> no additional
+framing is required.</p>
+</section>
+<section id="apis">
+<h1>APIs<a class="headerlink" href="#apis" title="Permalink to this heading"></a></h1>
+<p>General information on how the MDIF API works can be found in the
+<a class="reference internal" href="api_general.html#api-general"><span class="std std-ref">General API</span></a> section. Links to the individual APIs can be found in the
+list below.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api_core.html#api-core"><span class="std std-ref">Core API</span></a></p></li>
+<li><p><a class="reference internal" href="api_fwu.html#api-fwu"><span class="std std-ref">FWU API</span></a></p></li>
+<li><p><a class="reference internal" href="api_rfs.html#api-rfs"><span class="std std-ref">RFS API</span></a></p></li>
+</ul>
+</section>
+<section id="reference-implementations">
+<h1>Reference Implementations<a class="headerlink" href="#reference-implementations" title="Permalink to this heading"></a></h1>
+<p>This documentation package includes two reference implementations with full
+source code</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Serial connection from a Linux application written in C.</dt><dd><ul>
+<li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/linux_rfs_demo</span></code></p></li>
+<li><p>Based on <a class="reference internal" href="hdlc_library.html#hdlc-library"><span class="std std-ref">HDLC Reference Library</span></a> in <code class="file docutils literal notranslate"><span class="pre">src/hdlc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Network connection from a node.js application written in Typescript.</dt><dd><ul>
+<li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/nodejs_demo</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Both implementations contain the complete stack demonstrating the use of
+protocol buffers and all needed encoding. See <code class="file docutils literal notranslate"><span class="pre">README.md</span></code> files in the source
+directories for more information.</p>
+<p>In particular the <a class="reference internal" href="hdlc.html#hdlc"><span class="std std-ref">HDLC</span></a> implementation should be considered the de-facto
+specification.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="framing.html" class="btn btn-neutral float-right" title="Framing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>General API &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Core API" href="api_core.html" />
+    <link rel="prev" title="HDLC Reference Library" href="hdlc_library.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MDIF
+              <img src="_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">General API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#request-response">Request/Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stream">Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-error">Api Error</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">General API</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="general-api">
+<span id="api-general"></span><h1>General API<a class="headerlink" href="#general-api" title="Permalink to this heading"></a></h1>
+<p>A device supporting MDIF is controlled via messages. All messages are specified
+using Protocol Buffer (<a class="reference external" href="https://protobuf.dev/">Protobuf</a>) messages. Protobuf
+messages are defined in logical components which expose a certain set of
+functions.</p>
+<p>Message exchange with a device generally follows one of two patterns -
+request/response or stream.</p>
+<section id="request-response">
+<h2>Request/Response<a class="headerlink" href="#request-response" title="Permalink to this heading"></a></h2>
+<p>A message exchange following the request/response pattern is initiated by the
+client by sending a request and the device will respond with a response. Request
+messages have a ‘Req’ suffix and response messages have a ‘Res’ suffix.</p>
+<p>The message sequence chart below shows an example of a request/response message
+exchange with the ‘ping’ functionality from the <a class="reference internal" href="api_core.html#api-core"><span class="std std-ref">Core API</span></a> component.</p>
+<p class="mscgen">
+<img src="_images/mscgen-bee10285ff9b7f3e36fc68dd474ddba7260ee585.png" alt="msc {
+client,device;
+hscale=1.5;
+client-&gt;device: PingReq;
+device-&gt;client: PingRes;
+}" usemap="#bee10285ff9b7f3e36fc68dd474ddba7260ee585" />
+<map id="bee10285ff9b7f3e36fc68dd474ddba7260ee585" name="bee10285ff9b7f3e36fc68dd474ddba7260ee585"></map></p>
+</section>
+<section id="stream">
+<h2>Stream<a class="headerlink" href="#stream" title="Permalink to this heading"></a></h2>
+<p>Message exchanges following the stream pattern are initiated by the device, and
+they can be sent at any time. The messages are sent as indications and have an
+‘Ind’ suffix. Messages of this kind are used to notify the client of events like
+device state, process state (e.g. FWU), etc.</p>
+<p>The message sequence chart below shows an example of a stream message exchange
+with part of the ‘fwu’ functionality from the <a class="reference internal" href="api_fwu.html#api-fwu"><span class="std std-ref">FWU API</span></a> component.</p>
+<p class="mscgen">
+<img src="_images/mscgen-c25d50511eef9728d062a11de610a5f2ff43ce07.png" alt="msc {
+client,device;
+hscale=1.5;
+vspacing=5;
+...:;
+client&lt;-device: FwuStateInd\n\-\{state: ERASING_FLASH\};
+client&lt;-device: FwuStateInd\n\-\{state: WRITING_FLASH\};
+client&lt;-device: FwuStateInd\n\-\{state: VERIFY_FLASH\};
+client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
+}" usemap="#c25d50511eef9728d062a11de610a5f2ff43ce07" />
+<map id="c25d50511eef9728d062a11de610a5f2ff43ce07" name="c25d50511eef9728d062a11de610a5f2ff43ce07"></map></p>
+</section>
+<section id="api-error">
+<h2>Api Error<a class="headerlink" href="#api-error" title="Permalink to this heading"></a></h2>
+<p>If an error occurs during a request/response message exchange, the device will
+respond with an ApiErrorInd message. The message contains a string with a
+description of the error.</p>
+<p class="mscgen">
+<img src="_images/mscgen-3077aadb37a300798cbeaa997812016465c5b220.png" alt="msc {
+client,device;
+hscale=2.0;
+
+client-&gt;device: MsgWithId99Req;
+device-&gt;client: ApiErrorInd\n\-\{error: &quot;Message with id 99 not supported&quot;\};
+}" usemap="#3077aadb37a300798cbeaa997812016465c5b220" />
+<map id="3077aadb37a300798cbeaa997812016465c5b220" name="3077aadb37a300798cbeaa997812016465c5b220"></map></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hdlc_library.html" class="btn btn-neutral float-left" title="HDLC Reference Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_core.html" class="btn btn-neutral float-right" title="Core API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

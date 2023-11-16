@@ -1,0 +1,268 @@
+/*******************************************************************************
+ *                                                                             *
+ *                                                 ,,                          *
+ *                                                       ,,,,,                 *
+ *                                                           ,,,,,             *
+ *           ,,,,,,,,,,,,,,,,,,,,,,,,,,,,                        ,,,,          *
+ *          ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,            ,,,,          ,,,,        *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,,,,        ,,,       *
+ *          ,,,,,       ,,,,,      ,,,,,,                   ,,,        ,,,     *
+ *          ,,,,,       ,,,,,      ,,,,,,       ,,,           ,,,        ,     *
+ *          ,,,,,       ,,,,,      ,,,,,,           ,,,         ,,        ,    *
+ *          ,,,,,       ,,,,,      ,,,,,,              ,,        ,,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,        ,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                 ,                    *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *                                       ,,,,,                  ,,,,,,         *
+ *                     ,                 ,,,,,                  ,,,,,,         *
+ *             ,        ,,               ,,,,,                  ,,,,,,         *
+ *    ,        ,,        ,,,             ,,,,,                  ,,,,,,         *
+ *     ,        ,,,         ,,,          ,,,,,                  ,,,,,,         *
+ *     ,,,       ,,,                     ,,,,,                  ,,,,,,         *
+ *      ,,,        ,,,,                  ,,,,,                  ,,,,,,         *
+ *        ,,,         ,,,,               ,,,,,                  ,,,,,,         *
+ *         ,,,,,            ,,,,         ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *            ,,,,                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *               ,,,,,                                                         *
+ *                    ,,,,,                                                    *
+ *                                                                             *
+ * Program/file : core.proto                                                   *
+ *                                                                             *
+ * Description  : This protobuf file describes messages associated with the    *
+ *              : core functionality.                                          *
+ *                                                                             *
+ * Copyright 2023 MyDefence A/S.                                               *
+ *                                                                             *
+ * Licensed under the Apache License, Version 2.0 (the "License");             *
+ * you may not use this file except in compliance with the License.            *
+ * You may obtain a copy of the License at                                     *
+ *                                                                             *
+ * http://www.apache.org/licenses/LICENSE-2.0                                  *
+ *                                                                             *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.                                              *
+ *                                                                             *
+ *                                                                             *
+ *                                                                             *
+ *******************************************************************************/
+
+/*
+  Message allocation for the Core component are in the range:
+
+  | Start | End  | Radix |
+  |-------|------|-------|
+  | 0x01  | 0x1F | Hex   |
+  | 1     |   31 | Dec   |
+
+ */
+syntax = "proto3";
+
+package mdif.core;
+
+import "mdif/common.proto";
+
+/*************************************
+ ************* Sub types *************
+ ************************************/
+
+// Defines the type of device
+enum DeviceType {
+    reserved 4 to 7, 10, 11;
+    NOTSET = 0;
+    WINGMAN = 1; // Wingman man-borne RF sensor
+    WATCHDOG = 2; // Watchdog fixed RF direction finding sensor
+    WOLFPACK = 3; // Wolfpack fixed 360 degree RF direction finding sensor
+    PITBULL = 8; // Pitbull man-borne RF effector
+    DOBERMANN = 9; // Dobermann fixed RF effector
+    DOBERMANN_DUAL = 12; // Dobermann dual fixed 90 degree RF effector
+    DOBERMANN360 = 13; // Dobermann 360 degree RF effector
+    FALCON = 14; // Falcon air-borne RF direction finding sensor
+}
+
+// Defines the IP configuration
+message IpConfig {
+    // The IP address of the device. 4 bytes. 192.168.0.13 is encoded as
+    // ip[0]=192, ip[1]=168, ip[2]=0, ip[3]=13
+    bytes ip = 1;
+    // The netmask of the device. 4 bytes. 255.255.255.0 is encoded as
+    // netmask[0]=255, netmask[1]=255, netmask[2]=255, netmask[3]=0
+    bytes netmask = 2;
+    // The gateway of the device. 4 bytes. 192.168.0.1 is encoded as
+    // gateway[0]=192, gateway[1]=168, gateway[2]=0, gateway[3]=1
+    bytes gateway = 3;
+}
+
+// Defines the DHCP enable options
+enum DhcpEnable {
+    DHCP_NO_CHANGE = 0;
+    DHCP_DISABLE = 1;
+    DHCP_ENABLE = 2;
+}
+
+/*************************************
+ ****** API message definitions ******
+ ************************************/
+
+// Request Ping response
+//
+// The device will respond with a PingRes message.
+message PingReq {}
+
+// Ping response
+message PingRes {}
+
+// Request reset of device.
+//
+// The device will respond with a ResetRes message, and
+// the device will reset.
+message ResetReq {}
+
+// Reset response
+message ResetRes {
+    // The status of the reset request
+    common.Status status = 1;
+}
+
+// Request device info
+//
+// The device will respond with a GetDeviceInfoRes message.
+message GetDeviceInfoReq {}
+
+// Device info response
+message GetDeviceInfoRes {
+    // Serial number of the device
+    string serial_number = 1;
+    // The type of device
+    DeviceType device_type = 2;
+    // The version of the device
+    uint32 device_version = 3;
+    // The version of the software
+    string sw_version = 4;
+}
+
+// Request battery status
+//
+// The device will respond with a GetBatteryStatusRes message.
+message GetBatteryStatusReq {}
+
+// Battery status response
+message GetBatteryStatusRes {
+    // The status of the request
+    common.Status status = 1;
+    // Is the battery low
+    bool bat_low = 2;
+    // Is the battery charging
+    bool bat_charging = 3;
+    // The battery voltage
+    float bat_volt = 4;
+}
+
+// Request IP configuration
+//
+// The device will respond with a GetIpConfigRes message.
+message GetIpConfigReq {}
+
+// IP configuration response
+message GetIpConfigRes {
+    // The status of the request
+    common.Status status = 1;
+    // The current IP configuration
+    IpConfig current_ip_config = 2;
+    // The IP configuration set in NVM and used on boot
+    IpConfig nvm_ip_config = 3;
+    // The MAC address of the device
+    bytes mac_address = 4;
+    // Is DHCP enabled
+    bool dhcp_enabled = 5;
+}
+
+// Set IP configuration request
+//
+// The device will respond with a SetIpConfigRes message. Depending on the
+// connection used to send the request and the IP configuration set, the
+// response may not be received.
+message SetIpConfigReq {
+    // Persist the IP configuration to NVM
+    bool persist = 1;
+    // The IP configuration to set
+    IpConfig ip_config = 2;
+    // Enable DHCP
+    DhcpEnable dhcp_enable = 3;
+}
+
+// Set IP configuration response
+message SetIpConfigRes {
+    // The status of the request
+    common.Status status = 1;
+}
+
+// Api Error indication
+//
+// This message is used to indicate an error in the API. E.g if a request is not
+// properly decoded.
+message ApiErrorInd {
+    string error = 1;
+}
+
+// Core wire format message
+//
+// This message dictates the final format on the wire for core messages. It is a
+// oneof construct to wrap a single message at a time.
+//
+// Every request (req) has a corresponding response (res). The req/res pairs are
+// defined in the CoreService through RPC patterns.
+//
+// Indications (ind) are pushed without a request at any time
+message CoreMsg {
+    oneof msg {
+        // Request Ping response
+        PingReq ping_req = 1;
+        // Ping response
+        PingRes ping_res = 2;
+        // Request reset of device
+        ResetReq reset_req = 3;
+        // Reset response
+        ResetRes reset_res = 4;
+        // Request device info
+        GetDeviceInfoReq get_device_info_req = 5;
+        // Device info response
+        GetDeviceInfoRes get_device_info_res = 6;
+        // Request battery status
+        GetBatteryStatusReq get_battery_status_req = 7;
+        // Battery status response
+        GetBatteryStatusRes get_battery_status_res = 8;
+        // Request IP configuration
+        GetIpConfigReq get_ip_config_req = 9;
+        // IP configuration response
+        GetIpConfigRes get_ip_config_res = 10;
+        // Set IP configuration request
+        SetIpConfigReq set_ip_config_req = 11;
+        // Set IP configuration response
+        SetIpConfigRes set_ip_config_res = 12;
+
+        // Api Error indication
+        ApiErrorInd api_error_ind = 0x1F;
+    }
+}
+
+// Defines the relationship between requests and responses in the Core component
+service CoreService {
+    // Used to ping the target device
+    rpc Ping (PingReq) returns (PingRes);
+    // Used to reset the device
+    rpc Reset (ResetReq) returns (ResetRes);
+    // Used to get the device info
+    rpc GetDeviceInfo (GetDeviceInfoReq) returns (GetDeviceInfoRes);
+    // Used to get the battery status
+    rpc GetBatteryStatus (GetBatteryStatusReq) returns (GetBatteryStatusRes);
+    // Used to get the IP configuration
+    rpc GetIpConfig (GetIpConfigReq) returns (GetIpConfigRes);
+    // Used to set the IP configuration
+    rpc SetIpConfig (SetIpConfigReq) returns (SetIpConfigRes);
+}

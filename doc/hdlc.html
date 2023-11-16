@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HDLC &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HDLC Reference Library" href="hdlc_library.html" />
+    <link rel="prev" title="Framing" href="framing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MDIF
+              <img src="_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">HDLC</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hdlc">
+<span id="id1"></span><h1>HDLC<a class="headerlink" href="#hdlc" title="Permalink to this heading"></a></h1>
+<p>For reliability over the serial link we use <a class="reference external" href="https://en.wikipedia.org/wiki/High-Level_Data_Link_Control">HDLC framing</a> (ISO/IEC
+13239:20002) framing in Asynchronous balanced mode.</p>
+<p>The following subset of HDLC is used:</p>
+<ul class="simple">
+<li><p>SABM frames are used to indicate reset of send and receive sequence numbers.</p></li>
+<li><p>UA frames are used to acknowledge SABM frames.</p></li>
+<li><p>DATA frames (I-frame with Poll bit). The address field is always set to the
+broadcast address (255) and not checked on RX.</p></li>
+<li><p>ACK (S-frame Receive Ready with Final bit)</p></li>
+<li><p>NACK (S-frame Reject with Final bit).</p></li>
+<li><p>UI (Unnumbered Information)</p></li>
+<li><p>The Address and Control fields uses the 8-bit format which means that the
+highest sequence number is 7.</p></li>
+<li><p>The FCS field is 16-bit</p></li>
+</ul>
+<p>The HDLC connection will always start sending SABM and waiting for UA. A long
+period of disconnect or other errors will retrigger the sequence, and the
+application will be informed of the disconnect.</p>
+<p id="hdlc-keep-alive">MyDefence devices will use a 0-length DATA frame for HDLC keep-alive. The peer
+must confirm these frames like any other data frames. The peer may send
+keep-alive frames, but is not required to do so.</p>
+<p>The included <a class="reference internal" href="hdlc_library.html#hdlc-library"><span class="std std-ref">HDLC Reference Library</span></a> is also used in the MD serial devices. We
+suggest to use this reference implementation in all clients to ensure
+interoperability (and to save time making an HDLC implementation). Full source
+code is provided.</p>
+<p>The <a class="reference internal" href="hdlc_library.html#hdlc-library"><span class="std std-ref">HDLC Reference Library</span></a> has not been interoperability checked with other HDLC
+implementations. In case of deviations, the reference implementation is
+authoritative.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="framing.html" class="btn btn-neutral float-left" title="Framing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hdlc_library.html" class="btn btn-neutral float-right" title="HDLC Reference Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

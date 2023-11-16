@@ -1,0 +1,76 @@
+/*******************************************************************************
+ *                                                                             *
+ *                                                 ,,                          *
+ *                                                       ,,,,,                 *
+ *                                                           ,,,,,             *
+ *           ,,,,,,,,,,,,,,,,,,,,,,,,,,,,                        ,,,,          *
+ *          ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,            ,,,,          ,,,,        *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,,,,        ,,,       *
+ *          ,,,,,       ,,,,,      ,,,,,,                   ,,,        ,,,     *
+ *          ,,,,,       ,,,,,      ,,,,,,       ,,,           ,,,        ,     *
+ *          ,,,,,       ,,,,,      ,,,,,,           ,,,         ,,        ,    *
+ *          ,,,,,       ,,,,,      ,,,,,,              ,,        ,,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,        ,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                 ,                    *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *                                       ,,,,,                  ,,,,,,         *
+ *                     ,                 ,,,,,                  ,,,,,,         *
+ *             ,        ,,               ,,,,,                  ,,,,,,         *
+ *    ,        ,,        ,,,             ,,,,,                  ,,,,,,         *
+ *     ,        ,,,         ,,,          ,,,,,                  ,,,,,,         *
+ *     ,,,       ,,,                     ,,,,,                  ,,,,,,         *
+ *      ,,,        ,,,,                  ,,,,,                  ,,,,,,         *
+ *        ,,,         ,,,,               ,,,,,                  ,,,,,,         *
+ *         ,,,,,            ,,,,         ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *            ,,,,                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *               ,,,,,                                                         *
+ *                    ,,,,,                                                    *
+ *                                                                             *
+ * Program/file : common.proto                                                 *
+ *                                                                             *
+ * Description  : This protobuf file describes common features common to all   *
+ *              : other .proto files in project.                               *
+ *                                                                             *
+ * Copyright 2023 MyDefence A/S.                                               *
+ *                                                                             *
+ * Licensed under the Apache License, Version 2.0 (the "License");             *
+ * you may not use this file except in compliance with the License.            *
+ * You may obtain a copy of the License at                                     *
+ *                                                                             *
+ * http://www.apache.org/licenses/LICENSE-2.0                                  *
+ *                                                                             *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.                                              *
+ *                                                                             *
+ *                                                                             *
+ *                                                                             *
+ *******************************************************************************/
+
+ /*
+ Common to all mdif protobuffers.
+ */
+syntax = "proto3";
+
+package mdif.common;
+
+/*************************************
+ ************* Sub types *************
+ ************************************/
+
+// Defines the status of a request
+enum Status {
+    SUCCESS = 0; // The request was successful
+    FAILURE = 1; // The request failed
+    ERR_INVALID = 2; // The request was invalid
+    ERR_NOT_SUPPORTED = 3; // The request is not supported
+    ERR_NOT_IMPLEMENTED = 4; // The request is not implemented
+    ERR_NOT_READY = 5; // The device is not ready to process the request
+    ERR_SIZE = 6; // The device cannot process the size
+}
+
