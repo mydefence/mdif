@@ -52,9 +52,9 @@
  *                                                                             *
  *************************************************************************** -->
 # MyDefence Device Interface (MDIF)
-This repository contains the files needed to build a client interface, to an
-MDIF capable device. For information on what MDIF is refer to the
-[documentation](doc/index.html).
+This repository contains the files needed to build a client interface to an MDIF
+capable device. For information on what MDIF is refer to the documentation in
+the [doc](doc/).
 
 These files have been tested with UBUNTU 22.04 LTS operating system. Running on
 a similar system is recommended.
