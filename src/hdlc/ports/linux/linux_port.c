@@ -195,7 +195,7 @@ int hdlc_os_tx(hdlc_data_t *_hdlc, const uint8_t *buf, uint32_t count)
 #ifdef STRESS_TEST
     int ret = stress_test_write(hdlc_socket, buf, count);
 #else
-    int ret = send(hdlc_socket, buf, count, MSG_NOSIGNAL);
+    int ret = write(hdlc_socket, buf, count);
 #endif
 
     log_info("tx %d bytes", ret);
