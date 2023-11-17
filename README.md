@@ -54,13 +54,13 @@
 # MyDefence Device Interface (MDIF)
 This repository contains the files needed to build a client interface to an MDIF
 capable device. For information on what MDIF is refer to the
-[documentation](https://mydefence.github.io/mdif/index.html). Documetation is
+[documentation](https://mydefence.github.io/mdif/index.html). Documentation is
 also found in the [docs](docs/) folder.
 
 These files have been tested with UBUNTU 22.04 LTS operating system. Running on
 a similar system is recommended.
 
-Two example client application are provided:
+Two example client applications are provided:
 * Client with serial connection to MDIF device in
   [src/linux_rfs_demo](src/linux_rfs_demo/)
     * Application source also demonstrates how to interact with a RF sensor
@@ -78,7 +78,7 @@ Two example client application are provided:
 MDIF messages are specified using [Protocol Buffers](https://protobuf.dev/), and
 the specifications are found in the [src/protobuf](src/protobuf) folder. The
 required .proto files needs to be compiled for the chosen implementation
-language. The provided example applications demonstrate C an Typescript, but any
-other language (like Python or Java) with a Protobuf compiler useable.
+language. The provided example applications demonstrate C and Typescript, but
+any other language (like Python or Java) with a Protobuf compiler is useable.
 
 
