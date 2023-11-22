@@ -153,8 +153,8 @@ void *rx_thread_func(void *ptr)
             break;
         }
 
-#ifdef STRESS_TEST
-        ret = stress_test_read_cb(buf, ret);
+#ifdef HDLC_READ_CB
+        ret = hdlc_read_cb(buf, ret);
         if (!ret) {
             continue;
         }
@@ -192,8 +192,8 @@ int hdlc_os_tx(hdlc_data_t *_hdlc, const uint8_t *buf, uint32_t count)
         return 0;
     }
 
-#ifdef STRESS_TEST
-    int ret = stress_test_write(hdlc_socket, buf, count);
+#ifdef HDLC_WRITE
+    int ret = hdlc_write(hdlc_socket, buf, count);
 #else
     int ret = write(hdlc_socket, buf, count);
 #endif
@@ -201,7 +201,7 @@ int hdlc_os_tx(hdlc_data_t *_hdlc, const uint8_t *buf, uint32_t count)
     log_info("tx %d bytes", ret);
     if (ret != count) {
         if (ret == -1) {
-            if (errno == EAGAIN || errno == EPIPE) {
+            if (errno == EAGAIN) {
                 log_warn("write failed: %s. Discarding frame", strerror(errno));
                 return 0;
             }
@@ -232,7 +232,14 @@ static void *timer_thread_func(void *ptr)
             exit(1);
         }
 
-        hdlc_os_timeout(hdlc);
+        if (hdlc) {
+            hdlc_os_timeout(hdlc);
+        } else {
+            // This is possible during startup if hdlc_init() has not yet
+            // returned. Try again later.
+            log_warn("hdlc not initialized (timeout)");
+            hdlc_os_start_timer(NULL);
+        }
     }
 }
 

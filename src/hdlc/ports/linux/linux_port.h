@@ -79,9 +79,11 @@ void run_threads();
 void hdlc_linux_init();
 void *rx_thread_func(void *ptr);
 
-#ifdef STRESS_TEST
-uint16_t stress_test_read_cb(uint8_t *frame, uint16_t len);
-int stress_test_write(int hdlc_socket, const uint8_t *_buf, uint16_t count);
+#ifdef HDLC_READ_CB
+uint16_t hdlc_read_cb(uint8_t *frame, uint16_t len);
+#endif
+#ifdef HDLC_WRITE
+int hdlc_write(int hdlc_socket, const uint8_t *buf, uint16_t count);
 #endif
 
 // This port only supports single instance of hdlc. This instance data must be

@@ -62,16 +62,16 @@ a similar system is recommended.
 
 Two example client applications are provided:
 * Client with serial connection to MDIF device in
-  [src/linux_rfs_demo](src/linux_rfs_demo/)
+  [src/linux_rfs_demo](src/linux_rfs_demo/).
     * Application source also demonstrates how to interact with a RF sensor
       (RFS) device.
     * Application source written in C and compiles to native executable.
     * Refer to [README.md](src/linux_rfs_demo/README.md) for more information
       and build instructions.
 * Client with network connection to MDIF device in
-  [src/nodejs_demo](src/nodejs_demo/)
+  [src/nodejs_demo](src/nodejs_demo/).
     * Application source demonstrates a bare minimum for device communication.
-    * Application source written for Node.js in Typescript
+    * Application source written for Node.js in Typescript.
     * Refer to [README.md](src/nodejs_demo/README.md) for more information and
       build instructions.
 
