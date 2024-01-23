@@ -65,6 +65,10 @@ syntax = "proto3";
 
 package mdif.rfs;
 
+// [MD START java_declaration]
+option java_package = "dk.mydefence.mdif.rfs";
+// [MD END java_declaration]
+
 import "mdif/common.proto";
 
 // Defines the relationship between requests and responses in the RFS component
@@ -83,7 +87,7 @@ service RfsService {
 // oneof construct to wrap a single message at a time.
 //
 // Every request (req) has a corresponding response (res). The req/res pairs are
-// defined in the RfsService below through RPC patterns.
+// defined in the RfsService through RPC patterns.
 //
 // Indications (ind) are pushed without a request at any time
 message RfsMsg {
@@ -132,6 +136,7 @@ enum ScanBand {
     MHz1200 = 3; // ISM band 1G2
     MHz2400 = 4; // ISM band 2G4
     MHz5800 = 5; // ISM band 5G8
+    MHz5200 = 6; // ISM band 5G2
 }
 
 /*************************************
@@ -209,7 +214,7 @@ message WifiThreatInd {
     uint32 type_id = 2; // Detection type id.
     uint32 start_time = 3; // Start time of detection thread.
     float power = 4; // Power at time of reporting.
-    uint32 channel = 6; // Wifi channel as per international standards.
+    uint32 channel = 6; // Wifi channel as per international standards 802.11 a/b/g/n.
     bytes mac_adr = 7; // Mac address of wifi threat.
     float msg_timestamp = 8; // Time message is compiled.
 }

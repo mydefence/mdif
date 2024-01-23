@@ -99,6 +99,10 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <ul>
 <li><p><a class="reference internal" href="#mdif-core-CoreService"><span class="xref myst">CoreService</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-ApiErrorInd"><span class="xref myst">ApiErrorInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-CompassCalibrateReq"><span class="xref myst">CompassCalibrateReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-CompassCalibrateRes"><span class="xref myst">CompassCalibrateRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-CompassCalibrationCompleteInd"><span class="xref myst">CompassCalibrationCompleteInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-CompassHeading"><span class="xref myst">CompassHeading</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-CoreMsg"><span class="xref myst">CoreMsg</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetBatteryStatusReq"><span class="xref myst">GetBatteryStatusReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetBatteryStatusRes"><span class="xref myst">GetBatteryStatusRes</span></a></p></li>
@@ -106,6 +110,10 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif-core-GetDeviceInfoRes"><span class="xref myst">GetDeviceInfoRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetIpConfigReq"><span class="xref myst">GetIpConfigReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetIpConfigRes"><span class="xref myst">GetIpConfigRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GnssCompassStreamInd"><span class="xref myst">GnssCompassStreamInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GnssCompassStreamReq"><span class="xref myst">GnssCompassStreamReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GnssCompassStreamRes"><span class="xref myst">GnssCompassStreamRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GnssStatus"><span class="xref myst">GnssStatus</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-IpConfig"><span class="xref myst">IpConfig</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-PingReq"><span class="xref myst">PingReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-PingRes"><span class="xref myst">PingRes</span></a></p></li>
@@ -115,6 +123,7 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-DeviceType"><span class="xref myst">DeviceType</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-DhcpEnable"><span class="xref myst">DhcpEnable</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-SysTimeStatus"><span class="xref myst">SysTimeStatus</span></a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#scalar-value-types"><span class="xref myst">Scalar Value Types</span></a></p></li>
@@ -237,6 +246,16 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></td>
 <td><p>Used to set the IP configuration</p></td>
 </tr>
+<tr class="row-even"><td><p>GnssCompassStream</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GnssCompassStreamReq"><span class="xref myst">GnssCompassStreamReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-GnssCompassStreamRes"><span class="xref myst">GnssCompassStreamRes</span></a></p></td>
+<td><p>Used to enable or disable streaming of GNSS and compass data.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CompassCalibrate</p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompassCalibrateReq"><span class="xref myst">CompassCalibrateReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompassCalibrateRes"><span class="xref myst">CompassCalibrateRes</span></a></p></td>
+<td><p>Used to calibrate compass</p></td>
+</tr>
 </tbody>
 </table>
  <!-- end services -->
@@ -258,6 +277,112 @@ properly decoded.</p>
 <tr class="row-even"><td><p>error</p></td>
 <td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
 <td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-CompassCalibrateReq"></a></p>
+</section>
+<section id="compasscalibratereq">
+<h2>CompassCalibrateReq<a class="headerlink" href="#compasscalibratereq" title="Permalink to this heading"></a></h2>
+<p>Start a calibration of the compass.</p>
+<p>The device will respond with a CompassCalibrateRes message and,
+if the calibration was successfully started, will follow up with
+a CompassCalibrationCompleteInd once calibration has either succeeded,
+or timed out (20s-110s duration).</p>
+<p>When the calibration is running, the device must be on a level mount or surface,
+and should be rotated through 360 degrees within 20s.
+It may be necessary to rotate the device multiple times before the calibration succeeds.</p>
+<p><a name="mdif-core-CompassCalibrateRes"></a></p>
+</section>
+<section id="compasscalibrateres">
+<h2>CompassCalibrateRes<a class="headerlink" href="#compasscalibrateres" title="Permalink to this heading"></a></h2>
+<p>Compass calibration response.</p>
+<p>Indicates whether the calibration was started successfully.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-CompassCalibrationCompleteInd"></a></p>
+</section>
+<section id="compasscalibrationcompleteind">
+<h2>CompassCalibrationCompleteInd<a class="headerlink" href="#compasscalibrationcompleteind" title="Permalink to this heading"></a></h2>
+<p>Indication of a completed compass calibration.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the calibration</p></td>
+</tr>
+<tr class="row-odd"><td><p>offset_x</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>Calculated offset for X axis (Internal use only)</p></td>
+</tr>
+<tr class="row-even"><td><p>offset_y</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>Calculated offset for Y axis (Internal use only)</p></td>
+</tr>
+<tr class="row-odd"><td><p>scale_x</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Calculated scaling for X axis (Internal use only)</p></td>
+</tr>
+<tr class="row-even"><td><p>scale_y</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Calculated scaling for Y axis (Internal use only)</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-CompassHeading"></a></p>
+</section>
+<section id="compassheading">
+<h2>CompassHeading<a class="headerlink" href="#compassheading" title="Permalink to this heading"></a></h2>
+<p>Defines a compass heading</p>
+<p>Note that the reported heading is not compensated for magnetic declination.
+For details on how to compensate, see resources at NOAA:</p>
+<p><a class="reference external" href="https://www.ncei.noaa.gov/products/world-magnetic-model">World magnetic model</a></p>
+<p><a class="reference external" href="https://www.ncei.noaa.gov/products/magnetic-declination">Magnetic declination</a></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>calibrated</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Indicates presence of calibration data. Note that moving a device to a new mount or location will require a new calibration.</p></td>
+</tr>
+<tr class="row-odd"><td><p>heading</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Uncompensated magnetic heading. Degrees, 0 to 360. North is 0, East is 90.</p></td>
+</tr>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>X. Raw reading from magnetometer. For calibration purposes only.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>Y. Raw reading from magnetometer. For calibration purposes only.</p></td>
+</tr>
+<tr class="row-even"><td><p>z</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>Z. Raw reading from magnetometer. For calibration purposes only.</p></td>
 </tr>
 </tbody>
 </table>
@@ -326,6 +451,30 @@ defined in the CoreService through RPC patterns.</p>
 <tr class="row-odd"><td><p>set_ip_config_res</p></td>
 <td><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></td>
 <td><p>Set IP configuration response</p></td>
+</tr>
+<tr class="row-even"><td><p>gnss_compass_stream_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GnssCompassStreamReq"><span class="xref myst">GnssCompassStreamReq</span></a></p></td>
+<td><p>Request streamed GNSS and compass updates</p></td>
+</tr>
+<tr class="row-odd"><td><p>gnss_compass_stream_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GnssCompassStreamRes"><span class="xref myst">GnssCompassStreamRes</span></a></p></td>
+<td><p>Response to GNSS and compass stream request.</p></td>
+</tr>
+<tr class="row-even"><td><p>gnss_compass_stream_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GnssCompassStreamInd"><span class="xref myst">GnssCompassStreamInd</span></a></p></td>
+<td><p>GNSS and compass stream data indication.</p></td>
+</tr>
+<tr class="row-odd"><td><p>compass_calibrate_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompassCalibrateReq"><span class="xref myst">CompassCalibrateReq</span></a></p></td>
+<td><p>Request a compass calibration</p></td>
+</tr>
+<tr class="row-even"><td><p>compass_calibrate_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompassCalibrateRes"><span class="xref myst">CompassCalibrateRes</span></a></p></td>
+<td><p>Response to a compass calibration request.</p></td>
+</tr>
+<tr class="row-odd"><td><p>compass_calibration_complete_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompassCalibrationCompleteInd"><span class="xref myst">CompassCalibrationCompleteInd</span></a></p></td>
+<td><p>Indication that a compass calibration has completed.</p></td>
 </tr>
 <tr class="row-even"><td><p>api_error_ind</p></td>
 <td><p><a class="reference internal" href="#mdif-core-ApiErrorInd"><span class="xref myst">ApiErrorInd</span></a></p></td>
@@ -405,6 +554,14 @@ defined in the CoreService through RPC patterns.</p>
 <td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
 <td><p>The version of the software</p></td>
 </tr>
+<tr class="row-even"><td><p>gnss_present</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Does this device have GNSS</p></td>
+</tr>
+<tr class="row-odd"><td><p>compass_present</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Does this device have a compass</p></td>
+</tr>
 </tbody>
 </table>
 <p><a name="mdif-core-GetIpConfigReq"></a></p>
@@ -445,6 +602,156 @@ defined in the CoreService through RPC patterns.</p>
 <tr class="row-even"><td><p>dhcp_enabled</p></td>
 <td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
 <td><p>Is DHCP enabled</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GnssCompassStreamInd"></a></p>
+</section>
+<section id="gnsscompassstreamind">
+<h2>GnssCompassStreamInd<a class="headerlink" href="#gnsscompassstreamind" title="Permalink to this heading"></a></h2>
+<p>GNSS and compass stream data indication</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gnss_status</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GnssStatus"><span class="xref myst">GnssStatus</span></a></p></td>
+<td><p>GNSS status</p></td>
+</tr>
+<tr class="row-odd"><td><p>compass_heading</p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompassHeading"><span class="xref myst">CompassHeading</span></a></p></td>
+<td><p>Compass heading</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GnssCompassStreamReq"></a></p>
+</section>
+<section id="gnsscompassstreamreq">
+<h2>GnssCompassStreamReq<a class="headerlink" href="#gnsscompassstreamreq" title="Permalink to this heading"></a></h2>
+<p>Request GNSS and compass data stream</p>
+<p>The device will respond with a GnssCompassStreamRes message.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Enable or disable the stream</p></td>
+</tr>
+<tr class="row-odd"><td><p>period</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Period between updates in miliseconds. Supported range 250-65535.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GnssCompassStreamRes"></a></p>
+</section>
+<section id="gnsscompassstreamres">
+<h2>GnssCompassStreamRes<a class="headerlink" href="#gnsscompassstreamres" title="Permalink to this heading"></a></h2>
+<p>GNSS and compass stream response</p>
+<p>Indicates whether the stream was started successfully.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GnssStatus"></a></p>
+</section>
+<section id="gnssstatus">
+<h2>GnssStatus<a class="headerlink" href="#gnssstatus" title="Permalink to this heading"></a></h2>
+<p>Defines a GNSS status</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>configured</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>GNSS device has been successfully configured.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pos_valid</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Validity of the reported position.</p></td>
+</tr>
+<tr class="row-even"><td><p>time_valid</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SysTimeStatus"><span class="xref myst">SysTimeStatus</span></a></p></td>
+<td><p>Validity of the reported time.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pos_lat</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Latitude in degrees (WGS84 ellipsoid)</p></td>
+</tr>
+<tr class="row-even"><td><p>pos_lon</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Longditude in degrees (WGS84 ellipsoid)</p></td>
+</tr>
+<tr class="row-odd"><td><p>pos_hacc</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Horizontal accuracy estimate, meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>pos_hmsl</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Height over mean sea level, meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pos_vacc</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Vertical accuracy estimate, meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>sol_time</p></td>
+<td><p><a class="reference internal" href="#int64"><span class="xref myst">int64</span></a></p></td>
+<td><p>GPS time in microseconds for this navigation solution.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ecef_x</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>ECEF X coordinate, meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>ecef_y</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>ECEF Y coordinate, meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ecef_z</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>ECEF Z coordinate, meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>p_acc</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>ECEF position accuracy estimate, meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ground_speed</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Speed over ground, meters/second</p></td>
+</tr>
+<tr class="row-even"><td><p>heading_2d</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>2D heading. Degrees, 0 to 360. North is 0, East is 90.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sacc</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Speed accuracy estimate, meters/s</p></td>
+</tr>
+<tr class="row-even"><td><p>heading_acc</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Heading accuracy estimeate, degrees</p></td>
 </tr>
 </tbody>
 </table>
@@ -637,6 +944,33 @@ response may not be received.</p>
 <tr class="row-even"><td><p>DHCP_ENABLE</p></td>
 <td><p>2</p></td>
 <td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-SysTimeStatus"></a></p>
+</section>
+<section id="systimestatus">
+<h2>SysTimeStatus<a class="headerlink" href="#systimestatus" title="Permalink to this heading"></a></h2>
+<p>Defines the state of the system time.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VALID</p></td>
+<td><p>0</p></td>
+<td><p>The system time is valid, and is currently in sync with GNSS.</p></td>
+</tr>
+<tr class="row-odd"><td><p>VALID_DRIFTING</p></td>
+<td><p>1</p></td>
+<td><p>The system time was previously synchronized with GNSS, but is free-running (estimated drift &lt; 100us).</p></td>
+</tr>
+<tr class="row-even"><td><p>NOT_VALID</p></td>
+<td><p>2</p></td>
+<td><p>The system time is free-running, with no synchronization.</p></td>
 </tr>
 </tbody>
 </table>

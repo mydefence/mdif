@@ -29,10 +29,10 @@
  *               ,,,,,                                                         *
  *                    ,,,,,                                                    *
  *                                                                             *
- * Program/file : fwu.proto                                                    *
+ * Program/file : IHdlc.java                                                   *
  *                                                                             *
- * Description  : This protobuf file describes messages associated with the    *
- *              : firmware update (fwu) functionality.                         *
+ * Description  : Android implementation of OS abstraction interface for hdlc  *
+ *              :                                                              *
  *                                                                             *
  * Copyright 2023 MyDefence A/S.                                               *
  *                                                                             *
@@ -51,120 +51,16 @@
  *                                                                             *
  *                                                                             *
  *******************************************************************************/
+package dk.mydefence.mdif_example.hdlc;
 
-/*
-  Message allocation for the FWU component are in the range:
+public interface IHdlc {
+    void onHdlcFrame(byte[] frame);
 
-  | Start | End  | Radix |
-  |-------|------|-------|
-  | 0x20  | 0x2F | Hex   |
-  | 32    |   47 | Dec   |
+    void onHdlcConnected();
 
- */
-syntax = "proto3";
+    void onHdlcDisconnected();
 
-package mdif.fwu;
+    void onHdlcConnecting();
 
-// [MD START java_declaration]
-option java_package = "dk.mydefence.mdif.fwu";
-// [MD END java_declaration]
-
-import "mdif/common.proto";
-
-/*************************************
- ******** Message definitions ********
- ************************************/
-
- // Enumeration of possible states of FWU
- //
- // End-states means the FWU process has terminated
-enum State {
-    IDLE = 0; // FWU not started (end-state)
-    RECEIVING_DATA = 1; // Data is being transfered to the device
-    PROCESSING_IMAGE = 2; // Processing received firmware data
-    ERASING_FLASH = 3; // Flash is being erased
-    WRITING_FLASH = 4; // Firmware is being written to flash
-    VERIFYING_FLASH = 5; // Written firmware is verified in flash
-    FWU_COMPLETE = 6; // FWU is successfully completed (end-state)
-    ERROR = 7; // An error has occured and FWU was not completed (end-state)
-}
-
-// Initialize Firmware Update with size of firmware image.
-//
-// 'force' flag will skip any update guards in code making it possible to up/downgrade using
-// firmware which is not directly supported by the device. Note this will void warranty if
-// used without written approval from MyDefence. 
-message FwuInitReq {
-    uint32 size = 1; // Size of FWU image
-    bool force = 2; // Note using this flag could brik the device
-}
-
-// Response on FwuInitReq
-message FwuInitRes {
-    common.Status status = 1; // The status of the request
-    State state = 2; // If in State.RECEIVING_DATA the device is ready to proceed
-    uint32 max_chunk_size = 3; // Max chunk size in bytes
-}
-
-// Chunk data contains part of FWU image
-message FwuChunkReq {
-    bytes data = 1; // Section of firmware image
-}
-
-// Response on FwuChunkReq
-message FwuChunkRes {
-    common.Status status = 1; // The status of the request
-}
-
-// Abort FWU process
-message FwuAbortReq {
-}
-
-// Response on FwuAbortReq
-message FwuAbortRes {
-    common.Status status = 1; // The status of the request
-    State state = 2; // FWU state of the device
-}
-
-// Indication with current FWU state of the device
-message FwuStateInd {
-    State state = 1; // FWU state of the device
-}
-
-// FWU wire format message
-//
-// This message dictates the final format on the wire for FWU messages. It is a
-// oneof construct to wrap a single message at a time.
-//
-// Every request (req) has a corresponding response (res). The req/res pairs are
-// defined in the FwuService below through RPC patterns.
-//
-// Indications (ind) are pushed without a request at any time
-message FwuMsg {
-    oneof msg {
-        // Request FWU initialization
-        FwuInitReq fwu_init_req=0x0020;
-        // FWU init response
-        FwuInitRes fwu_init_res=0x0021;
-        // Request with FWU image chunk of data
-        FwuChunkReq fwu_chunk_req=0x0022;
-        // FWU chunk data response
-        FwuChunkRes fwu_chunk_res=0x0023;
-        // FWU state indication
-        FwuStateInd fwu_state_ind=0x0024;
-        // Request FWU to abort
-        FwuAbortReq fwu_abort_req=0x0025;
-        // FWU abort response
-        FwuAbortRes fwu_abort_res=0x0026;
-    }
-}
-
-// Defines the relationship between requests and responses in the FWU component
-service FwuService {
-    // Used to initialize FWU
-    rpc FwuInit (FwuInitReq) returns (FwuInitRes);
-    // Used to abort an active FWU
-    rpc FwuAbort (FwuAbortReq) returns (FwuAbortRes);
-    // Used to transmit a chunk with firmware data
-    rpc FwuChunk (FwuChunkReq) returns (FwuChunkRes);
+    void onHdlcFrameSent(byte[] frame);
 }

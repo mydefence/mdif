@@ -65,6 +65,10 @@ syntax = "proto3";
 
 package mdif.core;
 
+// [MD START java_declaration]
+option java_package = "dk.mydefence.mdif.core";
+// [MD END java_declaration]
+
 import "mdif/common.proto";
 
 /*************************************
@@ -96,6 +100,77 @@ message IpConfig {
     // The gateway of the device. 4 bytes. 192.168.0.1 is encoded as
     // gateway[0]=192, gateway[1]=168, gateway[2]=0, gateway[3]=1
     bytes gateway = 3;
+}
+
+// Defines the state of the system time.
+enum SysTimeStatus {
+    // The system time is valid, and is currently in sync with GNSS.
+    VALID = 0;
+    // The system time was previously synchronized with GNSS, but is free-running (estimated drift < 100us).
+    VALID_DRIFTING = 1;
+    // The system time is free-running, with no synchronization.
+    NOT_VALID = 2;
+}
+
+// Defines a GNSS status
+message GnssStatus {
+    // GNSS device has been successfully configured.
+    bool configured = 1;
+    // Validity of the reported position.
+    bool pos_valid = 2;
+    // Validity of the reported time.
+    SysTimeStatus time_valid = 3;
+    // Latitude in degrees (WGS84 ellipsoid)
+    float pos_lat = 4;
+    // Longditude in degrees (WGS84 ellipsoid)
+    float pos_lon = 5;
+    // Horizontal accuracy estimate, meters.
+    float pos_hacc = 6;
+    // Height over mean sea level, meters.
+    float pos_hmsl = 7;
+    // Vertical accuracy estimate, meters.
+    float pos_vacc = 8;
+    // GPS time in microseconds for this navigation solution.
+    int64 sol_time = 9;
+    // ECEF X coordinate, meters.
+    float ecef_x = 10;
+    // ECEF Y coordinate, meters.
+    float ecef_y = 11;
+    // ECEF Z coordinate, meters.
+    float ecef_z = 12;
+    // ECEF position accuracy estimate, meters.
+    float p_acc = 13;
+    // Speed over ground, meters/second
+    float ground_speed = 14;
+    // 2D heading. Degrees, 0 to 360. North is 0, East is 90.
+    float heading_2d = 15;
+    // Speed accuracy estimate, meters/s
+    float sacc = 16;
+    // Heading accuracy estimeate, degrees
+    float heading_acc = 17;
+}
+
+// Defines a compass heading
+//
+// Note that the reported heading is not compensated for magnetic declination.
+// For details on how to compensate, see resources at NOAA:
+//
+//    [World magnetic model](https://www.ncei.noaa.gov/products/world-magnetic-model)
+//
+//    [Magnetic declination](https://www.ncei.noaa.gov/products/magnetic-declination)
+//
+message CompassHeading {
+    // Indicates presence of calibration data.
+    // Note that moving a device to a new mount or location will require a new calibration.
+    bool calibrated = 1;
+    // Uncompensated magnetic heading. Degrees, 0 to 360. North is 0, East is 90.
+    float heading = 2;
+    // X. Raw reading from magnetometer. For calibration purposes only.
+    int32 x = 3;
+    // Y. Raw reading from magnetometer. For calibration purposes only.
+    int32 y = 4;
+    // Z. Raw reading from magnetometer. For calibration purposes only.
+    int32 z = 5;
 }
 
 // Defines the DHCP enable options
@@ -144,6 +219,10 @@ message GetDeviceInfoRes {
     uint32 device_version = 3;
     // The version of the software
     string sw_version = 4;
+    // Does this device have GNSS
+    bool gnss_present = 5;
+    // Does this device have a compass
+    bool compass_present = 6;
 }
 
 // Request battery status
@@ -202,6 +281,67 @@ message SetIpConfigRes {
     common.Status status = 1;
 }
 
+// Request GNSS and compass data stream
+//
+// The device will respond with a GnssCompassStreamRes message.
+message GnssCompassStreamReq {
+    // Enable or disable the stream
+    bool enable = 1;
+    // Period between updates in miliseconds. Supported range 250-65535.
+    uint32 period = 2;
+}
+
+// GNSS and compass stream response
+//
+// Indicates whether the stream was started successfully.
+message GnssCompassStreamRes {
+    // The status of the request
+    common.Status status = 1;
+}
+
+// GNSS and compass stream data indication
+message GnssCompassStreamInd {
+    // GNSS status
+    GnssStatus gnss_status = 1;
+    // Compass heading
+    CompassHeading compass_heading = 2;
+}
+
+// Start a calibration of the compass.
+//
+// The device will respond with a CompassCalibrateRes message and,
+// if the calibration was successfully started, will follow up with
+// a CompassCalibrationCompleteInd once calibration has either succeeded,
+// or timed out (20s-110s duration).
+//
+// When the calibration is running, the device must be on a level mount or surface,
+// and should be rotated through 360 degrees within 20s.
+// It may be necessary to rotate the device multiple times before the calibration succeeds.
+message CompassCalibrateReq {}
+
+// Compass calibration response.
+//
+// Indicates whether the calibration was started successfully.
+message CompassCalibrateRes {
+    // The status of the request
+    common.Status status = 1;
+}
+
+// Indication of a completed compass calibration.
+message CompassCalibrationCompleteInd {
+    // The status of the calibration
+    common.Status status = 1;
+    // Calculated offset for X axis (Internal use only)
+    int32 offset_x = 2;
+    // Calculated offset for Y axis (Internal use only)
+    int32 offset_y = 3;
+    // Calculated scaling for X axis (Internal use only)
+    float scale_x = 4;
+    // Calculated scaling for Y axis (Internal use only)
+    float scale_y = 5;
+}
+
+
 // Api Error indication
 //
 // This message is used to indicate an error in the API. E.g if a request is not
@@ -245,6 +385,18 @@ message CoreMsg {
         SetIpConfigReq set_ip_config_req = 11;
         // Set IP configuration response
         SetIpConfigRes set_ip_config_res = 12;
+        // Request streamed GNSS and compass updates
+        GnssCompassStreamReq gnss_compass_stream_req = 13;
+        // Response to GNSS and compass stream request.
+        GnssCompassStreamRes gnss_compass_stream_res = 14;
+        // GNSS and compass stream data indication.
+        GnssCompassStreamInd gnss_compass_stream_ind = 15;
+        // Request a compass calibration
+        CompassCalibrateReq compass_calibrate_req = 16;
+        // Response to a compass calibration request.
+        CompassCalibrateRes compass_calibrate_res = 17;
+        // Indication that a compass calibration has completed.
+        CompassCalibrationCompleteInd compass_calibration_complete_ind = 18;
 
         // Api Error indication
         ApiErrorInd api_error_ind = 0x1F;
@@ -265,4 +417,8 @@ service CoreService {
     rpc GetIpConfig (GetIpConfigReq) returns (GetIpConfigRes);
     // Used to set the IP configuration
     rpc SetIpConfig (SetIpConfigReq) returns (SetIpConfigRes);
+    // Used to enable or disable streaming of GNSS and compass data.
+    rpc GnssCompassStream (GnssCompassStreamReq) returns (GnssCompassStreamRes);
+    // Used to calibrate compass
+    rpc CompassCalibrate (CompassCalibrateReq) returns (CompassCalibrateRes);
 }

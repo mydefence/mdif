@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_mdif_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dk.mydefence.mdif_example.MainActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/statusMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MyDefence A/S"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintRight_toRightOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintTop_toTopOf="@+id/activity_mdif_constraint_layout"
+        tools:layout_constraintBottom_creator="0"
+        tools:layout_constraintLeft_creator="0"
+        tools:layout_constraintRight_creator="0"
+        tools:layout_constraintTop_creator="0" />
+
+    <TextView
+        android:id="@+id/mdifExampleMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No messages received"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintRight_toRightOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintTop_toTopOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintVertical_bias="0.245"
+        tools:layout_constraintBottom_creator="0"
+        tools:layout_constraintLeft_creator="0"
+        tools:layout_constraintRight_creator="0"
+        tools:layout_constraintTop_creator="0" />
+
+    <TextView
+        android:id="@+id/alerts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="No alert messages received"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintRight_toRightOf="@+id/activity_mdif_constraint_layout"
+        app:layout_constraintTop_toBottomOf="@id/mdifExampleMsg"
+        tools:layout_constraintBottom_creator="0"
+        tools:layout_constraintLeft_creator="0"
+        tools:layout_constraintRight_creator="0"
+        tools:layout_constraintTop_creator="0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

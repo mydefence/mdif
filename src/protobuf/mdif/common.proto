@@ -59,6 +59,10 @@ syntax = "proto3";
 
 package mdif.common;
 
+// [MD START java_declaration]
+option java_package = "dk.mydefence.mdif.common";
+// [MD END java_declaration]
+
 /*************************************
  ************* Sub types *************
  ************************************/

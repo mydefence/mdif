@@ -29,10 +29,10 @@
  *               ,,,,,                                                         *
  *                    ,,,,,                                                    *
  *                                                                             *
- * Program/file : fwu.proto                                                    *
+ * Program/file : java_port.c                                                  *
  *                                                                             *
- * Description  : This protobuf file describes messages associated with the    *
- *              : firmware update (fwu) functionality.                         *
+ * Description  : Java implementation of OS abstraction interface for hdlc     *
+ *              :                                                              *
  *                                                                             *
  * Copyright 2023 MyDefence A/S.                                               *
  *                                                                             *
@@ -51,120 +51,117 @@
  *                                                                             *
  *                                                                             *
  *******************************************************************************/
+#include <assert.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/timerfd.h>
+#include <sys/types.h>
+#include <termios.h>
+#include <time.h>
+#include <unistd.h>
 
-/*
-  Message allocation for the FWU component are in the range:
+#include "hdlc/include/hdlc.h"
+#include "hdlc/include/hdlc_os.h"
+#include "hdlc_port.h"
+#include "java_port.h"
 
-  | Start | End  | Radix |
-  |-------|------|-------|
-  | 0x20  | 0x2F | Hex   |
-  | 32    |   47 | Dec   |
+#define SIG SIGRTMIN
 
- */
-syntax = "proto3";
+static pthread_t timer_thread;
+static pthread_mutex_t hdlc_mutex;
 
-package mdif.fwu;
+static struct itimerspec its_start = {
+    .it_value.tv_sec = 0,
+    .it_value.tv_nsec = 0, // set in init
+    .it_interval.tv_sec = 0,
+    .it_interval.tv_nsec = 0,
+};
+static struct itimerspec its_stop = {
+    .it_value.tv_sec = 0,
+    .it_value.tv_nsec = 0,
+    .it_interval.tv_sec = 0,
+    .it_interval.tv_nsec = 0,
+};
+static int timeout_fd;
 
-// [MD START java_declaration]
-option java_package = "dk.mydefence.mdif.fwu";
-// [MD END java_declaration]
+static void *timer_thread_func(void *ptr);
 
-import "mdif/common.proto";
+// This port only supports single instance of hdlc. This instance data must be
+// used on all calls to hdlc functions. It will be valid after hdlc_java_init().
+hdlc_data_t *hdlc;
 
-/*************************************
- ******** Message definitions ********
- ************************************/
+void hdlc_java_init()
+{
+    its_start.it_value.tv_nsec = JAVA_HDLC_TIMEOUT_MS * 1000000;
 
- // Enumeration of possible states of FWU
- //
- // End-states means the FWU process has terminated
-enum State {
-    IDLE = 0; // FWU not started (end-state)
-    RECEIVING_DATA = 1; // Data is being transfered to the device
-    PROCESSING_IMAGE = 2; // Processing received firmware data
-    ERASING_FLASH = 3; // Flash is being erased
-    WRITING_FLASH = 4; // Firmware is being written to flash
-    VERIFYING_FLASH = 5; // Written firmware is verified in flash
-    FWU_COMPLETE = 6; // FWU is successfully completed (end-state)
-    ERROR = 7; // An error has occured and FWU was not completed (end-state)
+    if (pthread_mutex_init(&hdlc_mutex, NULL) != 0) {
+        log_fatal("mutex init has failed");
+        exit(1);
+    }
+
+    timeout_fd = timerfd_create(CLOCK_REALTIME, 0);
+    if (timeout_fd == -1) {
+        perror("timerfd_create");
+        exit(1);
+    }
+    if (pthread_create(&timer_thread, NULL, timer_thread_func, NULL) != 0) {
+        perror("pthread_create");
+        exit(1);
+    }
+
+    hdlc = hdlc_init(NULL);
 }
 
-// Initialize Firmware Update with size of firmware image.
-//
-// 'force' flag will skip any update guards in code making it possible to up/downgrade using
-// firmware which is not directly supported by the device. Note this will void warranty if
-// used without written approval from MyDefence. 
-message FwuInitReq {
-    uint32 size = 1; // Size of FWU image
-    bool force = 2; // Note using this flag could brik the device
-}
+static void *timer_thread_func(void *ptr)
+{
+    while (1) {
+        uint64_t exp;
 
-// Response on FwuInitReq
-message FwuInitRes {
-    common.Status status = 1; // The status of the request
-    State state = 2; // If in State.RECEIVING_DATA the device is ready to proceed
-    uint32 max_chunk_size = 3; // Max chunk size in bytes
-}
+        if (read(timeout_fd, &exp, sizeof(uint64_t)) == -1) {
+            perror("read");
+            exit(1);
+        }
 
-// Chunk data contains part of FWU image
-message FwuChunkReq {
-    bytes data = 1; // Section of firmware image
-}
-
-// Response on FwuChunkReq
-message FwuChunkRes {
-    common.Status status = 1; // The status of the request
-}
-
-// Abort FWU process
-message FwuAbortReq {
-}
-
-// Response on FwuAbortReq
-message FwuAbortRes {
-    common.Status status = 1; // The status of the request
-    State state = 2; // FWU state of the device
-}
-
-// Indication with current FWU state of the device
-message FwuStateInd {
-    State state = 1; // FWU state of the device
-}
-
-// FWU wire format message
-//
-// This message dictates the final format on the wire for FWU messages. It is a
-// oneof construct to wrap a single message at a time.
-//
-// Every request (req) has a corresponding response (res). The req/res pairs are
-// defined in the FwuService below through RPC patterns.
-//
-// Indications (ind) are pushed without a request at any time
-message FwuMsg {
-    oneof msg {
-        // Request FWU initialization
-        FwuInitReq fwu_init_req=0x0020;
-        // FWU init response
-        FwuInitRes fwu_init_res=0x0021;
-        // Request with FWU image chunk of data
-        FwuChunkReq fwu_chunk_req=0x0022;
-        // FWU chunk data response
-        FwuChunkRes fwu_chunk_res=0x0023;
-        // FWU state indication
-        FwuStateInd fwu_state_ind=0x0024;
-        // Request FWU to abort
-        FwuAbortReq fwu_abort_req=0x0025;
-        // FWU abort response
-        FwuAbortRes fwu_abort_res=0x0026;
+        if (hdlc) {
+            hdlc_os_timeout(hdlc);
+        } else {
+            // This is possible during startup if hdlc_init() has not yet
+            // returned. Try again later.
+            log_warn("hdlc not initialized (timeout)");
+            hdlc_os_start_timer(NULL);
+        }
     }
 }
 
-// Defines the relationship between requests and responses in the FWU component
-service FwuService {
-    // Used to initialize FWU
-    rpc FwuInit (FwuInitReq) returns (FwuInitRes);
-    // Used to abort an active FWU
-    rpc FwuAbort (FwuAbortReq) returns (FwuAbortRes);
-    // Used to transmit a chunk with firmware data
-    rpc FwuChunk (FwuChunkReq) returns (FwuChunkRes);
+void hdlc_os_start_timer(hdlc_data_t *_hdlc)
+{
+    if (timerfd_settime(timeout_fd, 0, &its_start, NULL) == -1) {
+        perror("timerfd_settime (start)");
+        exit(1);
+    }
+}
+
+void hdlc_os_stop_timer(hdlc_data_t *_hdlc)
+{
+    if (timerfd_settime(timeout_fd, 0, &its_stop, NULL) == -1) {
+        perror("timerfd_settime (stop)");
+        exit(1);
+    }
+}
+
+void hdlc_os_enter_critical_section(hdlc_data_t *hdlc)
+{
+    pthread_mutex_lock(&hdlc_mutex);
+}
+
+void hdlc_os_exit_critical_section(hdlc_data_t *hdlc)
+{
+    pthread_mutex_unlock(&hdlc_mutex);
 }

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "argparse": "^2.0.1",
+    "long": "^5.2.3",
     "protobufjs": "^7.2.5",
     "typed-emitter": "^2.1.0"
   }

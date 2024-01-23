@@ -6,3 +6,5 @@ node_modules
 
 /src/**/_generated
 
+/src/android_demo/.gradle
+/src/android_demo/app/.cxx
