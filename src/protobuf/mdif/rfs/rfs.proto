@@ -79,6 +79,8 @@ service RfsService {
     rpc Stop (StopReq) returns (StopRes);
     // Use to get individual drone info
     rpc GetDroneInfo (GetDroneInfoReq) returns (GetDroneInfoRes);
+    // Use to request a stream of remote ID messages.
+    rpc RemoteIdStream (RemoteIdStreamReq) returns (RemoteIdStreamRes);
 }
 
 // Rfs wire format messages
@@ -113,6 +115,12 @@ message RfsMsg {
         WifiThreatInd wifi_threat_ind=0x0089;
         // Threat stopped indication
         ThreatStoppedInd threat_stopped_ind=0x008A;
+        // Remote drone ID stream start - Request
+        RemoteIdStreamReq remote_id_stream_req=0x008B;
+        // Remote Drone ID stream start - Response
+        RemoteIdStreamRes remote_id_stream_res=0x008C;
+        // Remote Drone ID detection - Indication
+        RemoteIdInd remote_id_ind=0x008D;
     }
 }
 
@@ -123,7 +131,7 @@ message RfsMsg {
 // Enumeration of possible start-modes.
 enum StartMode {
     Default = 0; // RFS runs on internal antenna and external if present
-    ExtAntOnly = 1; // RFS runs on external antenna only. Will signal errer if not present
+    ExtAntOnly = 1; // RFS runs on external antenna only. Will signal error if not present
     IntAntOnly = 2; // RFS runs on internal antenna only, even if external is present
     UAVModeSearch = 3; // RFS runs on internal antenna in search/direction finding mode
 }
@@ -222,4 +230,24 @@ message WifiThreatInd {
 message ThreatStoppedInd {
     uint32 id = 1; // Instance of detection thread.
     float msg_timestamp = 2; // Time message is compiled.
+}
+
+// Request that remote ID results be streamed from the device.
+message RemoteIdStreamReq {
+    // Enable or disable the stream.
+    bool enable = 1;
+}
+
+// Response to RemoteIdStreamReq.
+message RemoteIdStreamRes {
+    // Status of the request.
+    common.Status status = 1;
+}
+
+// Remote ID indication with binary message pack.
+message RemoteIdInd {
+    // MAC address from which the remote ID was received.
+    bytes mac_adr = 1;
+    // Remote ID message pack, as per ASTM-F3411
+    bytes payload = 2;
 }

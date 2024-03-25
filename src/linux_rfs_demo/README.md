@@ -85,8 +85,8 @@ For help on other targets provided by the Makefile do
 
 Run with `--help` for help:
 
-    ./mdif_serial --help
+    ./rfs_demo --help
 
 The application must be given a path to the serial device, e.g:
 
-    ./mdif_serial /dev/ttyUSB0
+    ./rfs_demo /dev/ttyUSB0

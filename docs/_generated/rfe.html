@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Table of Contents &mdash; MDIF  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MDIF
+              <img src="../_static/md.webp" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../framing.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html">Serial Link</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html#hdlc">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc_library.html">HDLC Reference Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_general.html">General API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_core.html">Core API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_fwu.html">FWU API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_rfe.html">RFE API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wireshark.html">Wireshark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MDIF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Table of Contents</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!--
+Markdown tempalte for use with protoc-gen-doc.
+
+Based on markdown.tmpl from the protoc-gen-doc github repo:
+https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
+
+- Removed the top H1 heading
+- Increased the heading level of all other headings by one (H3->H2, H2->H1)
+- Removed the "top" anchor and its use
+- Print services first instead of last
+ -->
+<section id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mdif_common-proto"><span class="xref myst">mdif/common.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">Status</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mdif_rfe_rfe-proto"><span class="xref myst">mdif/rfe/rfe.proto</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mdif-rfe-RfeService"><span class="xref myst">RfeService</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-GetStateInfoReq"><span class="xref myst">GetStateInfoReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-RfeMsg"><span class="xref myst">RfeMsg</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-RfeState"><span class="xref myst">RfeState</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-StartReq"><span class="xref myst">StartReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-StartRes"><span class="xref myst">StartRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-StateInfo"><span class="xref myst">StateInfo</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-StopReq"><span class="xref myst">StopReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-StopRes"><span class="xref myst">StopRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-BatteryStatus"><span class="xref myst">BatteryStatus</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-Config"><span class="xref myst">Config</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-ControllerType"><span class="xref myst">ControllerType</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-FreqBand"><span class="xref myst">FreqBand</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-TemperatureStatus"><span class="xref myst">TemperatureStatus</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfe-TxStatus"><span class="xref myst">TxStatus</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#scalar-value-types"><span class="xref myst">Scalar Value Types</span></a></p></li>
+</ul>
+<p><a name="mdif_common-proto"></a></p>
+</section>
+<section id="mdif-common-proto">
+<h1>mdif/common.proto<a class="headerlink" href="#mdif-common-proto" title="Permalink to this heading"></a></h1>
+<p>Common to all mdif protobuffers.</p>
+ <!-- end services -->
+ <!-- end messages -->
+<p><a name="mdif-common-Status"></a></p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
+<p>Defines the status of a request</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SUCCESS</p></td>
+<td><p>0</p></td>
+<td><p>The request was successful</p></td>
+</tr>
+<tr class="row-odd"><td><p>FAILURE</p></td>
+<td><p>1</p></td>
+<td><p>The request failed</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_INVALID</p></td>
+<td><p>2</p></td>
+<td><p>The request was invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_SUPPORTED</p></td>
+<td><p>3</p></td>
+<td><p>The request is not supported</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_NOT_IMPLEMENTED</p></td>
+<td><p>4</p></td>
+<td><p>The request is not implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERR_NOT_READY</p></td>
+<td><p>5</p></td>
+<td><p>The device is not ready to process the request</p></td>
+</tr>
+<tr class="row-even"><td><p>ERR_SIZE</p></td>
+<td><p>6</p></td>
+<td><p>The device cannot process the size</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+<p><a name="mdif_rfe_rfe-proto"></a></p>
+</section>
+</section>
+<section id="mdif-rfe-rfe-proto">
+<h1>mdif/rfe/rfe.proto<a class="headerlink" href="#mdif-rfe-rfe-proto" title="Permalink to this heading"></a></h1>
+<p>Message allocation for the RFE component are in the range:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Start</p></th>
+<th class="head"><p>End</p></th>
+<th class="head"><p>Radix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xC0</p></td>
+<td><p>0xDF</p></td>
+<td><p>Hex</p></td>
+</tr>
+<tr class="row-odd"><td><p>192</p></td>
+<td><p>223</p></td>
+<td><p>Dec</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-RfeService"></a></p>
+<section id="rfeservice">
+<h2>RfeService<a class="headerlink" href="#rfeservice" title="Permalink to this heading"></a></h2>
+<p>Defines the relationship between requests and responses in the RFE component</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method Name</p></th>
+<th class="head"><p>Request Type</p></th>
+<th class="head"><p>Response Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Start</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StartReq"><span class="xref myst">StartReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StartRes"><span class="xref myst">StartRes</span></a></p></td>
+<td><p>Use to start the RF effector</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stop</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StopReq"><span class="xref myst">StopReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StopRes"><span class="xref myst">StopRes</span></a></p></td>
+<td><p>Use to stop the RF effector</p></td>
+</tr>
+<tr class="row-even"><td><p>GetStateInfo</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-GetStateInfoReq"><span class="xref myst">GetStateInfoReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StateInfo"><span class="xref myst">StateInfo</span></a></p></td>
+<td><p>Use to get the current state of the RF effector</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end services -->
+<p><a name="mdif-rfe-GetStateInfoReq"></a></p>
+</section>
+<section id="getstateinforeq">
+<h2>GetStateInfoReq<a class="headerlink" href="#getstateinforeq" title="Permalink to this heading"></a></h2>
+<p>Request RFE state</p>
+<p><a name="mdif-rfe-RfeMsg"></a></p>
+</section>
+<section id="rfemsg">
+<h2>RfeMsg<a class="headerlink" href="#rfemsg" title="Permalink to this heading"></a></h2>
+<p>Rfe wire format messages</p>
+<p>This message dictates the final format on the wire for rfe messages. It is a
+oneof construct to wrap a single message at a time.</p>
+<p>Every request (req) has a corresponding response (res). The req/res pairs are
+defined in the RfeService through RPC patterns.</p>
+<p>Indications (ind) are pushed without a request at any time</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>start_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StartReq"><span class="xref myst">StartReq</span></a></p></td>
+<td><p>Request RFE start</p></td>
+</tr>
+<tr class="row-odd"><td><p>start_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StartRes"><span class="xref myst">StartRes</span></a></p></td>
+<td><p>RFE start response</p></td>
+</tr>
+<tr class="row-even"><td><p>stop_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StopReq"><span class="xref myst">StopReq</span></a></p></td>
+<td><p>Request RFE stop</p></td>
+</tr>
+<tr class="row-odd"><td><p>stop_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StopRes"><span class="xref myst">StopRes</span></a></p></td>
+<td><p>RFE stop response</p></td>
+</tr>
+<tr class="row-even"><td><p>get_state_info_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-GetStateInfoReq"><span class="xref myst">GetStateInfoReq</span></a></p></td>
+<td><p>Request RFE state</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_state_info_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StateInfo"><span class="xref myst">StateInfo</span></a></p></td>
+<td><p>RFE state response</p></td>
+</tr>
+<tr class="row-even"><td><p>state_info_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-StateInfo"><span class="xref myst">StateInfo</span></a></p></td>
+<td><p>RFE state indication</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-RfeState"></a></p>
+</section>
+<section id="rfestate">
+<h2>RfeState<a class="headerlink" href="#rfestate" title="Permalink to this heading"></a></h2>
+<p>Defines the state of the RFE device</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>controller_type</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-ControllerType"><span class="xref myst">ControllerType</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>config</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-Config"><span class="xref myst">Config</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>battery_status</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-BatteryStatus"><span class="xref myst">BatteryStatus</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>temperature_status</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-TemperatureStatus"><span class="xref myst">TemperatureStatus</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-StartReq"></a></p>
+</section>
+<section id="startreq">
+<h2>StartReq<a class="headerlink" href="#startreq" title="Permalink to this heading"></a></h2>
+<p>Request RFE start.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>clear_list</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>If clear_list is set to true, any currently active frequency bands will be cleared. If it is set to false, the frequency bands in the freq_band_list will be added to the active frequency bands.</p></td>
+</tr>
+<tr class="row-odd"><td><p>freq_band_list</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-FreqBand"><span class="xref myst">FreqBand</span></a></p></td>
+<td><p>List of frequency bands to start trasmitting on</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-StartRes"></a></p>
+</section>
+<section id="startres">
+<h2>StartRes<a class="headerlink" href="#startres" title="Permalink to this heading"></a></h2>
+<p>Response to StartReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>Status of the request If only a single device is connected, then the status reflects the actual status of the device. If multiple devices are connected (daisy chained), then the status indicates if the request was accepted and relayed to the next device in the chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p>tx_status_list</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-TxStatus"><span class="xref myst">TxStatus</span></a></p></td>
+<td><p>List of statuses for each requested frequency band. The list is always relative to the first device in the chain.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-StateInfo"></a></p>
+</section>
+<section id="stateinfo">
+<h2>StateInfo<a class="headerlink" href="#stateinfo" title="Permalink to this heading"></a></h2>
+<p>Response to GetStateInfoReq and indication of RFE state</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>local</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-RfeState"><span class="xref myst">RfeState</span></a></p></td>
+<td><p>State of the first device in the chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p>remote</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-RfeState"><span class="xref myst">RfeState</span></a></p></td>
+<td><p>State of the last device in the chain.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-StopReq"></a></p>
+</section>
+<section id="stopreq">
+<h2>StopReq<a class="headerlink" href="#stopreq" title="Permalink to this heading"></a></h2>
+<p>Request RFE stop.</p>
+<p><a name="mdif-rfe-StopRes"></a></p>
+</section>
+<section id="stopres">
+<h2>StopRes<a class="headerlink" href="#stopres" title="Permalink to this heading"></a></h2>
+<p>Response to StopReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>Status of the request</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end messages -->
+<p><a name="mdif-rfe-BatteryStatus"></a></p>
+</section>
+<section id="batterystatus">
+<h2>BatteryStatus<a class="headerlink" href="#batterystatus" title="Permalink to this heading"></a></h2>
+<p>Defines the status of the battery</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BATTERY_STATUS_UNDEFINED</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>BATTERY_STATUS_NORMAL</p></td>
+<td><p>1</p></td>
+<td><p>Battery status is normal</p></td>
+</tr>
+<tr class="row-even"><td><p>BATTERY_STATUS_LOW</p></td>
+<td><p>2</p></td>
+<td><p>Battery status is low, still operating as normal</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-Config"></a></p>
+</section>
+<section id="config">
+<h2>Config<a class="headerlink" href="#config" title="Permalink to this heading"></a></h2>
+<p>Defines the configuration of the RFE device
+The configuration is a bit field, and each bit must be explicitly tested</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CONFIG_UNDEFINED</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CONFIG_SHUTDOWN</p></td>
+<td><p>1</p></td>
+<td><p>Device is hutting down</p></td>
+</tr>
+<tr class="row-even"><td><p>CONFIG_TRANSMITTING</p></td>
+<td><p>2</p></td>
+<td><p>Device is transmitting</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONFIG_AUTOMATIC</p></td>
+<td><p>4</p></td>
+<td><p>Device is in automatic mode. That is, the device is controlled by an external entity</p></td>
+</tr>
+<tr class="row-even"><td><p>CONFIG_TX_GNSS</p></td>
+<td><p>8</p></td>
+<td><p>Device is configured to transmit on GNSS band</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONFIG_TX_2G4</p></td>
+<td><p>16</p></td>
+<td><p>Device is configured to transmit on 2.4 GHz band</p></td>
+</tr>
+<tr class="row-even"><td><p>CONFIG_TX_5G2</p></td>
+<td><p>32</p></td>
+<td><p>Device is configured to transmit on 5.2 GHz band</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONFIG_TX_5G8</p></td>
+<td><p>64</p></td>
+<td><p>Device is configured to transmit on 5.8 GHz band</p></td>
+</tr>
+<tr class="row-even"><td><p>CONFIG_LOW_POWER</p></td>
+<td><p>128</p></td>
+<td><p>Device is in low power mode</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-ControllerType"></a></p>
+</section>
+<section id="controllertype">
+<h2>ControllerType<a class="headerlink" href="#controllertype" title="Permalink to this heading"></a></h2>
+<p>Defines the type of controller
+If device is in automatic mode a controller must operate the device</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CONTROLLER_TYPE_UNDEFINED</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CONTROLLER_TYPE_NOT_PRESENT</p></td>
+<td><p>1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CONTROLLER_TYPE_WINGMAN</p></td>
+<td><p>2</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CONTROLLER_TYPE_OTHER</p></td>
+<td><p>3</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-FreqBand"></a></p>
+</section>
+<section id="freqband">
+<h2>FreqBand<a class="headerlink" href="#freqband" title="Permalink to this heading"></a></h2>
+<p>Defines the frequency bands that can be used for RFE</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FREQ_BAND_GNSS</p></td>
+<td><p>0</p></td>
+<td><p>GPS (L1, 1.5GHz) + GLONASS (L1, 1.6GHz)</p></td>
+</tr>
+<tr class="row-odd"><td><p>FREQ_BAND_2_4_GHZ</p></td>
+<td><p>1</p></td>
+<td><p>2.4 GHz band</p></td>
+</tr>
+<tr class="row-even"><td><p>FREQ_BAND_5_2_GHZ</p></td>
+<td><p>2</p></td>
+<td><p>5.2 GHz band</p></td>
+</tr>
+<tr class="row-odd"><td><p>FREQ_BAND_5_8_GHZ</p></td>
+<td><p>3</p></td>
+<td><p>5.8 GHz band</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-TemperatureStatus"></a></p>
+</section>
+<section id="temperaturestatus">
+<h2>TemperatureStatus<a class="headerlink" href="#temperaturestatus" title="Permalink to this heading"></a></h2>
+<p>Defines the temperature status</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TEMPERATURE_STATUS_UNDEFINED</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>TEMPERATURE_STATUS_NORMAL</p></td>
+<td><p>1</p></td>
+<td><p>Temperature status is normal</p></td>
+</tr>
+<tr class="row-even"><td><p>TEMPERATURE_STATUS_HIGH</p></td>
+<td><p>2</p></td>
+<td><p>Temperature status is high, output power is reduced</p></td>
+</tr>
+<tr class="row-odd"><td><p>TEMPERATURE_STATUS_TO_HIGH</p></td>
+<td><p>3</p></td>
+<td><p>Temperature status is too high, transmission is stopped</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfe-TxStatus"></a></p>
+</section>
+<section id="txstatus">
+<h2>TxStatus<a class="headerlink" href="#txstatus" title="Permalink to this heading"></a></h2>
+<p>Defines the status on the the requested frequency band</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TX_STATUS_UNDEFINED</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>TX_STATUS_ACCEPT</p></td>
+<td><p>1</p></td>
+<td><p>Frequency band accepted</p></td>
+</tr>
+<tr class="row-even"><td><p>TX_STATUS_FREQ_NOT_POSSIBLE</p></td>
+<td><p>2</p></td>
+<td><p>The requested frequency band can not be jammed due to hardware limitations</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX_STATUS_FREQ_NOT_ALLOWED</p></td>
+<td><p>3</p></td>
+<td><p>The requested frequency band is not allowed.</p></td>
+</tr>
+<tr class="row-even"><td><p>TX_STATUS_PARTIAL</p></td>
+<td><p>4</p></td>
+<td><p>Only part of the requested frequency band will be jammed due to resource limitations</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX_STATUS_RESOURCE_LIMITATION</p></td>
+<td><p>5</p></td>
+<td><p>The requested frequency band can not be jammed due to resource limitations</p></td>
+</tr>
+<tr class="row-even"><td><p>TX_STATUS_OVERHEAT</p></td>
+<td><p>6</p></td>
+<td><p>No jamming due to temperature</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX_STATUS_BATTERY_LOW</p></td>
+<td><p>7</p></td>
+<td><p>No jamming due to battery status</p></td>
+</tr>
+<tr class="row-even"><td><p>TX_STATUS_MANUAL_MODE</p></td>
+<td><p>8</p></td>
+<td><p>No jamming due to manual mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX_STATUS_UNAVAILABLE</p></td>
+<td><p>9</p></td>
+<td><p>Currently unavailable - shutting down, FWU etc.</p></td>
+</tr>
+</tbody>
+</table>
+ <!-- end enums -->
+ <!-- end HasExtensions -->
+</section>
+</section>
+<section id="scalar-value-types">
+<h1>Scalar Value Types<a class="headerlink" href="#scalar-value-types" title="Permalink to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>.proto Type</p></th>
+<th class="head"><p>Notes</p></th>
+<th class="head"><p>C++</p></th>
+<th class="head"><p>Java</p></th>
+<th class="head"><p>Python</p></th>
+<th class="head"><p>Go</p></th>
+<th class="head"><p>C#</p></th>
+<th class="head"><p>PHP</p></th>
+<th class="head"><p>Ruby</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a name="double" /> double</p></td>
+<td><p></p></td>
+<td><p>double</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>float64</p></td>
+<td><p>double</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="float" /> float</p></td>
+<td><p></p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>float32</p></td>
+<td><p>float</p></td>
+<td><p>float</p></td>
+<td><p>Float</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="int32" /> int32</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="int64" /> int64</p></td>
+<td><p>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="uint32" /> uint32</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int/long</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="uint64" /> uint64</p></td>
+<td><p>Uses variable-length encoding.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sint32" /> sint32</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sint64" /> sint64</p></td>
+<td><p>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="fixed32" /> fixed32</p></td>
+<td><p>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</p></td>
+<td><p>uint32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>uint32</p></td>
+<td><p>uint</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="fixed64" /> fixed64</p></td>
+<td><p>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</p></td>
+<td><p>uint64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>uint64</p></td>
+<td><p>ulong</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="sfixed32" /> sfixed32</p></td>
+<td><p>Always four bytes.</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>int</p></td>
+<td><p>int32</p></td>
+<td><p>int</p></td>
+<td><p>integer</p></td>
+<td><p>Bignum or Fixnum (as required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="sfixed64" /> sfixed64</p></td>
+<td><p>Always eight bytes.</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>int/long</p></td>
+<td><p>int64</p></td>
+<td><p>long</p></td>
+<td><p>integer/string</p></td>
+<td><p>Bignum</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bool" /> bool</p></td>
+<td><p></p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>boolean</p></td>
+<td><p>bool</p></td>
+<td><p>bool</p></td>
+<td><p>boolean</p></td>
+<td><p>TrueClass/FalseClass</p></td>
+</tr>
+<tr class="row-odd"><td><p><a name="string" /> string</p></td>
+<td><p>A string must always contain UTF-8 encoded or 7-bit ASCII text.</p></td>
+<td><p>string</p></td>
+<td><p>String</p></td>
+<td><p>str/unicode</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>string</p></td>
+<td><p>String (UTF-8)</p></td>
+</tr>
+<tr class="row-even"><td><p><a name="bytes" /> bytes</p></td>
+<td><p>May contain any arbitrary sequence of bytes.</p></td>
+<td><p>string</p></td>
+<td><p>ByteString</p></td>
+<td><p>str</p></td>
+<td><p>[]byte</p></td>
+<td><p>ByteString</p></td>
+<td><p>string</p></td>
+<td><p>String (ASCII-8BIT)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MyDefence A/S.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

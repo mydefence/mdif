@@ -34,7 +34,7 @@
  * Description  : Provide the user an interface to prompt protobuf messages to *
  *              : the device running mdif over serial connection using hdlc.   *
  *                                                                             *
- * Copyright 2023 MyDefence A/S.                                               *
+ * Copyright 2024 MyDefence A/S.                                               *
  *                                                                             *
  * Licensed under the Apache License, Version 2.0 (the "License");             *
  * you may not use this file except in compliance with the License.            *
@@ -61,6 +61,7 @@
 #include "codec.h"
 
 void send_frame(const uint8_t *frame, uint32_t len);
+void print_help(void);
 
 //////////////////////////////////////////////////////////////////////////////
 // Command line parsing (using argp)
@@ -130,13 +131,15 @@ void hdlc_reset_cb(hdlc_data_t *_hdlc, hdlc_reset_cause_t cause) {
 }
 
 void hdlc_connected_cb(hdlc_data_t *hdlc) {
-    printf("hdlc connected\n");
+    printf("Connected\n\n");
+
+    print_help();
 
     uint32_t size;
     uint8_t *req = encode_core_get_device_info_req(&size);
     send_frame(req, size);
 
-    req = encode_rfs_start_req(&size);
+    req = encode_rfe_get_state_info_req(&size);
     send_frame(req, size);
 }
 
@@ -148,6 +151,22 @@ void send_frame(const uint8_t *frame, uint32_t len) {
     if (ret != 0) {
         printf("ERROR sending frame: %d\n\n", ret);
     }
+}
+
+void print_help(void) {
+    printf("HELP - Press key + <enter>\n");
+    printf(" h - help\n");
+    printf(" q - quit\n");
+    printf(" 1 - start/add 2G4\n");
+    printf(" 2 - start/add 5G8\n");
+    printf(" 3 - start/add 5G2\n");
+    printf(" 4 - start/add 2G4 + 5G8\n");
+    printf(" s - stop\n");
+    printf(" i - get device info\n");
+    printf(" I - get state info\n");
+    printf(" b - get battery status\n");
+    printf(" r - reset\n");
+    printf("\n");
 }
 
 int main(int argc, char **argv) {
@@ -165,74 +184,55 @@ int main(int argc, char **argv) {
 
     int fd = serial_open(args.serial_device);
 
+    printf("Connecting ...\n\n");
+
     hdlc_linux_init(); // calls hdlc_init()
     start_rx_thread(fd);
 
     uint32_t size;
     uint8_t *req;
-    int ch = 'h';
     while (1) {
+        int ch = getchar();
         switch (ch) {
         case 'h':
-            printf("HELP - Press key + <enter>\n");
-            printf(" h - help\n");
-            printf(" q - quit\n");
-            printf(" s - start\n");
-            printf(" S - stop\n");
-            printf(" i - get info\n");
-            printf(" b - get battery status\n");
-            printf(" r - reset\n");
-            printf("------------Drone info cmd.\n");
-            printf("The following examples allows the user to see\n");
-            printf("how the drone info is accessed from, start,\n");
-            printf("middle, end, and unknown type_id.\n");
-            printf(" d - get drone info with type_id=0 - the first in list\n");
-            printf(" D - get drone info with type_id=-1 - the last in list\n");
-            printf(" m - get drone info with type_id=1000404 - somewhere within in list\n");
-            printf(" M - get drone info with corrupted type_id\n");
-            printf("------------\n");
-            printf("\n");
+            print_help();
             break;
         case 'q':
             printf("Exiting\n");
             return 0;
 
+        case '1':
+            req = encode_rfe_start_req(&size, false, 1, (Mdif__Rfe__FreqBand[]){MDIF__RFE__FREQ_BAND__FREQ_BAND_2_4_GHZ});
+            send_frame(req, size);
+            break;
+
+        case '2':
+            req = encode_rfe_start_req(&size, false, 1, (Mdif__Rfe__FreqBand[]){MDIF__RFE__FREQ_BAND__FREQ_BAND_5_8_GHZ});
+            send_frame(req, size);
+            break;
+
+        case '3':
+            req = encode_rfe_start_req(&size, false, 1, (Mdif__Rfe__FreqBand[]){MDIF__RFE__FREQ_BAND__FREQ_BAND_5_2_GHZ});
+            send_frame(req, size);
+            break;
+
+        case '4':
+            req = encode_rfe_start_req(&size, false, 2, (Mdif__Rfe__FreqBand[]){MDIF__RFE__FREQ_BAND__FREQ_BAND_2_4_GHZ, MDIF__RFE__FREQ_BAND__FREQ_BAND_5_8_GHZ});
+            send_frame(req, size);
+            break;
+
         case 's':
-            req = encode_rfs_start_req(&size);
-            send_frame(req, size);
-            break;
-
-        case 'S':
-            req = encode_rfs_stop_req(&size);
-            send_frame(req, size);
-            break;
-
-        case 'd':
-            // Query First.
-            req = encode_rfs_get_drone_info_req(&size, 0);
-            send_frame(req, size);
-            break;
-
-        case 'D':
-            // Query Last of threat_info[max]
-            req = encode_rfs_get_drone_info_req(&size, 0xFFFFFFFF);
-            send_frame(req, size);
-            break;
-
-        case 'm':
-            // Query middle.
-            req = encode_rfs_get_drone_info_req(&size, 1000404);
-            send_frame(req, size);
-            break;
-
-        case 'M':
-            // Query unknown
-            req = encode_rfs_get_drone_info_req(&size, 1000405);
+            req = encode_rfe_stop_req(&size);
             send_frame(req, size);
             break;
 
         case 'i':
             req = encode_core_get_device_info_req(&size);
+            send_frame(req, size);
+            break;
+
+        case 'I':
+            req = encode_rfe_get_state_info_req(&size);
             send_frame(req, size);
             break;
 
@@ -245,6 +245,5 @@ int main(int argc, char **argv) {
             send_frame(req, size);
             break;
         }
-        ch = getchar();
     }
 }

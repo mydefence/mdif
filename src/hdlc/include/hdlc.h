@@ -72,6 +72,23 @@ typedef enum {
     HDLC_FRAME_TOO_LONG = -3,
 } hdlc_result_t;
 
+typedef enum {
+    /// Reset by application.
+    HDLC_RESET_CAUSE_APPLICATION_FREE = 0,
+    /// Reset by application due to loss of link.
+    HDLC_RESET_CAUSE_LINK_LOST,
+    /// Reset due to timeout during KEEP_ALIVE
+    HDLC_RESET_CAUSE_TIMEOUT_KEEP_ALIVE,
+    /// Reset due to timeout during retransmission
+    HDLC_RESET_CAUSE_TIMEOUT_RETRANSMIT,
+    /// Reset due to peer initiated reset
+    HDLC_RESET_CAUSE_PEER_INITIATED,
+
+    /// Not a real reset cause, but the number of reset causes
+    /// Add new reset causes before this
+    HDLC_RESET_CAUSE_NUMBER_OF_CAUSES,
+} hdlc_reset_cause_t;
+
 struct hdlc_stat_t {
     /// Data frames received (not including retransmissions)
     uint32_t rx;
@@ -165,7 +182,7 @@ void hdlc_recv_frame_cb(hdlc_data_t *h, uint8_t *frame, uint32_t len);
 
 /// This is called when HDLC sequence number are reset, which happens either
 /// 1. In case of retransmission timeout (see HDLC_RETRANSMIT_CNT in hdlc_os.h)
-/// 2. If sequence numbers are out of sync
+/// 2. If integration indicates loss of link or frees the HDLC instance
 /// 3. If HDLC SABM frame is received from peer
 ///
 /// This is followed by cleanup of the current TX queue including calling
@@ -173,7 +190,8 @@ void hdlc_recv_frame_cb(hdlc_data_t *h, uint8_t *frame, uint32_t len);
 /// will fail until hdlc_connected_cb() is called.
 ///
 /// @param h HDLC instance data allocated by hdlc_init()
-void hdlc_reset_cb(hdlc_data_t *h);
+/// @param cause Reason for reset
+void hdlc_reset_cb(hdlc_data_t *h, hdlc_reset_cause_t cause);
 
 /// This is called when HDLC is connected, i.e. when the HDLC SABM frame is
 /// acknowledged by peer. All frames sent between system startup OR

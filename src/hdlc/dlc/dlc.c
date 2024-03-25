@@ -82,7 +82,7 @@ static_assert(YAHDLC_MAX_FRAME_LEN == HDLC_MAX_FRAME_LEN, "Max frame len mismatc
 #endif
 
 static void send_sabm_frame(hdlc_intdata_t *hu);
-static void reset(hdlc_intdata_t *hi, const char *reason, int peer_initiated);
+static void reset(hdlc_intdata_t *hi, hdlc_reset_cause_t cause);
 
 static void hdlc_reset(hdlc_intdata_t *hi)
 {
@@ -110,7 +110,7 @@ void hdlc_free(hdlc_data_t *h)
 {
     hdlc_intdata_t *hi = (hdlc_intdata_t *)h;
     hdlc_os_enter_critical_section(&hi->ext);
-    reset(hi, "application free", 0);
+    reset(hi, HDLC_RESET_CAUSE_APPLICATION_FREE);
     // releases mutex
     hdlc_os_stop_timer(h);
     HDLC_OS_FREE(hi);
@@ -477,7 +477,7 @@ void hdlc_os_timeout(hdlc_data_t *h)
         struct txq_entry *txe = TAILQ_FIRST(&hi->dlc.txq);
         log_info("retransmit %d (attempt:%d)", txe->seq_no, hi->dlc.retransmit_attempts);
         if (++hi->dlc.retransmit_attempts == HDLC_RETRANSMIT_CNT) {
-            reset(hi, hi->dlc.keep_alive_counter >= HDLC_KEEP_ALIVE_CNT ? "keep-alive timeout" : "retrans timeout", 0);
+            reset(hi, hi->dlc.keep_alive_counter >= HDLC_KEEP_ALIVE_CNT ? HDLC_RESET_CAUSE_TIMEOUT_KEEP_ALIVE : HDLC_RESET_CAUSE_TIMEOUT_RETRANSMIT);
             // reset will drop the mutex
             return;
         }
@@ -639,7 +639,7 @@ void hdlc_os_rx(hdlc_data_t *h, const uint8_t *buf, uint32_t count)
         case YAHDLC_FRAME_SABM:
             send_ua_frame(hi);
             if (hi->dlc.state == ACTIVE) {
-                reset(hi, "SABM", 1);
+                reset(hi, HDLC_RESET_CAUSE_PEER_INITIATED);
                 // reset will drop the mutex
                 break;
             }
@@ -681,19 +681,25 @@ void hdlc_os_rx(hdlc_data_t *h, const uint8_t *buf, uint32_t count)
 
 // Some error condition or timeout has been detected. Re-init everything. Mutex
 // must be held when calling and will be dropped by this!
-static void reset(hdlc_intdata_t *hi, const char *reason, int peer_initiated)
+static void reset(hdlc_intdata_t *hi, hdlc_reset_cause_t cause)
 {
-    if (hi->dlc.state != ACTIVE) {
-        log_info("reset (%s) ignored", reason);
-        hdlc_os_exit_critical_section(&hi->ext);
-        return;
-    }
-    log_warn("HDLC reset (%s %d)!", reason, peer_initiated);
+    static const char *const reasons[] = {
+        "application free",   // HDLC_RESET_CAUSE_APPLICATION_FREE
+        "link lost",          // HDLC_RESET_CAUSE_LINK_LOST
+        "keep-alive timeout", // HDLC_RESET_CAUSE_TIMEOUT_KEEP_ALIVE
+        "retrans timeout",    // HDLC_RESET_CAUSE_TIMEOUT_RETRANSMIT
+        "peer initiated",     // HDLC_RESET_CAUSE_PEER_INITIATED
+    };
+    const char *reason = reasons[cause];
+
+    static_assert(sizeof(reasons) / sizeof(reasons[0]) == HDLC_RESET_CAUSE_NUMBER_OF_CAUSES, "reasons array size mismatch");
+
+    log_info("HDLC reset (%s)!", reason);
 
     struct txq_tailhead temp_freeq = hi->dlc.txq;
     hdlc_reset(hi); // state = RST_REQUIRED
 
-    if (peer_initiated) {
+    if (cause == HDLC_RESET_CAUSE_PEER_INITIATED) {
         hi->dlc.state = RST_COMPLETE_WAIT;
         // timer already started in hdcl_reset()
     }
@@ -703,7 +709,7 @@ static void reset(hdlc_intdata_t *hi, const char *reason, int peer_initiated)
     // Drop mutex, so that application can call hdlc_send_frame() from here
     // (will fail but not block).
     hdlc_os_exit_critical_section(&hi->ext);
-    hdlc_reset_cb(&hi->ext);
+    hdlc_reset_cb(&hi->ext, cause);
 
     struct txq_entry *fe = TAILQ_FIRST(&temp_freeq);
     while (fe) {
@@ -724,6 +730,6 @@ void hdlc_os_link_lost(hdlc_data_t *h)
 {
     hdlc_intdata_t *hi = (hdlc_intdata_t *)h;
     hdlc_os_enter_critical_section(&hi->ext);
-    reset(hi, "link lost", 0);
+    reset(hi, HDLC_RESET_CAUSE_LINK_LOST);
     // reset will drop the mutex
 }

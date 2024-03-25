@@ -96,7 +96,7 @@ enum dlc_state {
     // peer, where we ignore frames from peer. It will have to retransmit.
     RST_COMPLETE_WAIT,
     // Peer has been reset, no data yet. Difference between this and ACTIVE is
-    // whether we need to inform application of link loss.
+    // whether we need to reset state on SABM.
     RST_COMPLETE,
     // Data transfer active
     ACTIVE

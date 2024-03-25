@@ -61,12 +61,19 @@ These files have been tested with UBUNTU 22.04 LTS operating system. Running on
 a similar system is recommended.
 
 Example client applications are provided:
-* Linux/C client with serial connection to MDIF device in
+* Linux/C client with serial connection to MDIF RFS device in
   [src/linux_rfs_demo](src/linux_rfs_demo/).
     * Application source demonstrates how to interact with a RF sensor
       (RFS) device.
     * Application source written in C and compiles to native executable.
     * Refer to [README.md](src/linux_rfs_demo/README.md) for more information
+      and build instructions.
+* Linux/C client with serial connection to MDIF RFE device in
+  [src/linux_rfe_demo](src/linux_rfe_demo/).
+    * Application source demonstrates how to interact with a RF emitter
+      (RFE) device.
+    * Application source written in C and compiles to native executable.
+    * Refer to [README.md](src/linux_rfe_demo/README.md) for more information
       and build instructions.
 * Android/Java client with serial connection to MDIF device in
   [src/android_demo](src/android_demo/).

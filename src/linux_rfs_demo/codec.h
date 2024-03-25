@@ -53,16 +53,9 @@
  *******************************************************************************/
 #include <stdint.h>
 
-typedef enum {
-    DECODE_SUCCESS = 0,
-    DECODE_ERR_NO_PAYLOAD,
-    DECODE_ERR_NO_DECODER,
-    DECODE_ERR_OTHER
-} decode_rtn_t;
+#include "linux_core_codec/core_codec.h"
+#include "_generated/mdif/rfs/rfs.pb-c.h"
 
-uint8_t *encode_core_get_device_info_req(uint32_t *size);
-uint8_t *encode_core_reset_req(uint32_t *size);
-uint8_t *encode_core_get_battery_status_req(uint32_t *size);
 uint8_t *encode_rfs_get_drone_info_req(uint32_t *size, uint32_t type_id);
 uint8_t *encode_rfs_start_req(uint32_t *size);
 uint8_t *encode_rfs_stop_req(uint32_t *size);

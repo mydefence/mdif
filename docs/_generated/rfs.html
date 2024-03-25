@@ -43,12 +43,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../framing.html">Framing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html">Serial Link</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdlc.html#hdlc">HDLC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hdlc_library.html">HDLC Reference Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api_general.html">General API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api_core.html">Core API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api_fwu.html">FWU API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_rfe.html">RFE API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wireshark.html">Wireshark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 </ul>
@@ -103,6 +105,9 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-GetDronelistReq"><span class="xref myst">GetDronelistReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-GetDronelistRes"><span class="xref myst">GetDronelistRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RemoteIdInd"><span class="xref myst">RemoteIdInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamReq"><span class="xref myst">RemoteIdStreamReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamRes"><span class="xref myst">RemoteIdStreamRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RfsMsg"><span class="xref myst">RfsMsg</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd"><span class="xref myst">RfsThreatInd</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd-RelativeBearing"><span class="xref myst">RfsThreatInd.RelativeBearing</span></a></p></li>
@@ -220,6 +225,11 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoReq"><span class="xref myst">GetDroneInfoReq</span></a></p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></td>
 <td><p>Use to get individual drone info</p></td>
+</tr>
+<tr class="row-odd"><td><p>RemoteIdStream</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamReq"><span class="xref myst">RemoteIdStreamReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamRes"><span class="xref myst">RemoteIdStreamRes</span></a></p></td>
+<td><p>Use to request a stream of remote ID messages.</p></td>
 </tr>
 </tbody>
 </table>
@@ -347,6 +357,67 @@ Deprecated</p>
 </tr>
 </tbody>
 </table>
+<p><a name="mdif-rfs-RemoteIdInd"></a></p>
+</section>
+<section id="remoteidind">
+<h2>RemoteIdInd<a class="headerlink" href="#remoteidind" title="Permalink to this heading"></a></h2>
+<p>Remote ID indication with binary message pack.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mac_adr</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>MAC address from which the remote ID was received.</p></td>
+</tr>
+<tr class="row-odd"><td><p>payload</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>Remote ID message pack, as per ASTM-F3411</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RemoteIdStreamReq"></a></p>
+</section>
+<section id="remoteidstreamreq">
+<h2>RemoteIdStreamReq<a class="headerlink" href="#remoteidstreamreq" title="Permalink to this heading"></a></h2>
+<p>Request that remote ID results be streamed from the device.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Enable or disable the stream.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RemoteIdStreamRes"></a></p>
+</section>
+<section id="remoteidstreamres">
+<h2>RemoteIdStreamRes<a class="headerlink" href="#remoteidstreamres" title="Permalink to this heading"></a></h2>
+<p>Response to RemoteIdStreamReq.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>Status of the request.</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-rfs-RfsMsg"></a></p>
 </section>
 <section id="rfsmsg">
@@ -355,7 +426,7 @@ Deprecated</p>
 <p>This message dictates the final format on the wire for rfs messages. It is a
 oneof construct to wrap a single message at a time.</p>
 <p>Every request (req) has a corresponding response (res). The req/res pairs are
-defined in the RfsService below through RPC patterns.</p>
+defined in the RfsService through RPC patterns.</p>
 <p>Indications (ind) are pushed without a request at any time</p>
 <table class="docutils align-default">
 <thead>
@@ -408,6 +479,18 @@ defined in the RfsService below through RPC patterns.</p>
 <tr class="row-even"><td><p>threat_stopped_ind</p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-ThreatStoppedInd"><span class="xref myst">ThreatStoppedInd</span></a></p></td>
 <td><p>Threat stopped indication</p></td>
+</tr>
+<tr class="row-odd"><td><p>remote_id_stream_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamReq"><span class="xref myst">RemoteIdStreamReq</span></a></p></td>
+<td><p>Remote drone ID stream start - Request</p></td>
+</tr>
+<tr class="row-even"><td><p>remote_id_stream_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamRes"><span class="xref myst">RemoteIdStreamRes</span></a></p></td>
+<td><p>Remote Drone ID stream start - Response</p></td>
+</tr>
+<tr class="row-odd"><td><p>remote_id_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RemoteIdInd"><span class="xref myst">RemoteIdInd</span></a></p></td>
+<td><p>Remote Drone ID detection - Indication</p></td>
 </tr>
 </tbody>
 </table>
@@ -590,7 +673,7 @@ defined in the RfsService below through RPC patterns.</p>
 </tr>
 <tr class="row-even"><td><p>channel</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Wifi channel as per international standards.</p></td>
+<td><p>Wifi channel as per international standards 802.11 a/b/g/n.</p></td>
 </tr>
 <tr class="row-odd"><td><p>mac_adr</p></td>
 <td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
@@ -640,6 +723,10 @@ defined in the RfsService below through RPC patterns.</p>
 <td><p>5</p></td>
 <td><p>ISM band 5G8</p></td>
 </tr>
+<tr class="row-even"><td><p>MHz5200</p></td>
+<td><p>6</p></td>
+<td><p>ISM band 5G2</p></td>
+</tr>
 </tbody>
 </table>
 <p><a name="mdif-rfs-StartMode"></a></p>
@@ -661,7 +748,7 @@ defined in the RfsService below through RPC patterns.</p>
 </tr>
 <tr class="row-odd"><td><p>ExtAntOnly</p></td>
 <td><p>1</p></td>
-<td><p>RFS runs on external antenna only. Will signal errer if not present</p></td>
+<td><p>RFS runs on external antenna only. Will signal error if not present</p></td>
 </tr>
 <tr class="row-even"><td><p>IntAntOnly</p></td>
 <td><p>2</p></td>

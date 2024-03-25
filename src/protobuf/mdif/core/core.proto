@@ -104,26 +104,35 @@ message IpConfig {
 
 // Defines the state of the system time.
 enum SysTimeStatus {
-    // The system time is valid, and is currently in sync with GNSS.
+    // The system time is valid, and is currently being synchronized with GNSS.
     VALID = 0;
-    // The system time was previously synchronized with GNSS, but is free-running (estimated drift < 100us).
+    // The system time was previously synchronized with GNSS, but is free-running with an estimated drift less than 100us.
     VALID_DRIFTING = 1;
     // The system time is free-running, with no synchronization.
     NOT_VALID = 2;
 }
 
+// The type of GNSS fix.
+enum GnssFixType {
+    reserved 1, 4, 5;
+    // No fix available.
+    GNSS_FIX_NONE      = 0;
+    // 2-dimensional fix.
+    GNSS_FIX_2D        = 2;
+    // 3-dimensional fix.
+    GNSS_FIX_3D        = 3;
+}
+
 // Defines a GNSS status
 message GnssStatus {
-    // GNSS device has been successfully configured.
-    bool configured = 1;
+    reserved 1, 4, 5, 10, 11, 12;
     // Validity of the reported position.
     bool pos_valid = 2;
-    // Validity of the reported time.
+    // Validity of the reported system time.
+    // The time is considered valid if there is currently a valid GNSS time avaliable,
+    // or it has previously been available, and the system estimates that it has drifted
+    // less than 100us since it was lost.
     SysTimeStatus time_valid = 3;
-    // Latitude in degrees (WGS84 ellipsoid)
-    float pos_lat = 4;
-    // Longditude in degrees (WGS84 ellipsoid)
-    float pos_lon = 5;
     // Horizontal accuracy estimate, meters.
     float pos_hacc = 6;
     // Height over mean sea level, meters.
@@ -132,12 +141,6 @@ message GnssStatus {
     float pos_vacc = 8;
     // GPS time in microseconds for this navigation solution.
     int64 sol_time = 9;
-    // ECEF X coordinate, meters.
-    float ecef_x = 10;
-    // ECEF Y coordinate, meters.
-    float ecef_y = 11;
-    // ECEF Z coordinate, meters.
-    float ecef_z = 12;
     // ECEF position accuracy estimate, meters.
     float p_acc = 13;
     // Speed over ground, meters/second
@@ -148,6 +151,24 @@ message GnssStatus {
     float sacc = 16;
     // Heading accuracy estimeate, degrees
     float heading_acc = 17;
+    // The number of satellites used in the current navigation solution.
+    uint32 num_sv = 18;
+    // The type of fix currently provided
+    GnssFixType fix_type = 19;
+    // The estimated timing accuracy from the GNSS receiver, nanoseconds.
+    uint32 t_acc = 20;
+    // The estimated drift between the system time, and GNSS time. Microseconds.
+    uint32 systime_drift = 21;
+    // Latitude in degrees (WGS84 ellipsoid)
+    double pos_lat = 22;
+    // Longditude in degrees (WGS84 ellipsoid)
+    double pos_lon = 23;
+    // ECEF X coordinate, meters.
+    double ecef_x = 24;
+    // ECEF Y coordinate, meters.
+    double ecef_y = 25;
+    // ECEF Z coordinate, meters.
+    double ecef_z = 26;
 }
 
 // Defines a compass heading
@@ -209,8 +230,10 @@ message ResetRes {
 // The device will respond with a GetDeviceInfoRes message.
 message GetDeviceInfoReq {}
 
-// Device info response
-message GetDeviceInfoRes {
+// Device info
+//
+// Used in GetDeviceInfoRes and DeviceAnnounceInd
+message DeviceInfo {
     // Serial number of the device
     string serial_number = 1;
     // The type of device
@@ -223,6 +246,8 @@ message GetDeviceInfoRes {
     bool gnss_present = 5;
     // Does this device have a compass
     bool compass_present = 6;
+    // Can GNSS settings be configured for this device.
+    bool gnss_configurable = 7;
 }
 
 // Request battery status
@@ -285,18 +310,36 @@ message SetIpConfigRes {
 //
 // The device will respond with a GnssCompassStreamRes message.
 message GnssCompassStreamReq {
-    // Enable or disable the stream
+    // Enable or disable the stream.
+    // The device will include only the elements of the stream that it supports,
+    // as indicated in GetDeviceInfoRes.
+    // A device without GNSS does not support the stream.
     bool enable = 1;
-    // Period between updates in miliseconds. Supported range 250-65535.
+    // Period between GNSS updates in miliseconds. Valid range 250-1000.
+    // The compass updates are tied to the GNSS update rate.
+    // Note on Wolfpack 210:
+    // A WP210 is composite in nature - there are four zones, each addressable via MDIF as its
+    // own device. The GNSS and compass stream setup in this case is split across two zones.
+    // In the GetDeviceInfoRes message, one zone will reply compass_present=true and
+    // gnss_configurable=false. Enable the stream on this device to receive compass headings.
+    // Another zone will reply compass_present=false and gnss_configurable=true. Enable the
+    // stream on this device to change the GNSS timing.
     uint32 period = 2;
+    // Enable opportunistic calibration. If enabled, the calibration values will be incrementally
+    // updated when the device describes a full circle within 128 * period.
+    // Updates will be signalled with the  CompassCalibrationAdjustedInd signal, and the updated
+    // values may be persisted with the CompassCalibrationStoreReq signal.
+    bool auto_update_calibration = 3;
 }
 
 // GNSS and compass stream response
 //
 // Indicates whether the stream was started successfully.
 message GnssCompassStreamRes {
-    // The status of the request
+    // The status of the request.
     common.Status status = 1;
+    // Error description string
+    string error_string = 2;
 }
 
 // GNSS and compass stream data indication
@@ -328,6 +371,9 @@ message CompassCalibrateRes {
 }
 
 // Indication of a completed compass calibration.
+//
+// On succesful completion, the new calibration values automatically replace the previous set
+// in non-volatile memory.
 message CompassCalibrationCompleteInd {
     // The status of the calibration
     common.Status status = 1;
@@ -341,6 +387,33 @@ message CompassCalibrationCompleteInd {
     float scale_y = 5;
 }
 
+// Indication that opportunistic adjustment of compass calibration has happened.
+// This happens when the device detects that is has moved a full circle within max 128 samples
+// at the period set in GnssCompassStreamReq.
+// The new calibration values are volatile, and will be reset on a power-cycle.
+message CompassCalibrationAdjustedInd {
+    // Difference in heading for the latest measurement, due to calibration adjustment.
+    float heading_diff = 1;
+    // The updated calibration data. Internal use only.
+    // Calculated offset for X axis (Internal use only)
+    int32 offset_x = 2;
+    // Calculated offset for Y axis (Internal use only)
+    int32 offset_y = 3;
+    // Calculated scaling for X axis (Internal use only)
+    float scale_x = 4;
+    // Calculated scaling for Y axis (Internal use only)
+    float scale_y = 5;
+}
+
+// Request that the current calibration values be written to non-volatile memory.
+//
+// The device will respond with a CompassCalibrationStoreRes message.
+message CompassCalibrationStoreReq {}
+
+// Indicates if the calibration data has been written succesfully.
+message CompassCalibrationStoreRes {
+    common.Status status = 1;
+}
 
 // Api Error indication
 //
@@ -372,7 +445,7 @@ message CoreMsg {
         // Request device info
         GetDeviceInfoReq get_device_info_req = 5;
         // Device info response
-        GetDeviceInfoRes get_device_info_res = 6;
+        DeviceInfo get_device_info_res = 6;
         // Request battery status
         GetBatteryStatusReq get_battery_status_req = 7;
         // Battery status response
@@ -397,6 +470,14 @@ message CoreMsg {
         CompassCalibrateRes compass_calibrate_res = 17;
         // Indication that a compass calibration has completed.
         CompassCalibrationCompleteInd compass_calibration_complete_ind = 18;
+        // Indication that compass calibration has been updated.
+        CompassCalibrationAdjustedInd compass_calibration_adjusted_ind = 19;
+        // Request to store calibration data to non-volatile memory.
+        CompassCalibrationStoreReq compass_calibration_store_req = 20;
+        // Response to a compass calibration store request.
+        CompassCalibrationStoreRes compass_calibration_store_res = 21;
+        // Device Announce Indication
+        DeviceInfo device_announce_ind = 22;
 
         // Api Error indication
         ApiErrorInd api_error_ind = 0x1F;
@@ -410,7 +491,7 @@ service CoreService {
     // Used to reset the device
     rpc Reset (ResetReq) returns (ResetRes);
     // Used to get the device info
-    rpc GetDeviceInfo (GetDeviceInfoReq) returns (GetDeviceInfoRes);
+    rpc GetDeviceInfo (GetDeviceInfoReq) returns (DeviceInfo);
     // Used to get the battery status
     rpc GetBatteryStatus (GetBatteryStatusReq) returns (GetBatteryStatusRes);
     // Used to get the IP configuration
@@ -421,4 +502,6 @@ service CoreService {
     rpc GnssCompassStream (GnssCompassStreamReq) returns (GnssCompassStreamRes);
     // Used to calibrate compass
     rpc CompassCalibrate (CompassCalibrateReq) returns (CompassCalibrateRes);
+    // Used to store current compass calibration
+    rpc CompassCalibrationStore (CompassCalibrationStoreReq) returns (CompassCalibrationStoreRes);
 }

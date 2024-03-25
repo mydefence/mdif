@@ -4,6 +4,8 @@ node_modules
 
 /src/linux_rfs_demo/rfs_demo
 
+/src/linux_rfe_demo/rfe_demo
+
 /src/**/_generated
 
 /src/android_demo/.gradle

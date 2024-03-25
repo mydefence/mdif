@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HDLC &mdash; MDIF  documentation</title>
+  <title>Serial Link &mdash; MDIF  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -45,12 +45,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="framing.html">Framing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">HDLC</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Serial Link</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#hdlc">HDLC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdlc_library.html">HDLC Reference Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_general.html">General API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_core.html">Core API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_fwu.html">FWU API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rfe.html">RFE API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
 </ul>
@@ -69,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">HDLC</li>
+      <li class="breadcrumb-item active">Serial Link</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -78,7 +80,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="hdlc">
+  <section id="serial-link">
+<h1>Serial Link<a class="headerlink" href="#serial-link" title="Permalink to this heading"></a></h1>
+<p>The serial link uses the following configuration:</p>
+<ul class="simple">
+<li><p>Baud rate: 460800</p></li>
+<li><p>Data bits: 8</p></li>
+<li><p>Stop bits: 1</p></li>
+<li><p>Parity: None</p></li>
+<li><p>Flow control: None</p></li>
+</ul>
+</section>
+<section id="hdlc">
 <span id="id1"></span><h1>HDLC<a class="headerlink" href="#hdlc" title="Permalink to this heading"></a></h1>
 <p>For reliability over the serial link we use <a class="reference external" href="https://en.wikipedia.org/wiki/High-Level_Data_Link_Control">HDLC framing</a> (ISO/IEC
 13239:20002) framing in Asynchronous balanced mode.</p>

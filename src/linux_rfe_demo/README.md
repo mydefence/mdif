@@ -1,4 +1,4 @@
-/*******************************************************************************
+ <!-- **************************************************************************
  *                                                                             *
  *                                                 ,,                          *
  *                                                       ,,,,,                 *
@@ -29,12 +29,12 @@
  *               ,,,,,                                                         *
  *                    ,,,,,                                                    *
  *                                                                             *
- * Program/file : log.h                                                        *
+ * Program/file : README.md                                                    *
  *                                                                             *
- * Description  : Java implementation of OS abstraction interface for hdlc     *
- *              :                                                              *
+ * Description  : readme file with information on how to install tools and     *
+ *              : build the RFE demo application.                              *
  *                                                                             *
- * Copyright 2023 MyDefence A/S.                                               *
+ * Copyright 2024 MyDefence A/S.                                               *
  *                                                                             *
  * Licensed under the Apache License, Version 2.0 (the "License");             *
  * you may not use this file except in compliance with the License.            *
@@ -50,20 +50,43 @@
  *                                                                             *
  *                                                                             *
  *                                                                             *
- *******************************************************************************/
-#ifndef LOG_H
-#define LOG_H
+ *************************************************************************** -->
+# MDIF RFE Demo Application
 
-#if defined(__ANDROID__)
-#include <android/log.h>
+This demo application demonstrates working with MDIF protcol buffer
+specifications in a C environment. Moreover, it demonstrates how to interact
+with a RF emitter device. More specifically, how to start/stop transmission and
+decode state messages.
 
-#define LOG_TAG "MD HDLC"
+## Installation
 
-#define log_trace(fmt,...)        __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_debug(fmt,...)        __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_info(fmt,...)        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_warn(fmt,...)        __android_log_print(ANDROID_LOG_WARN, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_error(fmt,...)        __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_fatal(fmt,...)        __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, fmt, ##__VA_ARGS__)
-#endif
-#endif // LOG_H
+You need to install docker and normal gcc/make development toolchains. For
+docker use the OS package manager or the convenience script provided at
+[get.docker.com](https://get.docker.com/).
+
+Docker is used to create a container with the necessary tools to compile the
+MDIF .proto files into C source files. Gcc/make is then used to compile the
+application source and the generated source into an executable.
+
+Install Docker as mentioned above and on Ubuntu the remaining prerequisites are
+installed with:
+
+    sudo apt install make gcc libprotobuf-dev
+
+Then you can build the application
+
+    make
+
+For help on other targets provided by the Makefile do
+
+    make help
+
+## Running
+
+Run with `--help` for help:
+
+    ./rfe_demo --help
+
+The application must be given a path to the serial device, e.g:
+
+    ./rfe_demo /dev/ttyUSB0

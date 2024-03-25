@@ -29,12 +29,12 @@
  *               ,,,,,                                                         *
  *                    ,,,,,                                                    *
  *                                                                             *
- * Program/file : log.h                                                        *
+ * Program/file : core_codec.h                                                 *
  *                                                                             *
- * Description  : Java implementation of OS abstraction interface for hdlc     *
+ * Description  : Types and prototypes for core codec                          *
  *              :                                                              *
  *                                                                             *
- * Copyright 2023 MyDefence A/S.                                               *
+ * Copyright 2024 MyDefence A/S.                                               *
  *                                                                             *
  * Licensed under the Apache License, Version 2.0 (the "License");             *
  * you may not use this file except in compliance with the License.            *
@@ -51,19 +51,19 @@
  *                                                                             *
  *                                                                             *
  *******************************************************************************/
-#ifndef LOG_H
-#define LOG_H
+#include <stdint.h>
 
-#if defined(__ANDROID__)
-#include <android/log.h>
+#include "_generated/mdif/core/core.pb-c.h"
 
-#define LOG_TAG "MD HDLC"
+typedef enum {
+    DECODE_SUCCESS = 0,
+    DECODE_ERR_NO_PAYLOAD,
+    DECODE_ERR_NO_DECODER,
+    DECODE_ERR_OTHER
+} decode_rtn_t;
 
-#define log_trace(fmt,...)        __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_debug(fmt,...)        __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_info(fmt,...)        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_warn(fmt,...)        __android_log_print(ANDROID_LOG_WARN, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_error(fmt,...)        __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_fatal(fmt,...)        __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, fmt, ##__VA_ARGS__)
-#endif
-#endif // LOG_H
+uint8_t *encode_core_get_device_info_req(uint32_t *size);
+uint8_t *encode_core_reset_req(uint32_t *size);
+uint8_t *encode_core_get_battery_status_req(uint32_t *size);
+
+decode_rtn_t decode_core(const uint8_t *buf, uint32_t size);

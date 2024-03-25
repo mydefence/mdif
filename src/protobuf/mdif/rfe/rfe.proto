@@ -1,0 +1,253 @@
+/*******************************************************************************
+ *                                                                             *
+ *                                                 ,,                          *
+ *                                                       ,,,,,                 *
+ *                                                           ,,,,,             *
+ *           ,,,,,,,,,,,,,,,,,,,,,,,,,,,,                        ,,,,          *
+ *          ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,            ,,,,          ,,,,        *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,,,,        ,,,       *
+ *          ,,,,,       ,,,,,      ,,,,,,                   ,,,        ,,,     *
+ *          ,,,,,       ,,,,,      ,,,,,,       ,,,           ,,,        ,     *
+ *          ,,,,,       ,,,,,      ,,,,,,           ,,,         ,,        ,    *
+ *          ,,,,,       ,,,,,      ,,,,,,              ,,        ,,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                ,        ,            *
+ *          ,,,,,       ,,,,,      ,,,,,,                 ,                    *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *          ,,,,,       ,,,,,      ,,,,,,                                      *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *                                       ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *                                       ,,,,,                  ,,,,,,         *
+ *                     ,                 ,,,,,                  ,,,,,,         *
+ *             ,        ,,               ,,,,,                  ,,,,,,         *
+ *    ,        ,,        ,,,             ,,,,,                  ,,,,,,         *
+ *     ,        ,,,         ,,,          ,,,,,                  ,,,,,,         *
+ *     ,,,       ,,,                     ,,,,,                  ,,,,,,         *
+ *      ,,,        ,,,,                  ,,,,,                  ,,,,,,         *
+ *        ,,,         ,,,,               ,,,,,                  ,,,,,,         *
+ *         ,,,,,            ,,,,         ,,,,,,,,,,,,,,,,,,,,,,,,,,,,          *
+ *            ,,,,                       ,,,,,,,,,,,,,,,,,,,,,,,,,,            *
+ *               ,,,,,                                                         *
+ *                    ,,,,,                                                    *
+ *                                                                             *
+ * Program/file : rfe.proto                                                    *
+ *                                                                             *
+ * Description  : This protobuf file describes messages associated with the    *
+ *              : rf effector (rfe) functionality.                             *
+ *                                                                             *
+ * Copyright 2024 MyDefence A/S.                                               *
+ *                                                                             *
+ * Licensed under the Apache License, Version 2.0 (the "License");             *
+ * you may not use this file except in compliance with the License.            *
+ * You may obtain a copy of the License at                                     *
+ *                                                                             *
+ * http://www.apache.org/licenses/LICENSE-2.0                                  *
+ *                                                                             *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.                                              *
+ *                                                                             *
+ *                                                                             *
+ *                                                                             *
+ *******************************************************************************/
+
+/*
+  Message allocation for the RFE component are in the range:
+
+  | Start | End  | Radix |
+  |-------|------|-------|
+  | 0xC0  | 0xDF | Hex   |
+  | 192   |  223 | Dec   |
+
+ */
+ syntax = "proto3";
+
+ package mdif.rfe;
+
+// [MD START java_declaration]
+option java_package = "dk.mydefence.mdif.rfe";
+// [MD END java_declaration]
+
+import "mdif/common.proto";
+
+// Defines the relationship between requests and responses in the RFE component
+ service RfeService {
+    // Use to start the RF effector
+    rpc Start (StartReq) returns (StartRes);
+    // Use to stop the RF effector
+    rpc Stop (StopReq) returns (StopRes);
+    // Use to get the current state of the RF effector
+    rpc GetStateInfo (GetStateInfoReq) returns (StateInfo);
+ }
+
+// Rfe wire format messages
+//
+// This message dictates the final format on the wire for rfe messages. It is a
+// oneof construct to wrap a single message at a time.
+//
+// Every request (req) has a corresponding response (res). The req/res pairs are
+// defined in the RfeService through RPC patterns.
+//
+// Indications (ind) are pushed without a request at any time
+message RfeMsg {
+    oneof msg {
+        // Request RFE start
+        StartReq start_req=0x00C0;
+        // RFE start response
+        StartRes start_res=0x00C1;
+        // Request RFE stop
+        StopReq stop_req=0x00C2;
+        // RFE stop response
+        StopRes stop_res=0x00C3;
+        // Request RFE state
+        GetStateInfoReq get_state_info_req=0x00C4;
+        // RFE state response
+        StateInfo get_state_info_res=0x00C5;
+        // RFE state indication
+        StateInfo state_info_ind=0x00C6;
+    }
+}
+
+/*************************************
+ ************* Sub types *************
+ ************************************/
+
+// Defines the frequency bands that can be used for RFE
+ enum FreqBand {
+    // GPS (L1, 1.5GHz) + GLONASS (L1, 1.6GHz)
+    FREQ_BAND_GNSS = 0;
+    // 2.4 GHz band
+    FREQ_BAND_2_4_GHZ = 1;
+    // 5.2 GHz band
+    FREQ_BAND_5_2_GHZ = 2;
+    // 5.8 GHz band
+    FREQ_BAND_5_8_GHZ = 3;
+}
+
+// Defines the status of the battery
+enum BatteryStatus {
+    BATTERY_STATUS_UNDEFINED = 0;
+    // Battery status is normal
+    BATTERY_STATUS_NORMAL = 1;
+    // Battery status is low, still operating as normal
+    BATTERY_STATUS_LOW = 2;
+}
+
+// Defines the temperature status
+enum TemperatureStatus {
+    TEMPERATURE_STATUS_UNDEFINED = 0;
+    // Temperature status is normal
+    TEMPERATURE_STATUS_NORMAL = 1;
+    // Temperature status is high, output power is reduced
+    TEMPERATURE_STATUS_HIGH = 2;
+    // Temperature status is too high, transmission is stopped
+    TEMPERATURE_STATUS_TO_HIGH = 3;
+}
+
+// Defines the status on the the requested frequency band
+enum TxStatus {
+    TX_STATUS_UNDEFINED = 0;
+     // Frequency band accepted
+    TX_STATUS_ACCEPT = 1;
+     // The requested frequency band can not be jammed due to hardware limitations
+    TX_STATUS_FREQ_NOT_POSSIBLE = 2;
+     // The requested frequency band is not allowed.
+    TX_STATUS_FREQ_NOT_ALLOWED = 3;
+    // Only part of the requested frequency band will be jammed due to resource limitations
+    TX_STATUS_PARTIAL = 4;
+    // The requested frequency band can not be jammed due to resource limitations
+    TX_STATUS_RESOURCE_LIMITATION = 5;
+    // No jamming due to temperature
+    TX_STATUS_OVERHEAT = 6;
+    // No jamming due to battery status
+    TX_STATUS_BATTERY_LOW = 7;
+    // No jamming due to manual mode
+    TX_STATUS_MANUAL_MODE = 8;
+    // Currently unavailable - shutting down, FWU etc.
+    TX_STATUS_UNAVAILABLE = 9;
+}
+
+// Defines the configuration of the RFE device
+// The configuration is a bit field, and each bit must be explicitly tested
+enum Config {
+    CONFIG_UNDEFINED = 0;
+    // Device is hutting down
+    CONFIG_SHUTDOWN = 1;
+    // Device is transmitting
+    CONFIG_TRANSMITTING = 2;
+    // Device is in automatic mode. That is, the device is controlled by an
+    // external entity
+    CONFIG_AUTOMATIC = 4;
+    // Device is configured to transmit on GNSS band
+    CONFIG_TX_GNSS = 8;
+    // Device is configured to transmit on 2.4 GHz band
+    CONFIG_TX_2G4 = 16;
+    // Device is configured to transmit on 5.2 GHz band
+    CONFIG_TX_5G2 = 32;
+    // Device is configured to transmit on 5.8 GHz band
+    CONFIG_TX_5G8 = 64;
+    // Device is in low power mode
+    CONFIG_LOW_POWER = 128;
+}
+
+// Defines the type of controller
+// If device is in automatic mode a controller must operate the device
+enum ControllerType {
+    CONTROLLER_TYPE_UNDEFINED = 0;
+    CONTROLLER_TYPE_NOT_PRESENT = 1;
+    CONTROLLER_TYPE_WINGMAN = 2;
+    CONTROLLER_TYPE_OTHER = 3;
+}
+
+// Defines the state of the RFE device
+message RfeState {
+    ControllerType controller_type = 1;
+    Config config = 2;
+    BatteryStatus battery_status = 3;
+    TemperatureStatus temperature_status = 4;
+}
+
+/*************************************
+ ******** Message definitions ********
+ ************************************/
+
+// Request RFE start.
+message StartReq {
+    // If clear_list is set to true, any currently active frequency bands will
+    // be cleared. If it is set to false, the frequency bands in the
+    // freq_band_list will be added to the active frequency bands.
+    bool clear_list = 1;
+    // List of frequency bands to start trasmitting on
+    repeated FreqBand freq_band_list = 2;
+}
+// Response to StartReq
+message StartRes {
+    // Status of the request
+    // If only a single device is connected, then the status reflects the actual
+    // status of the device. If multiple devices are connected (daisy chained),
+    // then the status indicates if the request was accepted and relayed to the
+    // next device in the chain.
+    common.Status status = 1;
+    // List of statuses for each requested frequency band. The list is always
+    // relative to the first device in the chain.
+    repeated TxStatus tx_status_list = 2;
+}
+// Request RFE stop.
+message StopReq {}
+// Response to StopReq
+message StopRes {
+    // Status of the request
+    common.Status status = 1;
+}
+
+// Request RFE state
+message GetStateInfoReq {}
+
+// Response to GetStateInfoReq and indication of RFE state
+message StateInfo {
+    // State of the first device in the chain.
+    RfeState local = 1;
+    // State of the last device in the chain.
+    RfeState remote = 2;
+}

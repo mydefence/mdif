@@ -44,12 +44,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="framing.html">Framing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hdlc.html">HDLC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc.html">Serial Link</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdlc.html#hdlc">HDLC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdlc_library.html">HDLC Reference Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_general.html">General API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_core.html">Core API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_fwu.html">FWU API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_rfs.html">RFS API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rfe.html">RFE API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
 </ul>
@@ -106,15 +108,16 @@ list below.</p>
 <li><p><a class="reference internal" href="api_core.html#api-core"><span class="std std-ref">Core API</span></a></p></li>
 <li><p><a class="reference internal" href="api_fwu.html#api-fwu"><span class="std std-ref">FWU API</span></a></p></li>
 <li><p><a class="reference internal" href="api_rfs.html#api-rfs"><span class="std std-ref">RFS API</span></a></p></li>
+<li><p><a class="reference internal" href="api_rfe.html#api-rfe"><span class="std std-ref">RFE API</span></a></p></li>
 </ul>
 </section>
 <section id="reference-implementations">
 <h1>Reference Implementations<a class="headerlink" href="#reference-implementations" title="Permalink to this heading"></a></h1>
-<p>This documentation package includes two reference implementations with full
+<p>This documentation package includes reference implementations with full
 source code</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt>Serial connection from a Linux application written in C.</dt><dd><ul>
+<dt>Serial connection from a Linux application to a RF sensor device written in C.</dt><dd><ul>
 <li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/linux_rfs_demo</span></code></p></li>
 <li><p>Based on <a class="reference internal" href="hdlc_library.html#hdlc-library"><span class="std std-ref">HDLC Reference Library</span></a> in <code class="file docutils literal notranslate"><span class="pre">src/hdlc</span></code></p></li>
 </ul>
@@ -122,14 +125,30 @@ source code</p>
 </dl>
 </li>
 <li><dl class="simple">
+<dt>Serial connection from a Linux application to a RF emitter device written in C.</dt><dd><ul>
+<li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/linux_rfe_demo</span></code></p></li>
+<li><p>Based on <a class="reference internal" href="hdlc_library.html#hdlc-library"><span class="std std-ref">HDLC Reference Library</span></a> in <code class="file docutils literal notranslate"><span class="pre">src/hdlc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Serial connection from an Android device written in Java/C</dt><dd><ul>
+<li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/android_demo</span></code></p></li>
+<li><p>Based on <a class="reference internal" href="hdlc_library.html#hdlc-library"><span class="std std-ref">HDLC Reference Library</span></a> in <code class="file docutils literal notranslate"><span class="pre">src/hdlc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
 <dt>Network connection from a node.js application written in Typescript.</dt><dd><ul>
-<li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/nodejs_demo</span></code>.</p></li>
+<li><p>Demo application in <code class="file docutils literal notranslate"><span class="pre">src/nodejs_demo</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-<p>Both implementations contain the complete stack demonstrating the use of
+<p>All implementations contain the complete stack demonstrating the use of
 protocol buffers and all needed encoding. See <code class="file docutils literal notranslate"><span class="pre">README.md</span></code> files in the source
 directories for more information.</p>
 <p>In particular the <a class="reference internal" href="hdlc.html#hdlc"><span class="std std-ref">HDLC</span></a> implementation should be considered the de-facto
