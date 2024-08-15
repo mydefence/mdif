@@ -51,6 +51,7 @@
  *                                                                             *
  *                                                                             *
  *************************************************************************** -->
+
 # MDIF RFE Demo Application
 
 This demo application demonstrates working with MDIF protcol buffer
@@ -71,7 +72,7 @@ application source and the generated source into an executable.
 Install Docker as mentioned above and on Ubuntu the remaining prerequisites are
 installed with:
 
-    sudo apt install make gcc libprotobuf-dev
+    sudo apt install make gcc libprotobuf-dev libprotobuf-c-dev
 
 Then you can build the application
 

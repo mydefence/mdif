@@ -57,7 +57,7 @@ import dk.mydefence.mdif.core.Core;
 
 public interface IMdifCore {
 
-    void onGetDeviceInfoRes(Core.GetDeviceInfoRes getDeviceInfoRes);
+    void onGetDeviceInfoRes(Core.DeviceInfo getDeviceInfoRes);
 
     void onApiErrorInd(Core.ApiErrorInd error);
 

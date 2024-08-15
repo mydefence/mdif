@@ -142,7 +142,7 @@ received and all other Status values means the message was not successful.</p>
 <p>Below is an example of how a 10MB FWU image is transferred to a device where the
 device has dictated a maximum chunk size of 1kB.</p>
 <p class="mscgen">
-<img src="_images/mscgen-27f564114d5b5fd16c8b70b50a104255c18dcd10.png" alt="msc {
+<img src="_images/mscgen-f323beac6d75287ff2dc6f095ba9b0d455710243.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -171,8 +171,8 @@ client&lt;-device: FwuStateInd\n\-\{state: ERASING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: WRITING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: VERIFY_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
-}" usemap="#27f564114d5b5fd16c8b70b50a104255c18dcd10" />
-<map id="27f564114d5b5fd16c8b70b50a104255c18dcd10" name="27f564114d5b5fd16c8b70b50a104255c18dcd10"></map></p>
+}" usemap="#f323beac6d75287ff2dc6f095ba9b0d455710243" />
+<map id="f323beac6d75287ff2dc6f095ba9b0d455710243" name="f323beac6d75287ff2dc6f095ba9b0d455710243"></map></p>
 </section>
 <section id="fwu-ethernet">
 <h3>FWU Ethernet<a class="headerlink" href="#fwu-ethernet" title="Permalink to this heading"></a></h3>
@@ -180,7 +180,7 @@ client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
 dictate larger maximum chunk sizes. Note that transfer with only one chunk is
 possible. Below is an example of FWU with only one chunk with 10MB data.</p>
 <p class="mscgen">
-<img src="_images/mscgen-4d2bceddf64d3910a02c29005115ca90a8187cd9.png" alt="msc {
+<img src="_images/mscgen-25f41d9f39f4c120fca7d3454ac55770bbf66b9b.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -200,14 +200,14 @@ client&lt;-device: FwuStateInd\n\-\{state: ERASING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: WRITING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: VERIFY_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
-}" usemap="#4d2bceddf64d3910a02c29005115ca90a8187cd9" />
-<map id="4d2bceddf64d3910a02c29005115ca90a8187cd9" name="4d2bceddf64d3910a02c29005115ca90a8187cd9"></map></p>
+}" usemap="#25f41d9f39f4c120fca7d3454ac55770bbf66b9b" />
+<map id="25f41d9f39f4c120fca7d3454ac55770bbf66b9b" name="25f41d9f39f4c120fca7d3454ac55770bbf66b9b"></map></p>
 </section>
 <section id="fwu-error-handling">
 <h3>FWU error handling<a class="headerlink" href="#fwu-error-handling" title="Permalink to this heading"></a></h3>
 <p>Size of firmware image too big or the device is not ready to do FWU.</p>
 <p class="mscgen">
-<img src="_images/mscgen-178ad562aa094c510c63e8614eef21991300fde7.png" alt="msc {
+<img src="_images/mscgen-95444fc9dc8ab3de95e98eb4f765dbf36cdc7830.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -215,13 +215,13 @@ vspacing=5;
 client-&gt;device: FwuInitReq\n\-\{size: 10485760, ...\};
 device-&gt;device: \-Firmware too large;
 client&lt;-device [color=red]: FwuInitRes\n\-\{status: ERR_SIZE, state: ERROR, ...\};
-}" usemap="#178ad562aa094c510c63e8614eef21991300fde7" />
-<map id="178ad562aa094c510c63e8614eef21991300fde7" name="178ad562aa094c510c63e8614eef21991300fde7"></map></p>
+}" usemap="#95444fc9dc8ab3de95e98eb4f765dbf36cdc7830" />
+<map id="95444fc9dc8ab3de95e98eb4f765dbf36cdc7830" name="95444fc9dc8ab3de95e98eb4f765dbf36cdc7830"></map></p>
 <p>Firmware image contains a list of allowed devices for the specific firmware. For
 this reason the FWU may be aborted after this information has been received in
 the transfer.</p>
 <p class="mscgen">
-<img src="_images/mscgen-bb63c29625ca5902fa5359846d2718fd8b67ed21.png" alt="msc {
+<img src="_images/mscgen-3f828ab97c0ff6aa0ce92ab98cdd24db8b4f0fc1.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -233,11 +233,11 @@ client-&gt;device: FwuChunkReq\-(1024 bytes);
 device-&gt;device: \-Firmware not approved for this device;
 client&lt;-device [color=red]: FwuChunkRes\n\-\{status: ERR_NOT_SUPPORTED\};
 client&lt;-device: FwuStateInd\n\-\{state: ERROR\};
-}" usemap="#bb63c29625ca5902fa5359846d2718fd8b67ed21" />
-<map id="bb63c29625ca5902fa5359846d2718fd8b67ed21" name="bb63c29625ca5902fa5359846d2718fd8b67ed21"></map></p>
+}" usemap="#3f828ab97c0ff6aa0ce92ab98cdd24db8b4f0fc1" />
+<map id="3f828ab97c0ff6aa0ce92ab98cdd24db8b4f0fc1" name="3f828ab97c0ff6aa0ce92ab98cdd24db8b4f0fc1"></map></p>
 <p>Received more bytes than expected.</p>
 <p class="mscgen">
-<img src="_images/mscgen-489f4454cf53be3802f078d9981275474e4e1072.png" alt="msc {
+<img src="_images/mscgen-121c40dc9d2cdfb515fa556d5927682c5142402a.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -253,11 +253,11 @@ client-&gt;device: FwuChunkReq\-(1024 bytes);
 device-&gt;device: \-Too many bytes received;
 client&lt;-device: FwuChunkRes\n\-\{status: ERR_SIZE\};
 client&lt;-device [color=red]: FwuStateInd\n\-\{state: ERROR\};
-}" usemap="#489f4454cf53be3802f078d9981275474e4e1072" />
-<map id="489f4454cf53be3802f078d9981275474e4e1072" name="489f4454cf53be3802f078d9981275474e4e1072"></map></p>
+}" usemap="#121c40dc9d2cdfb515fa556d5927682c5142402a" />
+<map id="121c40dc9d2cdfb515fa556d5927682c5142402a" name="121c40dc9d2cdfb515fa556d5927682c5142402a"></map></p>
 <p>Client aborts during transfer.</p>
 <p class="mscgen">
-<img src="_images/mscgen-dea46709774ef2c2d48dd73fecfb5dec3e45e021.png" alt="msc {
+<img src="_images/mscgen-0f9c57da884a9cc321048cb8d6e8f80f499bee34.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -274,11 +274,11 @@ client-&gt;device: FwuChunkReq\-(1024 bytes);
 device-&gt;device: \-bytes_remaining=10483712;
 client-&gt;device [color=red]: FwuAbortReq;
 client&lt;-device: FwuAbortRes\n\-\{status: SUCCESS, state: IDLE\};
-}" usemap="#dea46709774ef2c2d48dd73fecfb5dec3e45e021" />
-<map id="dea46709774ef2c2d48dd73fecfb5dec3e45e021" name="dea46709774ef2c2d48dd73fecfb5dec3e45e021"></map></p>
+}" usemap="#0f9c57da884a9cc321048cb8d6e8f80f499bee34" />
+<map id="0f9c57da884a9cc321048cb8d6e8f80f499bee34" name="0f9c57da884a9cc321048cb8d6e8f80f499bee34"></map></p>
 <p>Client aborts too late in the process and the device will complete the FWU.</p>
 <p class="mscgen">
-<img src="_images/mscgen-81665c5c0b16d5900d146fd649861cd8a0c68f93.png" alt="msc {
+<img src="_images/mscgen-73810ad662f670f7ffd8d0a103106d4a3306d383.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -300,11 +300,11 @@ client&lt;-device [color=red]: FwuAbortRes\n\-\{status: ERR_NOT_READY, state: ER
 client&lt;-device: FwuStateInd\n\-\{state: WRITING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: VERIFY_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
-}" usemap="#81665c5c0b16d5900d146fd649861cd8a0c68f93" />
-<map id="81665c5c0b16d5900d146fd649861cd8a0c68f93" name="81665c5c0b16d5900d146fd649861cd8a0c68f93"></map></p>
+}" usemap="#73810ad662f670f7ffd8d0a103106d4a3306d383" />
+<map id="73810ad662f670f7ffd8d0a103106d4a3306d383" name="73810ad662f670f7ffd8d0a103106d4a3306d383"></map></p>
 <p>Target fails to respond with an acknowledge on a chunk.</p>
 <p class="mscgen">
-<img src="_images/mscgen-661725700714dcb2c6e02a85aaa0e60f0264115f.png" alt="msc {
+<img src="_images/mscgen-0b590a71c7cbf4fc70f1f8237e1e31c595cc4de3.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -322,11 +322,11 @@ device-xc [color=red]: FwuChunkRes;
 |||;
 client-&gt;device [color=red]: FwuAbortReq;
 client&lt;-device: FwuAbortRes\n\-\{status: SUCCESS, state: IDLE\};
-}" usemap="#661725700714dcb2c6e02a85aaa0e60f0264115f" />
-<map id="661725700714dcb2c6e02a85aaa0e60f0264115f" name="661725700714dcb2c6e02a85aaa0e60f0264115f"></map></p>
+}" usemap="#0b590a71c7cbf4fc70f1f8237e1e31c595cc4de3" />
+<map id="0b590a71c7cbf4fc70f1f8237e1e31c595cc4de3" name="0b590a71c7cbf4fc70f1f8237e1e31c595cc4de3"></map></p>
 <p>Client stops sending FWU image chunks and the FWU is aborted after a timeout period.</p>
 <p class="mscgen">
-<img src="_images/mscgen-12ddc8c18d4385c0ce513ad793318c6b50cbeb30.png" alt="msc {
+<img src="_images/mscgen-92a9b0197ac700b637148ee55166f40a5f57135f.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -344,12 +344,12 @@ client&lt;-device: FwuChunkRes\n\-\{status: SUCCESS\};
 ...;
 ...;
 client&lt;-device: FwuStateInd\n\-\{state: IDLE\};
-}" usemap="#12ddc8c18d4385c0ce513ad793318c6b50cbeb30" />
-<map id="12ddc8c18d4385c0ce513ad793318c6b50cbeb30" name="12ddc8c18d4385c0ce513ad793318c6b50cbeb30"></map></p>
+}" usemap="#92a9b0197ac700b637148ee55166f40a5f57135f" />
+<map id="92a9b0197ac700b637148ee55166f40a5f57135f" name="92a9b0197ac700b637148ee55166f40a5f57135f"></map></p>
 <p>If a new FWU is started while another is being processed then the first is
 aborted and the new session is started.</p>
 <p class="mscgen">
-<img src="_images/mscgen-316cec9e482bac3c83f04f937cdcd4c2cdc2d1be.png" alt="msc {
+<img src="_images/mscgen-c4b1da1092a71d31a60bd7965d2fe9dd3ea51fd6.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -388,13 +388,13 @@ client&lt;-device: FwuStateInd\n\-\{state: ERASING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: WRITING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: VERIFY_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
-}" usemap="#316cec9e482bac3c83f04f937cdcd4c2cdc2d1be" />
-<map id="316cec9e482bac3c83f04f937cdcd4c2cdc2d1be" name="316cec9e482bac3c83f04f937cdcd4c2cdc2d1be"></map></p>
+}" usemap="#c4b1da1092a71d31a60bd7965d2fe9dd3ea51fd6" />
+<map id="c4b1da1092a71d31a60bd7965d2fe9dd3ea51fd6" name="c4b1da1092a71d31a60bd7965d2fe9dd3ea51fd6"></map></p>
 <p>Checksum calculation fails on image received. Please note that in this situation
 the device may have an invalid image and unable to operate. <strong>Client must retry
 FWU</strong>.</p>
 <p class="mscgen">
-<img src="_images/mscgen-a9e41c6b2ff30fb3740b3becf5af58f0fc7d18f2.png" alt="msc {
+<img src="_images/mscgen-3075d9b8b7d242171b3d1344e49ae7c1547493a3.png" alt="msc {
 client,device;
 hscale=3;
 vspacing=5;
@@ -414,8 +414,8 @@ client&lt;-device [color=red]: FwuStateInd\n\-\{state: ERROR\};
 |||;
 --- [color=red]: Client should initialize a new FWU\nTarget may be in a non-working state;
 |||;
-}" usemap="#a9e41c6b2ff30fb3740b3becf5af58f0fc7d18f2" />
-<map id="a9e41c6b2ff30fb3740b3becf5af58f0fc7d18f2" name="a9e41c6b2ff30fb3740b3becf5af58f0fc7d18f2"></map></p>
+}" usemap="#3075d9b8b7d242171b3d1344e49ae7c1547493a3" />
+<map id="3075d9b8b7d242171b3d1344e49ae7c1547493a3" name="3075d9b8b7d242171b3d1344e49ae7c1547493a3"></map></p>
 </section>
 </section>
 <section id="protobuf-specification">

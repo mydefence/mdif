@@ -236,7 +236,7 @@ void hdlc_recv_frame_cb(hdlc_data_t *_hdlc, uint8_t *frame, uint32_t len) {
  *
  * @param _hdlc HDLC instance data allocated by hdlc_init()
  */
-void hdlc_reset_cb(hdlc_data_t *_hdlc) {
+void hdlc_reset_cb(hdlc_data_t *_hdlc, hdlc_reset_cause_t cause) {
     log_debug("hdlc reset\n");
 
     // Connect to current thread if not already connected

@@ -57,6 +57,7 @@
 #include "hdlc/include/hdlc.h"
 #include "hdlc/include/hdlc_os.h"
 #include "hdlc/ports/linux/linux_port.h"
+#include "linux_mdif_socket/mdif_socket.h"
 
 #include "codec.h"
 
@@ -66,10 +67,10 @@ void print_help(void);
 //////////////////////////////////////////////////////////////////////////////
 // Command line parsing (using argp)
 
-static char doc[]                   = "Demo of communication with MyDefence device over MDIF HDLC/serial connection.\n\n"
-                                      "Without options it will query the device info\n\n"
-                                      "  [serial device]            Path to character device, e.g. \"/dev/ttyUSB0\"\n";
-static char args_doc[]              = "[serial device]";
+static char doc[]                   = "\nDemo of communication with MyDefence device over MDIF TCP or HDLC/serial connection.\n\n"
+                                      "  [device]            Address of MDIF device, e.g. \"/dev/ttyUSB0\"\n"
+                                      "                      or \"192.168.1.42\"\n";
+static char args_doc[]              = "[device]";
 static struct argp_option options[] = {
     {"verbose", 'v', 0, 0, "Verbose output, e.g. decoding of messages. Repeat for increased verbosity."},
     {0}};
@@ -147,9 +148,15 @@ void hdlc_connected_cb(hdlc_data_t *hdlc) {
 // Main program logic
 
 void send_frame(const uint8_t *frame, uint32_t len) {
-    int ret = hdlc_send_frame(hdlc, frame, len);
-    if (ret != 0) {
-        printf("ERROR sending frame: %d\n\n", ret);
+    if (mdif_socket != -1) {
+        mdif_socket_send(frame, len);
+        free((uint8_t*)frame);
+    } else {
+        int ret = hdlc_send_frame(hdlc, frame, len);
+        if (ret != 0) {
+            printf("ERROR sending frame: %d\n\n", ret);
+        }
+        // free'd in hdlc_frame_sent_cb()
     }
 }
 
@@ -182,12 +189,13 @@ int main(int argc, char **argv) {
     };
     log_set_level(hdlc_log_level);
 
-    int fd = serial_open(args.serial_device);
-
-    printf("Connecting ...\n\n");
-
-    hdlc_linux_init(); // calls hdlc_init()
-    start_rx_thread(fd);
+    if (args.serial_device[0] == '/') {
+        int fd = serial_open(args.serial_device);
+        hdlc_linux_init(); // calls hdlc_init()
+        start_rx_thread(fd);
+    } else {
+        mdif_socket_init(args.serial_device);
+    }
 
     uint32_t size;
     uint8_t *req;

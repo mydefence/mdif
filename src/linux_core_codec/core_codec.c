@@ -225,6 +225,14 @@ decode_rtn_t decode_core(const uint8_t *buf, uint32_t size) {
         break;
     }
 
+    case MDIF__CORE__CORE_MSG__MSG_DEVICE_ANNOUNCE_IND:
+        printf("Decode DEVICE_ANNOUNCE_IND\n");
+        printf("    device_type=%d\n", core_msg->device_announce_ind->device_type);
+        printf("    device_version=%u\n", core_msg->device_announce_ind->device_version);
+        printf("    serial_number=%s\n", core_msg->device_announce_ind->serial_number);
+        printf("    sw_version=%s\n", core_msg->device_announce_ind->sw_version);
+        break;
+
     case MDIF__CORE__CORE_MSG__MSG_GET_DEVICE_INFO_RES: {
         printf("Decode GET_DEVICE_INFO_RES\n");
         printf("    device_type=%d\n", core_msg->get_device_info_res->device_type);

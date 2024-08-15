@@ -84,7 +84,7 @@ public class MdifCore {
                     mCallback.onApiErrorInd(error);
                     break;
                 case GET_DEVICE_INFO_RES:
-                    Core.GetDeviceInfoRes info = core.getGetDeviceInfoRes();
+                    Core.DeviceInfo info = core.getGetDeviceInfoRes();
                     Log.i(TAG, "GET_DEVICE_INFO_RES:");
                     Log.i(TAG, "\tDeviceType:          " + info.getDeviceType());
                     Log.i(TAG, "\tSerial number:       " + info.getSerialNumber());

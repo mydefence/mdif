@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final IMdifCore mMdifCoreCallback = new IMdifCore() {
         @Override
-        public void onGetDeviceInfoRes(Core.GetDeviceInfoRes getDeviceInfoRes) {
+        public void onGetDeviceInfoRes(Core.DeviceInfo getDeviceInfoRes) {
             String sb = "Device type:       " + getDeviceInfoRes.getDeviceType() +
                     "\nSW version:        " + getDeviceInfoRes.getSwVersion() +
                     "\nSerial number:   " + getDeviceInfoRes.getSerialNumber() +

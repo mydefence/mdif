@@ -16,7 +16,8 @@ PB_C_FILES=$(PB_GEN_DIR)/mdif/core/core.pb-c.c $(PB_GEN_DIR)/mdif/common.pb-c.c 
 
 HDLC_SRC=../hdlc/dlc/dlc.c ../hdlc/ports/linux/linux_port.c ../hdlc/yahdlc/yahdlc.c ../hdlc/yahdlc/fcs.c ../hdlc/ports/linux/log/log.c
 CORE_CODEC_SRC=../linux_core_codec/core_codec.c
-CFILES=$(HDLC_SRC) $(PB_C_FILES) $(CORE_CODEC_SRC) main.c codec.c
+MDIF_SOCKET_SRC=../linux_mdif_socket/mdif_socket.c
+CFILES=$(HDLC_SRC) $(PB_C_FILES) $(CORE_CODEC_SRC) $(MDIF_SOCKET_SRC) main.c codec.c
 COPT=-Wall -I. -I.. -I../hdlc/ports/linux -g -I$(PB_GEN_DIR)
 
 $(DOCKER_BUILDER): $(DOCKER_FILE)

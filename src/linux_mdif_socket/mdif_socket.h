@@ -29,12 +29,12 @@
  *               ,,,,,                                                         *
  *                    ,,,,,                                                    *
  *                                                                             *
- * Program/file : codec.h                                                      *
+ * Program/file : main.c                                                       *
  *                                                                             *
- * Description  : Types and prototypes for codec                               *
- *              :                                                              *
+ * Description  : Provide the user an interface to prompt protobuf messages to *
+ *              : the device running mdif over serial connection using hdlc.   *
  *                                                                             *
- * Copyright 2024 MyDefence A/S.                                               *
+ * Copyright 2023 MyDefence A/S.                                               *
  *                                                                             *
  * Licensed under the Apache License, Version 2.0 (the "License");             *
  * you may not use this file except in compliance with the License.            *
@@ -51,14 +51,13 @@
  *                                                                             *
  *                                                                             *
  *******************************************************************************/
-#include <stdint.h>
-#include <stdbool.h>
 
-#include "linux_core_codec/core_codec.h"
-#include "_generated/mdif/rfe/rfe.pb-c.h"
+#ifndef _MDIF_SOCKET_H
+#define _MDIF_SOCKET_H
 
-uint8_t *encode_rfe_start_req(uint32_t *size, bool clear_list, size_t n_freq_band_list, Mdif__Rfe__FreqBand *freq_band_list);
-uint8_t *encode_rfe_stop_req(uint32_t *size);
-uint8_t *encode_rfe_get_state_info_req(uint32_t *size);
+extern int mdif_socket;
 
-decode_rtn_t decode_mdif_msg(const uint8_t *buf, uint32_t size);
+int mdif_socket_init(const char *host);
+void mdif_socket_send(const uint8_t *buf, uint32_t size);
+
+#endif // _MDIF_SOCKET_H

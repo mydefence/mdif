@@ -101,13 +101,13 @@ messages have a ‘Req’ suffix and response messages have a ‘Res’ suffix.<
 <p>The message sequence chart below shows an example of a request/response message
 exchange with the ‘ping’ functionality from the <a class="reference internal" href="api_core.html#api-core"><span class="std std-ref">Core API</span></a> component.</p>
 <p class="mscgen">
-<img src="_images/mscgen-bee10285ff9b7f3e36fc68dd474ddba7260ee585.png" alt="msc {
+<img src="_images/mscgen-cb50456fb02c509918ff2a8182436bc1bdb84e60.png" alt="msc {
 client,device;
 hscale=1.5;
 client-&gt;device: PingReq;
 device-&gt;client: PingRes;
-}" usemap="#bee10285ff9b7f3e36fc68dd474ddba7260ee585" />
-<map id="bee10285ff9b7f3e36fc68dd474ddba7260ee585" name="bee10285ff9b7f3e36fc68dd474ddba7260ee585"></map></p>
+}" usemap="#cb50456fb02c509918ff2a8182436bc1bdb84e60" />
+<map id="cb50456fb02c509918ff2a8182436bc1bdb84e60" name="cb50456fb02c509918ff2a8182436bc1bdb84e60"></map></p>
 </section>
 <section id="stream">
 <h2>Stream<a class="headerlink" href="#stream" title="Permalink to this heading"></a></h2>
@@ -118,7 +118,7 @@ device state, process state (e.g. FWU), etc.</p>
 <p>The message sequence chart below shows an example of a stream message exchange
 with part of the ‘fwu’ functionality from the <a class="reference internal" href="api_fwu.html#api-fwu"><span class="std std-ref">FWU API</span></a> component.</p>
 <p class="mscgen">
-<img src="_images/mscgen-c25d50511eef9728d062a11de610a5f2ff43ce07.png" alt="msc {
+<img src="_images/mscgen-25cf7276cd7b19e62657cfd1ed39604907212ec1.png" alt="msc {
 client,device;
 hscale=1.5;
 vspacing=5;
@@ -127,8 +127,8 @@ client&lt;-device: FwuStateInd\n\-\{state: ERASING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: WRITING_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: VERIFY_FLASH\};
 client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
-}" usemap="#c25d50511eef9728d062a11de610a5f2ff43ce07" />
-<map id="c25d50511eef9728d062a11de610a5f2ff43ce07" name="c25d50511eef9728d062a11de610a5f2ff43ce07"></map></p>
+}" usemap="#25cf7276cd7b19e62657cfd1ed39604907212ec1" />
+<map id="25cf7276cd7b19e62657cfd1ed39604907212ec1" name="25cf7276cd7b19e62657cfd1ed39604907212ec1"></map></p>
 </section>
 <section id="api-error">
 <h2>Api Error<a class="headerlink" href="#api-error" title="Permalink to this heading"></a></h2>
@@ -136,14 +136,14 @@ client&lt;-device: FwuStateInd\n\-\{state: FWU_COMPLETE\};
 respond with an ApiErrorInd message. The message contains a string with a
 description of the error.</p>
 <p class="mscgen">
-<img src="_images/mscgen-3077aadb37a300798cbeaa997812016465c5b220.png" alt="msc {
+<img src="_images/mscgen-241c0133090e6005e3712fd79d787d0738c82858.png" alt="msc {
 client,device;
 hscale=2.0;
 
 client-&gt;device: MsgWithId99Req;
 device-&gt;client: ApiErrorInd\n\-\{error: &quot;Message with id 99 not supported&quot;\};
-}" usemap="#3077aadb37a300798cbeaa997812016465c5b220" />
-<map id="3077aadb37a300798cbeaa997812016465c5b220" name="3077aadb37a300798cbeaa997812016465c5b220"></map></p>
+}" usemap="#241c0133090e6005e3712fd79d787d0738c82858" />
+<map id="241c0133090e6005e3712fd79d787d0738c82858" name="241c0133090e6005e3712fd79d787d0738c82858"></map></p>
 </section>
 </section>
 
