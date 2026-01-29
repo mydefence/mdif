@@ -5,7 +5,7 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 repository adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.4.0] - 2026-01-27
+## [1.4.0] - 2026-01-29
 
 ### Supported devices
 -   RF Sensor devices running firmware v4.3.1 or later
