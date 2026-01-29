@@ -260,9 +260,8 @@ static decode_rtn_t decode_rfs(const uint8_t *buf, uint32_t size) {
         printf("     type_id          = %d\n", drone_info->type_id);
         printf("     type_id_name     = %s\n", drone_info->type_id_name);
         printf("     drone_name       = %s\n", drone_info->drone_name);
-        // TBD ids like vendor id...do we need to know it, if we have name?
         printf("     vendor_name      = %s\n", drone_info->vendor_id_name);
-        printf("     category_id_name = %s\n", drone_info->category_id_name);
+        printf("     category         = %u\n", drone_info->category);
         printf("     bands            = ");
         for (int i = 0; i < drone_info->n_band; i++) {
             printf("%i", drone_info->band[i]);
@@ -285,9 +284,8 @@ static decode_rtn_t decode_rfs(const uint8_t *buf, uint32_t size) {
             printf("    relative_bearing:\n");
             printf("        bearing=%f\n", rfs_msg->rfs_threat_ind->relative_bearing->bearing);
             printf("        var_bearing=%f\n", rfs_msg->rfs_threat_ind->relative_bearing->var_bearing);
-            printf("        timestamp=%f\n", rfs_msg->rfs_threat_ind->relative_bearing->timestamp);
         }
-        printf("    last_seen=%d\n", rfs_msg->rfs_threat_ind->last_seen);
+        printf("    last_seen=%lu.%u\n", rfs_msg->rfs_threat_ind->last_seen_ts->seconds, rfs_msg->rfs_threat_ind->last_seen_ts->nanos);
         // Todo: Add repeated current band to response and display
         // Todo: Keep paired with .proto message response.
         break;

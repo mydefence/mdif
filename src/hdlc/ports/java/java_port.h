@@ -54,19 +54,19 @@
 #ifndef _JAVA_PORT_H_
 #define _JAVA_PORT_H_
 
-// This port only supports a single instance, so using various global variables
-// instead of hdlc user_data pointer.
-
 #include "hdlc/include/hdlc_os.h"
 
 #if !defined JAVA_HDLC_TIMEOUT_MS
 #define JAVA_HDLC_TIMEOUT_MS 200
 #endif
 
-void hdlc_java_init();
+#ifndef HDLC_NUM_INSTANCES
+#define HDLC_NUM_INSTANCES (2)
+#endif
 
-// This port only supports single instance of hdlc. This instance data must be
-// used on all calls to hdlc functions. It will be valid after hdlc_java_init().
-extern hdlc_data_t *hdlc;
+void hdlc_java_init(uint32_t instance_id);
+void hdlc_java_stop(uint32_t instance_id);
+hdlc_data_t *get_hdlc_data(uint32_t instance_id);
+uint32_t get_hdlc_instance_id(hdlc_data_t *hdlc);
 
 #endif // _JAVA_PORT_H_

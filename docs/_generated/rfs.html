@@ -105,20 +105,33 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-GetDronelistReq"><span class="xref myst">GetDronelistReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-GetDronelistRes"><span class="xref myst">GetDronelistRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-GetSignalInterferenceReq"><span class="xref myst">GetSignalInterferenceReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-MuteInd"><span class="xref myst">MuteInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-MuteReq"><span class="xref myst">MuteReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-MuteRes"><span class="xref myst">MuteRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RemoteIdInd"><span class="xref myst">RemoteIdInd</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamReq"><span class="xref myst">RemoteIdStreamReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamRes"><span class="xref myst">RemoteIdStreamRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RfsMsg"><span class="xref myst">RfsMsg</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd"><span class="xref myst">RfsThreatInd</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd-RelativeBearing"><span class="xref myst">RfsThreatInd.RelativeBearing</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-SignalInterference"><span class="xref myst">SignalInterference</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-SignalInterferenceBand"><span class="xref myst">SignalInterferenceBand</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-StartReq"><span class="xref myst">StartReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-StartRes"><span class="xref myst">StartRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StateReq"><span class="xref myst">StateReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-StateRes"><span class="xref myst">StateRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-StopReq"><span class="xref myst">StopReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-StopRes"><span class="xref myst">StopRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-ThreatStoppedInd"><span class="xref myst">ThreatStoppedInd</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-WifiThreatInd"><span class="xref myst">WifiThreatInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-WpLedIdentifyReq"><span class="xref myst">WpLedIdentifyReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-WpLedIdentifyRes"><span class="xref myst">WpLedIdentifyRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-RidTransportType"><span class="xref myst">RidTransportType</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-rfs-StartMode"><span class="xref myst">StartMode</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-State"><span class="xref myst">State</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-rfs-ThreatCategory"><span class="xref myst">ThreatCategory</span></a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#scalar-value-types"><span class="xref myst">Scalar Value Types</span></a></p></li>
@@ -221,15 +234,30 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p><a class="reference internal" href="#mdif-rfs-StopRes"><span class="xref myst">StopRes</span></a></p></td>
 <td><p>Use to stop the RFS detection algorithms</p></td>
 </tr>
-<tr class="row-even"><td><p>GetDroneInfo</p></td>
+<tr class="row-even"><td><p>State</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StateReq"><span class="xref myst">StateReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StateRes"><span class="xref myst">StateRes</span></a></p></td>
+<td><p>Use to get current state of the RFS detection algorithms</p></td>
+</tr>
+<tr class="row-odd"><td><p>GetDroneInfo</p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoReq"><span class="xref myst">GetDroneInfoReq</span></a></p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-GetDroneInfoRes"><span class="xref myst">GetDroneInfoRes</span></a></p></td>
 <td><p>Use to get individual drone info</p></td>
 </tr>
-<tr class="row-odd"><td><p>RemoteIdStream</p></td>
+<tr class="row-even"><td><p>RemoteIdStream</p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamReq"><span class="xref myst">RemoteIdStreamReq</span></a></p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-RemoteIdStreamRes"><span class="xref myst">RemoteIdStreamRes</span></a></p></td>
 <td><p>Use to request a stream of remote ID messages.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mute</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-MuteReq"><span class="xref myst">MuteReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-MuteRes"><span class="xref myst">MuteRes</span></a></p></td>
+<td><p>Request muting of a detection.</p></td>
+</tr>
+<tr class="row-even"><td><p>GetSignalInterference</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetSignalInterferenceReq"><span class="xref myst">GetSignalInterferenceReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-SignalInterference"><span class="xref myst">SignalInterference</span></a></p></td>
+<td><p>Use to request signal interference status</p></td>
 </tr>
 </tbody>
 </table>
@@ -267,17 +295,13 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
 <td><p>Name of rf emitter vendor (e.g DJI)</p></td>
 </tr>
-<tr class="row-odd"><td><p>category_id</p></td>
-<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Identifier of rf emitter category drone/controller/wifi (e.g 1)</p></td>
-</tr>
-<tr class="row-even"><td><p>category_id_name</p></td>
-<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
-<td><p>Name of rf emitter category (e.g Drone)</p></td>
-</tr>
 <tr class="row-odd"><td><p>band</p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></td>
 <td><p>Bands where detector looks (e.g 2G4 and 5G8)</p></td>
+</tr>
+<tr class="row-even"><td><p>category</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-ThreatCategory"><span class="xref myst">ThreatCategory</span></a></p></td>
+<td><p>Category of threat.</p></td>
 </tr>
 </tbody>
 </table>
@@ -357,6 +381,88 @@ Deprecated</p>
 </tr>
 </tbody>
 </table>
+<p><a name="mdif-rfs-GetSignalInterferenceReq"></a></p>
+</section>
+<section id="getsignalinterferencereq">
+<h2>GetSignalInterferenceReq<a class="headerlink" href="#getsignalinterferencereq" title="Permalink to this heading"></a></h2>
+<p>Request signal interference</p>
+<p>The device will respond with a <code class="docutils literal notranslate"><span class="pre">SignalInterference</span></code> message</p>
+<p><a name="mdif-rfs-MuteInd"></a></p>
+</section>
+<section id="muteind">
+<h2>MuteInd<a class="headerlink" href="#muteind" title="Permalink to this heading"></a></h2>
+<p>Indication that a mute status has changed.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>muted</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Is muting enabled for this threat or type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>ID of the threat to mute, as received in RfsThreatInd, WifiThreatInd or RemoteIdInd. 0 is invalid, and means muting is done by type.</p></td>
+</tr>
+<tr class="row-even"><td><p>type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Type ID to mute. This shall be ignored if a valid (non-zero) ID is given.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-MuteReq"></a></p>
+</section>
+<section id="mutereq">
+<h2>MuteReq<a class="headerlink" href="#mutereq" title="Permalink to this heading"></a></h2>
+<p>Request to mute or unmute a detection. Note that if a detection is muted by both ID and type, it will be necessary
+to unmute by both methods too.
+Setting id = 0 and type_id = 0 will mute all active threats, by ID where possible, and by type otherwise.
+Setting id = 0 and type_id = 0 when all active threats are already muted, will unmute all.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mute</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Enable or disable muting.</p></td>
+</tr>
+<tr class="row-odd"><td><p>id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>ID of the threat to mute, as received in RfsThreatInd, WifiThreatInd or RemoteIdInd. 0 to mute by type, only.</p></td>
+</tr>
+<tr class="row-even"><td><p>type_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Type ID to mute. This will also mute future threats of this type. This will be ignored if a valid (non-zero) ID is given.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-MuteRes"></a></p>
+</section>
+<section id="muteres">
+<h2>MuteRes<a class="headerlink" href="#muteres" title="Permalink to this heading"></a></h2>
+<p>Response to MuteReq.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>Status of the request.</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-rfs-RemoteIdInd"></a></p>
 </section>
 <section id="remoteidind">
@@ -377,6 +483,18 @@ Deprecated</p>
 <tr class="row-odd"><td><p>payload</p></td>
 <td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
 <td><p>Remote ID message pack, as per ASTM-F3411</p></td>
+</tr>
+<tr class="row-even"><td><p>id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>ID of detection. Unique for this sensor, not across sensors.</p></td>
+</tr>
+<tr class="row-odd"><td><p>transport_type</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-RidTransportType"><span class="xref myst">RidTransportType</span></a></p></td>
+<td><p>Transport type of RID message.</p></td>
+</tr>
+<tr class="row-even"><td><p>muted</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Mute status of this threat.</p></td>
 </tr>
 </tbody>
 </table>
@@ -492,6 +610,46 @@ defined in the RfsService through RPC patterns.</p>
 <td><p><a class="reference internal" href="#mdif-rfs-RemoteIdInd"><span class="xref myst">RemoteIdInd</span></a></p></td>
 <td><p>Remote Drone ID detection - Indication</p></td>
 </tr>
+<tr class="row-even"><td><p>mute_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-MuteReq"><span class="xref myst">MuteReq</span></a></p></td>
+<td><p>Request to mute a detection</p></td>
+</tr>
+<tr class="row-odd"><td><p>mute_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-MuteRes"><span class="xref myst">MuteRes</span></a></p></td>
+<td><p>Response to muting</p></td>
+</tr>
+<tr class="row-even"><td><p>state_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StateReq"><span class="xref myst">StateReq</span></a></p></td>
+<td><p>State request</p></td>
+</tr>
+<tr class="row-odd"><td><p>state_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-StateRes"><span class="xref myst">StateRes</span></a></p></td>
+<td><p>State response</p></td>
+</tr>
+<tr class="row-even"><td><p>mute_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-MuteInd"><span class="xref myst">MuteInd</span></a></p></td>
+<td><p>Indication of a mute status change</p></td>
+</tr>
+<tr class="row-odd"><td><p>wp_led_id_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-WpLedIdentifyReq"><span class="xref myst">WpLedIdentifyReq</span></a></p></td>
+<td><p>Wolfpack set led identify</p></td>
+</tr>
+<tr class="row-even"><td><p>wp_led_id_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-WpLedIdentifyRes"><span class="xref myst">WpLedIdentifyRes</span></a></p></td>
+<td><p>Wolfpack led identify response</p></td>
+</tr>
+<tr class="row-odd"><td><p>signal_interference_req</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-GetSignalInterferenceReq"><span class="xref myst">GetSignalInterferenceReq</span></a></p></td>
+<td><p>Request signal interference information</p></td>
+</tr>
+<tr class="row-even"><td><p>signal_interference_res</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-SignalInterference"><span class="xref myst">SignalInterference</span></a></p></td>
+<td><p>Signal interference status</p></td>
+</tr>
+<tr class="row-odd"><td><p>signal_interference_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-SignalInterference"><span class="xref myst">SignalInterference</span></a></p></td>
+<td><p>Signal interference indication</p></td>
+</tr>
 </tbody>
 </table>
 <p><a name="mdif-rfs-RfsThreatInd"></a></p>
@@ -509,35 +667,35 @@ defined in the RfsService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>id</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Instance of detection thread.</p></td>
+<td><p>ID of detection. Unique for this sensor, not across sensors.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type_id</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Detection type id.</p></td>
+<td><p>Detection type id. May be be used to look up description with GetDroneInfoReq.</p></td>
 </tr>
-<tr class="row-even"><td><p>start_time</p></td>
-<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Start time of detection thread.</p></td>
-</tr>
-<tr class="row-odd"><td><p>power</p></td>
+<tr class="row-even"><td><p>power</p></td>
 <td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Power at time of reporting.</p></td>
+<td><p>Power at time of reporting, dB.</p></td>
 </tr>
-<tr class="row-even"><td><p>current_band</p></td>
+<tr class="row-odd"><td><p>current_band</p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></td>
-<td><p>Band(s) where detected occurs.</p></td>
+<td><p>Band(s) where detection occurs.</p></td>
 </tr>
-<tr class="row-odd"><td><p>relative_bearing</p></td>
+<tr class="row-even"><td><p>relative_bearing</p></td>
 <td><p><a class="reference internal" href="#mdif-rfs-RfsThreatInd-RelativeBearing"><span class="xref myst">RfsThreatInd.RelativeBearing</span></a></p></td>
-<td><p>Relative bearing of rfs at time of reporting.</p></td>
+<td><p>Relative bearing from device to threat.</p></td>
 </tr>
-<tr class="row-even"><td><p>last_seen</p></td>
-<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Last time of detection</p></td>
+<tr class="row-odd"><td><p>start_ts</p></td>
+<td><p><a class="reference internal" href="#google-protobuf-Timestamp"><span class="xref myst">google.protobuf.Timestamp</span></a></p></td>
+<td><p>Earliest observation of this detection.</p></td>
 </tr>
-<tr class="row-odd"><td><p>msg_timestamp</p></td>
-<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Time message is compiled.</p></td>
+<tr class="row-even"><td><p>last_seen_ts</p></td>
+<td><p><a class="reference internal" href="#google-protobuf-Timestamp"><span class="xref myst">google.protobuf.Timestamp</span></a></p></td>
+<td><p>Latest observation time of this detection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>muted</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Mute status of this threat.</p></td>
 </tr>
 </tbody>
 </table>
@@ -555,19 +713,88 @@ defined in the RfsService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>valid</p></td>
 <td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
-<td><p>Valid when applicable.</p></td>
+<td><p>Current validity of the bearing calculation.</p></td>
 </tr>
 <tr class="row-odd"><td><p>bearing</p></td>
 <td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Calculated Bearing.</p></td>
+<td><p>Calculated bearing. Degrees from center of device. Positive is counter-clockwise.</p></td>
 </tr>
 <tr class="row-even"><td><p>var_bearing</p></td>
 <td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
 <td><p>Variance in bearing.</p></td>
 </tr>
-<tr class="row-odd"><td><p>timestamp</p></td>
-<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Time bearing is calculated.</p></td>
+<tr class="row-odd"><td><p>ts</p></td>
+<td><p><a class="reference internal" href="#google-protobuf-Timestamp"><span class="xref myst">google.protobuf.Timestamp</span></a></p></td>
+<td><p>Timestamp when bearing was last updated.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-SignalInterference"></a></p>
+</section>
+<section id="signalinterference">
+<h2>SignalInterference<a class="headerlink" href="#signalinterference" title="Permalink to this heading"></a></h2>
+<p>Signal interference status</p>
+<p>This message is the response to a <code class="docutils literal notranslate"><span class="pre">GetSignalInterferenceReq</span></code> message or used in
+an indication.</p>
+<p>Indication will be sent when the signal interference status changes.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>signal_interference</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-SignalInterferenceBand"><span class="xref myst">SignalInterferenceBand</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-SignalInterferenceBand"></a></p>
+</section>
+<section id="signalinterferenceband">
+<h2>SignalInterferenceBand<a class="headerlink" href="#signalinterferenceband" title="Permalink to this heading"></a></h2>
+<p>Single band of signal interference status</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>band</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-ScanBand"><span class="xref myst">ScanBand</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>interference_status</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>0 = no interference, 1 = interference detected</p></td>
+</tr>
+<tr class="row-even"><td><p>min_gain</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>max_gain</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>avg_gain</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>threshold</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>num_over</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>num_under</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -591,6 +818,34 @@ defined in the RfsService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>status</p></td>
 <td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-StateReq"></a></p>
+</section>
+<section id="statereq">
+<h2>StateReq<a class="headerlink" href="#statereq" title="Permalink to this heading"></a></h2>
+<p>Request RFS start detection.</p>
+<p><a name="mdif-rfs-StateRes"></a></p>
+</section>
+<section id="stateres">
+<h2>StateRes<a class="headerlink" href="#stateres" title="Permalink to this heading"></a></h2>
+<p>Response to StartReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>state</p></td>
+<td><p><a class="reference internal" href="#mdif-rfs-State"><span class="xref myst">State</span></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -636,10 +891,6 @@ defined in the RfsService through RPC patterns.</p>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
 <td><p>Instance of detection thread.</p></td>
 </tr>
-<tr class="row-odd"><td><p>msg_timestamp</p></td>
-<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Time message is compiled.</p></td>
-</tr>
 </tbody>
 </table>
 <p><a name="mdif-rfs-WifiThreatInd"></a></p>
@@ -657,35 +908,117 @@ defined in the RfsService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>id</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Instance of detection thread.</p></td>
+<td><p>ID of detection. Unique for this sensor, not across sensors.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type_id</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Detection type id.</p></td>
+<td><p>Detection type id. May be used to look up more info with GetDroneInfoReq.</p></td>
 </tr>
-<tr class="row-even"><td><p>start_time</p></td>
-<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Start time of detection thread.</p></td>
-</tr>
-<tr class="row-odd"><td><p>power</p></td>
+<tr class="row-even"><td><p>power</p></td>
 <td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Power at time of reporting.</p></td>
+<td><p>Received signal strength indication. dB.</p></td>
 </tr>
-<tr class="row-even"><td><p>channel</p></td>
+<tr class="row-odd"><td><p>channel</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
 <td><p>Wifi channel as per international standards 802.11 a/b/g/n.</p></td>
 </tr>
-<tr class="row-odd"><td><p>mac_adr</p></td>
+<tr class="row-even"><td><p>mac_adr</p></td>
 <td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
 <td><p>Mac address of wifi threat.</p></td>
 </tr>
-<tr class="row-even"><td><p>msg_timestamp</p></td>
-<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
-<td><p>Time message is compiled.</p></td>
+<tr class="row-odd"><td><p>start_ts</p></td>
+<td><p><a class="reference internal" href="#google-protobuf-Timestamp"><span class="xref myst">google.protobuf.Timestamp</span></a></p></td>
+<td><p>Earliest observation of this detection.</p></td>
+</tr>
+<tr class="row-even"><td><p>muted</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Mute status of this threat.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-WpLedIdentifyReq"></a></p>
+</section>
+<section id="wpledidentifyreq">
+<h2>WpLedIdentifyReq<a class="headerlink" href="#wpledidentifyreq" title="Permalink to this heading"></a></h2>
+<p>Send LED indentify signal to a Wolfpack
+Identify = 1 will make the Wolfpack flash green for 30 min, either with the red flash in default mode, or alone in darkmode.
+Identify = 0 will disable the green flash.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>identify</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Enable/disable the Wolfpack green LED flash.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-WpLedIdentifyRes"></a></p>
+</section>
+<section id="wpledidentifyres">
+<h2>WpLedIdentifyRes<a class="headerlink" href="#wpledidentifyres" title="Permalink to this heading"></a></h2>
+<p>Response to WpLedIdentifyReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>Status for the WpLedIdentifyReq, if no PMU is connected it will fail.</p></td>
 </tr>
 </tbody>
 </table>
  <!-- end messages -->
+<p><a name="mdif-rfs-RidTransportType"></a></p>
+</section>
+<section id="ridtransporttype">
+<h2>RidTransportType<a class="headerlink" href="#ridtransporttype" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TRANSPORT_UNKNOWN</p></td>
+<td><p>0</p></td>
+<td><p>Bluetooth classic transport</p></td>
+</tr>
+<tr class="row-odd"><td><p>TRANSPORT_BEACON</p></td>
+<td><p>1</p></td>
+<td><p>Wi-Fi beacon transport</p></td>
+</tr>
+<tr class="row-even"><td><p>TRANSPORT_NAN</p></td>
+<td><p>2</p></td>
+<td><p>Wi-Fi NaN transport</p></td>
+</tr>
+<tr class="row-odd"><td><p>TRANSPORT_BT_CLASSIC</p></td>
+<td><p>3</p></td>
+<td><p>Bluetooth classic transport</p></td>
+</tr>
+<tr class="row-even"><td><p>TRANSPORT_BT_EXT</p></td>
+<td><p>4</p></td>
+<td><p>Bluetooth extended transport, THIS IS NOT PART OF THE REMOTE ID STANDARD, see ASTM-F3411 (section 5.4.7.1)</p></td>
+</tr>
+<tr class="row-odd"><td><p>TRANSPORT_BT_CLASSIC_CODED_PHY</p></td>
+<td><p>5</p></td>
+<td><p>Bluetooth classic coded PHY transport</p></td>
+</tr>
+<tr class="row-even"><td><p>TRANSPORT_BT_EXT_CODED_PHY</p></td>
+<td><p>6</p></td>
+<td><p>Bluetooth extended coded PHY transport</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-rfs-ScanBand"></a></p>
 </section>
 <section id="scanband">
@@ -705,27 +1038,27 @@ defined in the RfsService through RPC patterns.</p>
 </tr>
 <tr class="row-odd"><td><p>MHz433</p></td>
 <td><p>1</p></td>
-<td><p>ISM band ~433</p></td>
+<td><p>ISM band 433MHz</p></td>
 </tr>
 <tr class="row-even"><td><p>MHz900</p></td>
 <td><p>2</p></td>
-<td><p>ISM band ~900</p></td>
+<td><p>ISM band 868-915MHz</p></td>
 </tr>
 <tr class="row-odd"><td><p>MHz1200</p></td>
 <td><p>3</p></td>
-<td><p>ISM band 1G2</p></td>
+<td><p>ISM band 1.2GHz</p></td>
 </tr>
 <tr class="row-even"><td><p>MHz2400</p></td>
 <td><p>4</p></td>
-<td><p>ISM band 2G4</p></td>
+<td><p>ISM band 2.4GHz</p></td>
 </tr>
 <tr class="row-odd"><td><p>MHz5800</p></td>
 <td><p>5</p></td>
-<td><p>ISM band 5G8</p></td>
+<td><p>ISM band 5.8GHz</p></td>
 </tr>
 <tr class="row-even"><td><p>MHz5200</p></td>
 <td><p>6</p></td>
-<td><p>ISM band 5G2</p></td>
+<td><p>ISM band 5.2GHz</p></td>
 </tr>
 </tbody>
 </table>
@@ -757,6 +1090,80 @@ defined in the RfsService through RPC patterns.</p>
 <tr class="row-odd"><td><p>UAVModeSearch</p></td>
 <td><p>3</p></td>
 <td><p>RFS runs on internal antenna in search/direction finding mode</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-State"></a></p>
+</section>
+<section id="state">
+<h2>State<a class="headerlink" href="#state" title="Permalink to this heading"></a></h2>
+<p>Enumeration of system status</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MAIN_STATE_IDLE</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>MAIN_STATE_RUNNING</p></td>
+<td><p>1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>MAIN_STATE_STOPPING</p></td>
+<td><p>2</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>MAIN_STATE_STARTING</p></td>
+<td><p>3</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>MAIN_STATE_START_ERROR</p></td>
+<td><p>4</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-ThreatCategory"></a></p>
+</section>
+<section id="threatcategory">
+<h2>ThreatCategory<a class="headerlink" href="#threatcategory" title="Permalink to this heading"></a></h2>
+<p>Enumeration of the categories of threats that may be reported.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CategoryInvalid</p></td>
+<td><p>0</p></td>
+<td><p>Invalid.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CategoryDrone</p></td>
+<td><p>1</p></td>
+<td><p>Drone / UAV.</p></td>
+</tr>
+<tr class="row-even"><td><p>CategoryController</p></td>
+<td><p>2</p></td>
+<td><p>Controller / ground station.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CategoryDroneOrController</p></td>
+<td><p>3</p></td>
+<td><p>Drone or controller. Source indeterminate.</p></td>
+</tr>
+<tr class="row-even"><td><p>CategoryWifi</p></td>
+<td><p>4</p></td>
+<td><p>Wi-Fi signal from either drone or controller.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CategoryTest</p></td>
+<td><p>5</p></td>
+<td><p>MyDefence test signal.</p></td>
 </tr>
 </tbody>
 </table>

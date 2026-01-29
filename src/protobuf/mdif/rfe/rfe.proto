@@ -189,6 +189,9 @@ enum Config {
     CONFIG_TX_5G8 = 64;
     // Device is in low power mode
     CONFIG_LOW_POWER = 128;
+    // Device is in semi-automatic mode. That is, the device is controlled by an
+    // external entity but the user must manually approve each start request
+    CONFIG_SEMI_AUTOMATIC = 256;
 }
 
 // Defines the type of controller
@@ -203,9 +206,10 @@ enum ControllerType {
 // Defines the state of the RFE device
 message RfeState {
     ControllerType controller_type = 1;
-    Config config = 2;
+    Config config_deprecated = 2;
     BatteryStatus battery_status = 3;
     TemperatureStatus temperature_status = 4;
+    uint32 config = 5;
 }
 
 /*************************************
@@ -220,6 +224,8 @@ message StartReq {
     bool clear_list = 1;
     // List of frequency bands to start trasmitting on
     repeated FreqBand freq_band_list = 2;
+    // Sender type composing the request. Used internally and can be left unset.
+    ControllerType controller_type = 3;
 }
 // Response to StartReq
 message StartRes {

@@ -70,18 +70,26 @@ option java_package = "dk.mydefence.mdif.rfs";
 // [MD END java_declaration]
 
 import "mdif/common.proto";
+import "google/protobuf/timestamp.proto";
 
 // Defines the relationship between requests and responses in the RFS component
 service RfsService {
     // Use to start the RFS detection algorithms
-    rpc Start (StartReq) returns (StartRes);
+    rpc Start(StartReq) returns (StartRes);
     // Use to stop the RFS detection algorithms
-    rpc Stop (StopReq) returns (StopRes);
+    rpc Stop(StopReq) returns (StopRes);
+    // Use to get current state of the RFS detection algorithms
+    rpc State(StateReq) returns (StateRes);
     // Use to get individual drone info
-    rpc GetDroneInfo (GetDroneInfoReq) returns (GetDroneInfoRes);
+    rpc GetDroneInfo(GetDroneInfoReq) returns (GetDroneInfoRes);
     // Use to request a stream of remote ID messages.
     rpc RemoteIdStream (RemoteIdStreamReq) returns (RemoteIdStreamRes);
+    // Request muting of a detection.
+    rpc Mute (MuteReq) returns (MuteRes);
+    // Use to request signal interference status
+    rpc GetSignalInterference (GetSignalInterferenceReq) returns (SignalInterference);
 }
+
 
 // Rfs wire format messages
 //
@@ -95,32 +103,52 @@ service RfsService {
 message RfsMsg {
     oneof msg {
         // Request RFS start
-        StartReq start_req=0x0080;
+        StartReq start_req                     = 0x0080;
         // RFS start response
-        StartRes start_res=0x0081;
+        StartRes start_res                     = 0x0081;
         // Request RFS stop
-        StopReq stop_req=0x0082;
+        StopReq stop_req                       = 0x0082;
         // RFS stop response
-        StopRes stop_res=0x0083;
+        StopRes stop_res                       = 0x0083;
         // use GetDroneInfoReq instead
-        GetDronelistReq get_dronelist_req=0x0084 [deprecated=true];
-        GetDronelistRes get_dronelist_res=0x0085 [deprecated=true];
+        GetDronelistReq get_dronelist_req      = 0x0084 [ deprecated = true ];
+        GetDronelistRes get_dronelist_res      = 0x0085 [ deprecated = true ];
         // Get individual drone info
-        GetDroneInfoReq get_drone_info_req=0x0086;
+        GetDroneInfoReq get_drone_info_req     = 0x0086;
         // Individual drone info response
-        GetDroneInfoRes get_drone_info_res=0x0087;
+        GetDroneInfoRes get_drone_info_res     = 0x0087;
         // RFS threat indication
-        RfsThreatInd rfs_threat_ind=0x0088;
+        RfsThreatInd rfs_threat_ind            = 0x0088;
         // Wifi threat indication
-        WifiThreatInd wifi_threat_ind=0x0089;
+        WifiThreatInd wifi_threat_ind          = 0x0089;
         // Threat stopped indication
-        ThreatStoppedInd threat_stopped_ind=0x008A;
+        ThreatStoppedInd threat_stopped_ind    = 0x008A;
         // Remote drone ID stream start - Request
-        RemoteIdStreamReq remote_id_stream_req=0x008B;
+        RemoteIdStreamReq remote_id_stream_req = 0x008B;
         // Remote Drone ID stream start - Response
-        RemoteIdStreamRes remote_id_stream_res=0x008C;
+        RemoteIdStreamRes remote_id_stream_res = 0x008C;
         // Remote Drone ID detection - Indication
-        RemoteIdInd remote_id_ind=0x008D;
+        RemoteIdInd remote_id_ind              = 0x008D;
+        // Request to mute a detection
+        MuteReq mute_req                       = 0x008E;
+        // Response to muting
+        MuteRes mute_res                       = 0x008F;
+        // State request
+        StateReq state_req                     = 0x0090;
+        // State response
+        StateRes state_res                     = 0x0091;
+        // Indication of a mute status change
+        MuteInd mute_ind                       = 0x0092;
+        // Wolfpack set led identify
+        WpLedIdentifyReq wp_led_id_req         = 0x0093;
+        // Wolfpack led identify response
+        WpLedIdentifyRes wp_led_id_res         = 0x0094;
+        // Request signal interference information
+        GetSignalInterferenceReq signal_interference_req=0x0095;
+        // Signal interference status
+        SignalInterference signal_interference_res=0x0096;
+        // Signal interference indication
+        SignalInterference signal_interference_ind=0x0097;
     }
 }
 
@@ -130,21 +158,51 @@ message RfsMsg {
 
 // Enumeration of possible start-modes.
 enum StartMode {
-    Default = 0; // RFS runs on internal antenna and external if present
-    ExtAntOnly = 1; // RFS runs on external antenna only. Will signal error if not present
-    IntAntOnly = 2; // RFS runs on internal antenna only, even if external is present
+    Default       = 0; // RFS runs on internal antenna and external if present
+    ExtAntOnly    = 1; // RFS runs on external antenna only. Will signal error if not present
+    IntAntOnly    = 2; // RFS runs on internal antenna only, even if external is present
     UAVModeSearch = 3; // RFS runs on internal antenna in search/direction finding mode
 }
 
 // Enumeration of frequncies bands scanned.
 enum ScanBand {
     Invalid = 0; // Default, before overwriting with detection band.
-    MHz433 = 1; // ISM band ~433
-    MHz900 = 2; // ISM band ~900
-    MHz1200 = 3; // ISM band 1G2
-    MHz2400 = 4; // ISM band 2G4
-    MHz5800 = 5; // ISM band 5G8
-    MHz5200 = 6; // ISM band 5G2
+    MHz433 = 1; // ISM band 433MHz
+    MHz900 = 2; // ISM band 868-915MHz
+    MHz1200 = 3; // ISM band 1.2GHz
+    MHz2400 = 4; // ISM band 2.4GHz
+    MHz5800 = 5; // ISM band 5.8GHz
+    MHz5200 = 6; // ISM band 5.2GHz
+}
+
+// Enumeration of the categories of threats that may be reported.
+enum ThreatCategory {
+    CategoryInvalid             = 0;    // Invalid.
+    CategoryDrone = 1; // Drone / UAV.
+    CategoryController       = 2; // Controller / ground station.
+    CategoryDroneOrController = 3; // Drone or controller. Source indeterminate.
+    CategoryWifi             = 4; // Wi-Fi signal from either drone or controller.
+    CategoryTest             = 5; // MyDefence test signal.
+}
+
+// Enumeration of system status
+enum State {
+    MAIN_STATE_IDLE        = 0;
+    MAIN_STATE_RUNNING     = 1;
+    MAIN_STATE_STOPPING    = 2;
+    MAIN_STATE_STARTING    = 3;
+    MAIN_STATE_START_ERROR = 4;
+}
+
+enum RidTransportType {
+    TRANSPORT_UNKNOWN              = 0;  // Bluetooth classic transport
+    TRANSPORT_BEACON               = 1;  // Wi-Fi beacon transport
+    TRANSPORT_NAN                  = 2;  // Wi-Fi NaN transport
+    TRANSPORT_BT_CLASSIC           = 3;  // Bluetooth classic transport
+    TRANSPORT_BT_EXT               = 4;  // Bluetooth extended transport, THIS IS NOT PART OF THE REMOTE ID STANDARD, see ASTM-F3411 (section 5.4.7.1)
+    TRANSPORT_BT_CLASSIC_CODED_PHY = 5;  // Bluetooth classic coded PHY transport
+    TRANSPORT_BT_EXT_CODED_PHY     = 6;  // Bluetooth extended coded PHY transport
+
 }
 
 /*************************************
@@ -152,15 +210,16 @@ enum ScanBand {
  ************************************/
 // Description of a drone.
 message DroneInfo {
-    uint32 type_id = 1; // Identifier for detection filter
-    string type_id_name = 2; // Name of RF protocol/Family (e.g Lightbridge)
-    string drone_name = 3; // Name of drone(s) (e.g Phantom 3)
-    uint32 vendor_id = 4; // Identifier to rf emitter vendor (e.g 1)
-    string vendor_id_name = 5; // Name of rf emitter vendor (e.g DJI)
-    uint32 category_id = 6; // Identifier of rf emitter category drone/controller/wifi (e.g 1)
-    string category_id_name = 7; // Name of rf emitter category (e.g Drone)
-    repeated ScanBand band = 8; // Bands where detector looks (e.g 2G4 and 5G8)
+    reserved 6, 7;
+    uint32 type_id          = 1; // Identifier for detection filter
+    string type_id_name     = 2; // Name of RF protocol/Family (e.g Lightbridge)
+    string drone_name       = 3; // Name of drone(s) (e.g Phantom 3)
+    uint32 vendor_id        = 4; // Identifier to rf emitter vendor (e.g 1)
+    string vendor_id_name   = 5; // Name of rf emitter vendor (e.g DJI)
+    repeated ScanBand band  = 8; // Bands where detector looks (e.g 2G4 and 5G8)
+    ThreatCategory category = 9; // Category of threat.
 }
+
 // Get individual drone description, just in time or loop through and build library.
 message GetDroneInfoReq {
     // Id of detection filter associated with drone. 0 is first in library.
@@ -168,22 +227,22 @@ message GetDroneInfoReq {
 }
 // Response to GetDroneInfoReq
 message GetDroneInfoRes {
-    common.Status status = 1;
+    common.Status status      = 1;
     // Description of drone.
-    DroneInfo drone_info = 2;
+    DroneInfo drone_info      = 2;
     // Id to next drone, 0 indicates end of library.
     uint32 next_drone_type_id = 3;
 }
 // Get drone descriptions for all drones in target device library.
 // Deprecated, use GetDroneInfoReq instead
-message GetDronelistReq{
+message GetDronelistReq {
     option deprecated = true;
 }
 // Response to GetDronelistReq
 // Deprecated
-message GetDronelistRes{
-    option deprecated = true;
-    common.Status status = 1;
+message GetDronelistRes {
+    option deprecated             = true;
+    common.Status status          = 1;
     repeated DroneInfo drone_info = 2;
 }
 // Request RFS start detection.
@@ -198,38 +257,48 @@ message StopReq {}
 message StopRes {
     common.Status status = 1;
 }
+
+// Request RFS start detection.
+message StateReq {}
+// Response to StartReq
+message StateRes {
+    common.Status status = 1;
+    State state          = 2;
+}
 // Post rfs threat indication.
 message RfsThreatInd {
+    reserved 3, 7, 8;
     message RelativeBearing {
-        bool valid = 1; // Valid when applicable.
-        float bearing = 2; // Calculated Bearing.
+        reserved 4;
+        bool valid = 1; // Current validity of the bearing calculation.
+        float bearing = 2; // Calculated bearing. Degrees from center of device. Positive is counter-clockwise.
         float var_bearing = 3; // Variance in bearing.
-        float timestamp = 4; // Time bearing is calculated.
+        google.protobuf.Timestamp ts = 5; // Timestamp when bearing was last updated.
     }
-    uint32 id = 1; // Instance of detection thread.
-    uint32 type_id = 2; // Detection type id.
-    uint32 start_time = 3; // Start time of detection thread.
-    float power = 4; // Power at time of reporting.
-    repeated ScanBand current_band = 5; // Band(s) where detected occurs.
-    RelativeBearing relative_bearing = 6; // Relative bearing of rfs at time of reporting.
-    uint32 last_seen = 7; // Last time of detection
-    float msg_timestamp = 8; // Time message is compiled.
+    uint32 id = 1; // ID of detection. Unique for this sensor, not across sensors.
+    uint32 type_id = 2; // Detection type id. May be be used to look up description with GetDroneInfoReq.
+    float power = 4; // Power at time of reporting, dB.
+    repeated ScanBand current_band = 5; // Band(s) where detection occurs.
+    RelativeBearing relative_bearing = 6; // Relative bearing from device to threat.
+    google.protobuf.Timestamp start_ts = 9; // Earliest observation of this detection.
+    google.protobuf.Timestamp last_seen_ts = 10; // Latest observation time of this detection.
+    bool muted = 11; // Mute status of this threat.
 }
 // Post wifi threat indication.
 message WifiThreatInd {
-    reserved 5;
-    uint32 id = 1; // Instance of detection thread.
-    uint32 type_id = 2; // Detection type id.
-    uint32 start_time = 3; // Start time of detection thread.
-    float power = 4; // Power at time of reporting.
+    reserved 3, 5, 8;
+    uint32 id = 1; // ID of detection. Unique for this sensor, not across sensors.
+    uint32 type_id = 2; // Detection type id. May be used to look up more info with GetDroneInfoReq.
+    float power = 4; // Received signal strength indication. dB.
     uint32 channel = 6; // Wifi channel as per international standards 802.11 a/b/g/n.
     bytes mac_adr = 7; // Mac address of wifi threat.
-    float msg_timestamp = 8; // Time message is compiled.
+    google.protobuf.Timestamp start_ts = 9; // Earliest observation of this detection.
+    bool muted = 10; // Mute status of this threat.
 }
 // Post stop of threat indication.
 message ThreatStoppedInd {
-    uint32 id = 1; // Instance of detection thread.
-    float msg_timestamp = 2; // Time message is compiled.
+    reserved 2;
+    uint32 id           = 1; // Instance of detection thread.
 }
 
 // Request that remote ID results be streamed from the device.
@@ -250,4 +319,82 @@ message RemoteIdInd {
     bytes mac_adr = 1;
     // Remote ID message pack, as per ASTM-F3411
     bytes payload = 2;
+    // ID of detection. Unique for this sensor, not across sensors.
+    uint32 id = 3;
+    // Transport type of RID message.
+    RidTransportType transport_type = 4;
+    // Mute status of this threat.
+    bool muted = 10;
+
+
 }
+
+// Request to mute or unmute a detection. Note that if a detection is muted by both ID and type, it will be necessary
+// to unmute by both methods too.
+// Setting id = 0 and type_id = 0 will mute all active threats, by ID where possible, and by type otherwise.
+// Setting id = 0 and type_id = 0 when all active threats are already muted, will unmute all.
+message MuteReq {
+    // Enable or disable muting.
+    bool mute = 1;
+    // ID of the threat to mute, as received in RfsThreatInd, WifiThreatInd or RemoteIdInd. 0 to mute by type, only.
+    uint32 id = 2;
+    // Type ID to mute. This will also mute future threats of this type. This will be ignored if a valid (non-zero) ID is given.
+    uint32 type_id = 3;
+}
+
+// Response to MuteReq.
+message MuteRes {
+    // Status of the request.
+    common.Status status = 1;
+}
+
+// Indication that a mute status has changed.
+message MuteInd {
+    // Is muting enabled for this threat or type.
+    bool muted = 1;
+    // ID of the threat to mute, as received in RfsThreatInd, WifiThreatInd or RemoteIdInd. 0 is invalid, and means muting is done by type.
+    uint32 id = 2;
+    // Type ID to mute. This shall be ignored if a valid (non-zero) ID is given.
+    uint32 type_id = 3;
+}
+
+// Send LED indentify signal to a Wolfpack
+// Identify = 1 will make the Wolfpack flash green for 30 min, either with the red flash in default mode, or alone in darkmode.
+// Identify = 0 will disable the green flash.
+message WpLedIdentifyReq {
+    // Enable/disable the Wolfpack green LED flash.
+    bool identify = 1;
+}
+
+// Response to WpLedIdentifyReq
+message WpLedIdentifyRes {
+    // Status for the WpLedIdentifyReq, if no PMU is connected it will fail.
+    common.Status status = 1;
+}
+
+// Single band of signal interference status
+message SignalInterferenceBand {
+    ScanBand band = 1;
+    int32 interference_status = 2;  // 0 = no interference, 1 = interference detected
+    int32 min_gain = 3;
+    int32 max_gain = 4;
+    int32 avg_gain = 5;
+    int32 threshold = 6;
+    int32 num_over = 7;
+    int32 num_under = 8;
+}
+
+// Signal interference status
+//
+// This message is the response to a `GetSignalInterferenceReq` message or used in
+// an indication.
+//
+// Indication will be sent when the signal interference status changes.
+message SignalInterference {
+    repeated SignalInterferenceBand signal_interference = 1;
+}
+
+// Request signal interference
+//
+// The device will respond with a `SignalInterference` message
+message GetSignalInterferenceReq {}

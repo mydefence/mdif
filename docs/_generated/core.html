@@ -100,6 +100,7 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif_core_core-proto"><span class="xref myst">mdif/core/core.proto</span></a></p>
 <ul>
 <li><p><a class="reference internal" href="#mdif-core-CoreService"><span class="xref myst">CoreService</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-AccessoriesList"><span class="xref myst">AccessoriesList</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-ApiErrorInd"><span class="xref myst">ApiErrorInd</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-CompassCalibrateReq"><span class="xref myst">CompassCalibrateReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-CompassCalibrateRes"><span class="xref myst">CompassCalibrateRes</span></a></p></li>
@@ -108,13 +109,18 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif-core-CompassCalibrationStoreReq"><span class="xref myst">CompassCalibrationStoreReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-CompassCalibrationStoreRes"><span class="xref myst">CompassCalibrationStoreRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-CompassHeading"><span class="xref myst">CompassHeading</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-CompositeInfo"><span class="xref myst">CompositeInfo</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-CoreMsg"><span class="xref myst">CoreMsg</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-DeviceInfo"><span class="xref myst">DeviceInfo</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-DisconnectInd"><span class="xref myst">DisconnectInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetAccessoriesListReq"><span class="xref myst">GetAccessoriesListReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetBatteryStatusReq"><span class="xref myst">GetBatteryStatusReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetBatteryStatusRes"><span class="xref myst">GetBatteryStatusRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetDeviceInfoReq"><span class="xref myst">GetDeviceInfoReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetIpConfigReq"><span class="xref myst">GetIpConfigReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GetIpConfigRes"><span class="xref myst">GetIpConfigRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetPersistentSettingReq"><span class="xref myst">GetPersistentSettingReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-GetPersistentSettingRes"><span class="xref myst">GetPersistentSettingRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GnssCompassStreamInd"><span class="xref myst">GnssCompassStreamInd</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GnssCompassStreamReq"><span class="xref myst">GnssCompassStreamReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GnssCompassStreamRes"><span class="xref myst">GnssCompassStreamRes</span></a></p></li>
@@ -126,9 +132,15 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference internal" href="#mdif-core-ResetRes"><span class="xref myst">ResetRes</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-SetIpConfigReq"><span class="xref myst">SetIpConfigReq</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-SetIpConfigRes"><span class="xref myst">SetIpConfigRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-SetPersistentSettingReq"><span class="xref myst">SetPersistentSettingReq</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-SetPersistentSettingRes"><span class="xref myst">SetPersistentSettingRes</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-WrapperMsgInd"><span class="xref myst">WrapperMsgInd</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-AccessoryId"><span class="xref myst">AccessoryId</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-ChargingState"><span class="xref myst">ChargingState</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-DeviceType"><span class="xref myst">DeviceType</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-DhcpEnable"><span class="xref myst">DhcpEnable</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-GnssFixType"><span class="xref myst">GnssFixType</span></a></p></li>
+<li><p><a class="reference internal" href="#mdif-core-PersistentSetting"><span class="xref myst">PersistentSetting</span></a></p></li>
 <li><p><a class="reference internal" href="#mdif-core-SysTimeStatus"><span class="xref myst">SysTimeStatus</span></a></p></li>
 </ul>
 </li>
@@ -207,6 +219,14 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p>31</p></td>
 <td><p>Dec</p></td>
 </tr>
+<tr class="row-even"><td><p>0x100</p></td>
+<td><p>0x1FF</p></td>
+<td><p>Hex</p></td>
+</tr>
+<tr class="row-odd"><td><p>256</p></td>
+<td><p>511</p></td>
+<td><p>Dec</p></td>
+</tr>
 </tbody>
 </table>
 <p><a name="mdif-core-CoreService"></a></p>
@@ -267,9 +287,51 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p><a class="reference internal" href="#mdif-core-CompassCalibrationStoreRes"><span class="xref myst">CompassCalibrationStoreRes</span></a></p></td>
 <td><p>Used to store current compass calibration</p></td>
 </tr>
+<tr class="row-odd"><td><p>GetAccessoriesList</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetAccessoriesListReq"><span class="xref myst">GetAccessoriesListReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-AccessoriesList"><span class="xref myst">AccessoriesList</span></a></p></td>
+<td><p>Used to get a list of attached accessories</p></td>
+</tr>
+<tr class="row-even"><td><p>SetPersistentSetting</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetPersistentSettingReq"><span class="xref myst">SetPersistentSettingReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetPersistentSettingRes"><span class="xref myst">SetPersistentSettingRes</span></a></p></td>
+<td><p>Used to set a persistent setting</p></td>
+</tr>
+<tr class="row-odd"><td><p>GetPersistentSetting</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetPersistentSettingReq"><span class="xref myst">GetPersistentSettingReq</span></a></p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetPersistentSettingRes"><span class="xref myst">GetPersistentSettingRes</span></a></p></td>
+<td><p>Used to get a persistent setting</p></td>
+</tr>
 </tbody>
 </table>
+<p>Used to set LED mode on Wolfpack |</p>
  <!-- end services -->
+<p><a name="mdif-core-AccessoriesList"></a></p>
+</section>
+<section id="accessorieslist">
+<h2>AccessoriesList<a class="headerlink" href="#accessorieslist" title="Permalink to this heading"></a></h2>
+<p>Response on GetAccessoriesList request or indication of change in attached accessories</p>
+<p>The device will respond with a AccessoriesList message. If the port is in use, the
+accessory id will be set to the corresponding accessory and set to ACCESSORY_INVALID
+if nothing is attached on the given port.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mpc</p></td>
+<td><p><a class="reference internal" href="#mdif-core-AccessoryId"><span class="xref myst">AccessoryId</span></a></p></td>
+<td><p>The accessory attached to the first port</p></td>
+</tr>
+<tr class="row-odd"><td><p>str_mpc</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-core-ApiErrorInd"></a></p>
 </section>
 <section id="apierrorind">
@@ -462,6 +524,32 @@ For details on how to compensate, see resources at NOAA:</p>
 </tr>
 </tbody>
 </table>
+<p><a name="mdif-core-CompositeInfo"></a></p>
+</section>
+<section id="compositeinfo">
+<h2>CompositeInfo<a class="headerlink" href="#compositeinfo" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>parent_serial</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Parent serial</p></td>
+</tr>
+<tr class="row-odd"><td><p>num_zones</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Number of zones</p></td>
+</tr>
+<tr class="row-even"><td><p>zone_id</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>Zone id</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-core-CoreMsg"></a></p>
 </section>
 <section id="coremsg">
@@ -568,9 +656,49 @@ defined in the CoreService through RPC patterns.</p>
 <td><p><a class="reference internal" href="#mdif-core-DeviceInfo"><span class="xref myst">DeviceInfo</span></a></p></td>
 <td><p>Device Announce Indication</p></td>
 </tr>
+<tr class="row-even"><td><p>disconnect_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-DisconnectInd"><span class="xref myst">DisconnectInd</span></a></p></td>
+<td><p>Device has been removed indication</p></td>
+</tr>
+<tr class="row-odd"><td><p>wrapper_msg_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-WrapperMsgInd"><span class="xref myst">WrapperMsgInd</span></a></p></td>
+<td><p>Wrapper message indication</p></td>
+</tr>
+<tr class="row-even"><td><p>battery_status_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetBatteryStatusRes"><span class="xref myst">GetBatteryStatusRes</span></a></p></td>
+<td><p>Battery status indication</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_accessories_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetAccessoriesListReq"><span class="xref myst">GetAccessoriesListReq</span></a></p></td>
+<td><p>Get attached accessories request</p></td>
+</tr>
+<tr class="row-even"><td><p>get_accessories_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-AccessoriesList"><span class="xref myst">AccessoriesList</span></a></p></td>
+<td><p>List of attached accessories response</p></td>
+</tr>
+<tr class="row-odd"><td><p>accessories_list_ind</p></td>
+<td><p><a class="reference internal" href="#mdif-core-AccessoriesList"><span class="xref myst">AccessoriesList</span></a></p></td>
+<td><p>List of attached accessories indication</p></td>
+</tr>
+<tr class="row-even"><td><p>set_persistent_setting_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetPersistentSettingReq"><span class="xref myst">SetPersistentSettingReq</span></a></p></td>
+<td><p>Set persistent setting request</p></td>
+</tr>
+<tr class="row-odd"><td><p>set_persistent_setting_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-SetPersistentSettingRes"><span class="xref myst">SetPersistentSettingRes</span></a></p></td>
+<td><p>Set persistent setting response</p></td>
+</tr>
 <tr class="row-even"><td><p>api_error_ind</p></td>
 <td><p><a class="reference internal" href="#mdif-core-ApiErrorInd"><span class="xref myst">ApiErrorInd</span></a></p></td>
 <td><p>Api Error indication</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_persistent_setting_req</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetPersistentSettingReq"><span class="xref myst">GetPersistentSettingReq</span></a></p></td>
+<td><p>Get persistent setting request</p></td>
+</tr>
+<tr class="row-even"><td><p>get_persistent_setting_res</p></td>
+<td><p><a class="reference internal" href="#mdif-core-GetPersistentSettingRes"><span class="xref myst">GetPersistentSettingRes</span></a></p></td>
+<td><p>Get persistent setting response</p></td>
 </tr>
 </tbody>
 </table>
@@ -616,8 +744,53 @@ defined in the CoreService through RPC patterns.</p>
 <td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
 <td><p>Can GNSS settings be configured for this device.</p></td>
 </tr>
+<tr class="row-odd"><td><p>connection_index</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p>The connection index of the device</p></td>
+</tr>
+<tr class="row-even"><td><p>battery_present</p></td>
+<td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
+<td><p>Battery available in the device</p></td>
+</tr>
+<tr class="row-odd"><td><p>build_date</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Build date of the device</p></td>
+</tr>
+<tr class="row-even"><td><p>mac</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>Device MAC address</p></td>
+</tr>
+<tr class="row-odd"><td><p>composite_info</p></td>
+<td><p><a class="reference internal" href="#mdif-core-CompositeInfo"><span class="xref myst">CompositeInfo</span></a></p></td>
+<td><p>Composit info</p></td>
+</tr>
 </tbody>
 </table>
+<p><a name="mdif-core-DisconnectInd"></a></p>
+</section>
+<section id="disconnectind">
+<h2>DisconnectInd<a class="headerlink" href="#disconnectind" title="Permalink to this heading"></a></h2>
+<p>Indication that a device has been removed from the network.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>serial_number</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GetAccessoriesListReq"></a></p>
+</section>
+<section id="getaccessorieslistreq">
+<h2>GetAccessoriesListReq<a class="headerlink" href="#getaccessorieslistreq" title="Permalink to this heading"></a></h2>
+<p>Get attached accessories request</p>
+<p>The device will respond with a AccessoriesList message.</p>
 <p><a name="mdif-core-GetBatteryStatusReq"></a></p>
 </section>
 <section id="getbatterystatusreq">
@@ -652,6 +825,18 @@ defined in the CoreService through RPC patterns.</p>
 <tr class="row-odd"><td><p>bat_volt</p></td>
 <td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
 <td><p>The battery voltage</p></td>
+</tr>
+<tr class="row-even"><td><p>temperature</p></td>
+<td><p><a class="reference internal" href="#float"><span class="xref myst">float</span></a></p></td>
+<td><p>Battery temperature in degrees Celsius</p></td>
+</tr>
+<tr class="row-odd"><td><p>charging_state</p></td>
+<td><p><a class="reference internal" href="#mdif-core-ChargingState"><span class="xref myst">ChargingState</span></a></p></td>
+<td><p>Charging state</p></td>
+</tr>
+<tr class="row-even"><td><p>remaining_percent</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>Remaining battery percentage</p></td>
 </tr>
 </tbody>
 </table>
@@ -699,6 +884,52 @@ defined in the CoreService through RPC patterns.</p>
 <tr class="row-even"><td><p>dhcp_enabled</p></td>
 <td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
 <td><p>Is DHCP enabled</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GetPersistentSettingReq"></a></p>
+</section>
+<section id="getpersistentsettingreq">
+<h2>GetPersistentSettingReq<a class="headerlink" href="#getpersistentsettingreq" title="Permalink to this heading"></a></h2>
+<p>Request a persistent setting from device</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>setting</p></td>
+<td><p><a class="reference internal" href="#mdif-core-PersistentSetting"><span class="xref myst">PersistentSetting</span></a></p></td>
+<td><p>The settings which can be queried</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-GetPersistentSettingRes"></a></p>
+</section>
+<section id="getpersistentsettingres">
+<h2>GetPersistentSettingRes<a class="headerlink" href="#getpersistentsettingres" title="Permalink to this heading"></a></h2>
+<p>Response to GetPersistentSettingReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+<tr class="row-odd"><td><p>str_value</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>The string value of the setting</p></td>
+</tr>
+<tr class="row-even"><td><p>int_value</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>The integer value of the setting</p></td>
 </tr>
 </tbody>
 </table>
@@ -985,7 +1216,206 @@ response may not be received.</p>
 </tr>
 </tbody>
 </table>
+<p><a name="mdif-core-SetPersistentSettingReq"></a></p>
+</section>
+<section id="setpersistentsettingreq">
+<h2>SetPersistentSettingReq<a class="headerlink" href="#setpersistentsettingreq" title="Permalink to this heading"></a></h2>
+<p>Change a persistent setting in device</p>
+<p>Settings set here are stored in non-volatile memory and will be persistent on
+power-cycle.
+Note that not all settings are available on all devices.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>setting</p></td>
+<td><p><a class="reference internal" href="#mdif-core-PersistentSetting"><span class="xref myst">PersistentSetting</span></a></p></td>
+<td><p>The setting to change</p></td>
+</tr>
+<tr class="row-odd"><td><p>str_value</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p>The string value to set</p></td>
+</tr>
+<tr class="row-even"><td><p>int_value</p></td>
+<td><p><a class="reference internal" href="#int32"><span class="xref myst">int32</span></a></p></td>
+<td><p>The integer value to set</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-SetPersistentSettingRes"></a></p>
+</section>
+<section id="setpersistentsettingres">
+<h2>SetPersistentSettingRes<a class="headerlink" href="#setpersistentsettingres" title="Permalink to this heading"></a></h2>
+<p>Response to SetPersistentSettingReq</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p>The status of the request</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-WrapperMsgInd"></a></p>
+</section>
+<section id="wrappermsgind">
+<h2>WrapperMsgInd<a class="headerlink" href="#wrappermsgind" title="Permalink to this heading"></a></h2>
+<p>Wraps a message for a specific device in the network.</p>
+<p>If the receiving device is not in the network then this message is sent back
+to sender indicating status=ERR_NOT_READY</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>receiver</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>sender</p></td>
+<td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><a class="reference internal" href="#mdif-common-Status"><span class="xref myst">mdif.common.Status</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>length</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>payload</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
  <!-- end messages -->
+<p><a name="mdif-core-AccessoryId"></a></p>
+</section>
+<section id="accessoryid">
+<h2>AccessoryId<a class="headerlink" href="#accessoryid" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ACCESSORY_INVALID</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_MASTER</p></td>
+<td><p>1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_CONSOLE</p></td>
+<td><p>10</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_AA100</p></td>
+<td><p>12</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_PITBULL</p></td>
+<td><p>14</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_FUTTE</p></td>
+<td><p>15</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_AUDIO</p></td>
+<td><p>16</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_VIBRATOR</p></td>
+<td><p>19</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_AA120</p></td>
+<td><p>22</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_AA150</p></td>
+<td><p>24</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_DLC</p></td>
+<td><p>26</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_HDLC</p></td>
+<td><p>27</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_HDLC_MASTER</p></td>
+<td><p>28</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_HDLC_PITBULL</p></td>
+<td><p>29</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_HDLC_OTHER</p></td>
+<td><p>30</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_AA180</p></td>
+<td><p>32</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-ChargingState"></a></p>
+</section>
+<section id="chargingstate">
+<h2>ChargingState<a class="headerlink" href="#chargingstate" title="Permalink to this heading"></a></h2>
+<p>Charging state of the battery</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DISCHARGING</p></td>
+<td><p>0</p></td>
+<td><p>Battery is not charging</p></td>
+</tr>
+<tr class="row-odd"><td><p>NOT_CHARGING_FULL</p></td>
+<td><p>1</p></td>
+<td><p>Charger connected but battery is full</p></td>
+</tr>
+<tr class="row-even"><td><p>CHARGING</p></td>
+<td><p>2</p></td>
+<td><p>Battery is charging</p></td>
+</tr>
+<tr class="row-odd"><td><p>NOT_CHARGING_NTC_HOT</p></td>
+<td><p>3</p></td>
+<td><p>Charger connected but battery is too hot to charge</p></td>
+</tr>
+<tr class="row-even"><td><p>NOT_CHARGING_NTC_COLD</p></td>
+<td><p>4</p></td>
+<td><p>Charger connected but battery is too cold to charge</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-core-DeviceType"></a></p>
 </section>
 <section id="devicetype">
@@ -1034,6 +1464,10 @@ response may not be received.</p>
 <tr class="row-even"><td><p>FALCON</p></td>
 <td><p>14</p></td>
 <td><p>Falcon air-borne RF direction finding sensor</p></td>
+</tr>
+<tr class="row-odd"><td><p>HOST</p></td>
+<td><p>99</p></td>
+<td><p>Host device</p></td>
 </tr>
 </tbody>
 </table>
@@ -1088,6 +1522,41 @@ response may not be received.</p>
 <tr class="row-even"><td><p>GNSS_FIX_3D</p></td>
 <td><p>3</p></td>
 <td><p>3-dimensional fix.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-core-PersistentSetting"></a></p>
+</section>
+<section id="persistentsetting">
+<h2>PersistentSetting<a class="headerlink" href="#persistentsetting" title="Permalink to this heading"></a></h2>
+<p>Persistent settings which can be changed in devices</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUDIO_VOLUME</p></td>
+<td><p>0</p></td>
+<td><p>Audio volume (value from 0-10). Uses first int_value in Set/GetPersistentSettingReq to set/get volume</p></td>
+</tr>
+<tr class="row-odd"><td><p>LED_ENABLE</p></td>
+<td><p>1</p></td>
+<td><p>LED enable (0 or 1). Uses first int_value in Set/GetPersistentSettingReq to set/get led enable</p></td>
+</tr>
+<tr class="row-even"><td><p>VIBRATOR_ENABLE</p></td>
+<td><p>2</p></td>
+<td><p>Vibrator enable (0 or 1). Uses first int_value in Set/GetPersistentSettingReq to set/get vibrator enable</p></td>
+</tr>
+<tr class="row-odd"><td><p>AUDIO_ENABLE</p></td>
+<td><p>3</p></td>
+<td><p>Audio enable (0 or 1), Uses first int_value in Set/GetPersistentSettingReq to set/get audio enable</p></td>
+</tr>
+<tr class="row-even"><td><p>ECM_SEMIAUTOMATIC_ENABLE</p></td>
+<td><p>4</p></td>
+<td><p>ECM semi-automatic mode (0 or 1). Uses first int_value in Set/GetPersistentSettingReq to set/get ECM semi-automatic enable</p></td>
 </tr>
 </tbody>
 </table>

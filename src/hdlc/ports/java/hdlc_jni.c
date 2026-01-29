@@ -55,16 +55,16 @@
 #include <inttypes.h>
 #include <jni.h>
 #include <pthread.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "log/log.h"
 #include "hdlc/include/hdlc.h"
 #include "hdlc/include/hdlc_os.h"
 #include "hdlc/ports/java/java_port.h"
-
+#include "log/log.h"
 
 static int counter_attach_current_thread = 0;
+int log_level = 2; // Default log level VERBOSE, can be changed by application
 
 // processing callback to handler class
 typedef struct jni_context {
@@ -80,11 +80,12 @@ typedef struct jni_context {
 } JniContext;
 JniContext g_ctx;
 
-jmethodID locate_method_id(JNIEnv *env, char *method_name, char *arguments) {
+jmethodID locate_method_id(JNIEnv *env, char *method_name, char *arguments)
+{
     jmethodID method_id = (*env)->GetStaticMethodID(env, g_ctx.jniHdlcClz, method_name, arguments);
     if (method_id == NULL) {
         log_error("Unable to locate method '%s'", method_name);
-        return NULL;  // Unable to locate required method
+        return NULL; // Unable to locate required method
     } else {
         log_debug("Method '%s' was found", method_name);
         return method_id;
@@ -102,31 +103,31 @@ jmethodID locate_method_id(JNIEnv *env, char *method_name, char *arguments) {
  *     we rely on system to free all global refs when it goes away;
  *     the pairing function JNI_OnUnload() never gets called at all.
  */
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
+{
     JNIEnv *env;
     memset(&g_ctx, 0, sizeof(g_ctx));
 
     g_ctx.javaVM = vm;
-    if ((*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_6) != JNI_OK) {
-        return JNI_ERR;  // JNI version not supported.
+    if ((*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_6) != JNI_OK) {
+        return JNI_ERR; // JNI version not supported.
     }
 
     jclass clz =
-            (*env)->FindClass(env, "dk/mydefence/mdif_example/hdlc/Hdlc");
+        (*env)->FindClass(env, "dk/mydefence/android/hdlcservice/hdlc/Hdlc");
     g_ctx.jniHdlcClz = (*env)->NewGlobalRef(env, clz);
 
     jmethodID jniHdlcCtor =
-            (*env)->GetMethodID(env, g_ctx.jniHdlcClz, "<init>", "()V");
+        (*env)->GetMethodID(env, g_ctx.jniHdlcClz, "<init>", "()V");
     jobject handler = (*env)->NewObject(env, g_ctx.jniHdlcClz, jniHdlcCtor);
     g_ctx.jniHdlcObj = (*env)->NewGlobalRef(env, handler);
 
-
     // Finding callback methods
-    g_ctx.hdlc_os_tx_id = locate_method_id(env, "hdlc_os_tx", "([B)V");
-    g_ctx.hdlc_frame_sent_cb_id = locate_method_id(env, "hdlc_frame_sent_cb", "([BI)V");
-    g_ctx.hdlc_recv_frame_cb_id = locate_method_id(env, "hdlc_recv_frame_cb", "([BI)V");
-    g_ctx.hdlc_reset_cb_id = locate_method_id(env, "hdlc_reset_cb", "()V");
-    g_ctx.hdlc_connected_cb_id = locate_method_id(env, "hdlc_connected_cb", "()V");
+    g_ctx.hdlc_os_tx_id = locate_method_id(env, "hdlc_os_tx", "([BI)V");
+    g_ctx.hdlc_frame_sent_cb_id = locate_method_id(env, "hdlc_frame_sent_cb", "([BII)V");
+    g_ctx.hdlc_recv_frame_cb_id = locate_method_id(env, "hdlc_recv_frame_cb", "([BII)V");
+    g_ctx.hdlc_reset_cb_id = locate_method_id(env, "hdlc_reset_cb", "(I)V");
+    g_ctx.hdlc_connected_cb_id = locate_method_id(env, "hdlc_connected_cb", "(I)V");
 
     if (g_ctx.hdlc_os_tx_id == 0 ||
         g_ctx.hdlc_frame_sent_cb_id == 0 ||
@@ -137,7 +138,6 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     }
     return JNI_VERSION_1_6;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 // Implementation of HDLC callbacks
@@ -150,8 +150,9 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
  *
  * @param env JNIEnv pointer
  */
-void attatch_current_thread(JNIEnv **env) {
-    jint res = (*g_ctx.javaVM)->GetEnv(g_ctx.javaVM, (void **) env, JNI_VERSION_1_6);
+void attatch_current_thread(JNIEnv **env)
+{
+    jint res = (*g_ctx.javaVM)->GetEnv(g_ctx.javaVM, (void **)env, JNI_VERSION_1_6);
     if (res != JNI_OK) {
         res = (*g_ctx.javaVM)->AttachCurrentThread(g_ctx.javaVM, env, NULL);
         if (JNI_OK != res) {
@@ -162,7 +163,7 @@ void attatch_current_thread(JNIEnv **env) {
         if (++counter_attach_current_thread == 1) {
             log_info("Attaced to current thread");
             log_info("Note that if working with multiple threads then "
-                 "DetachCurrentThread MUST be used to free resources.");
+                     "DetachCurrentThread MUST be used to free resources.");
         } else {
             log_warn("Attaced to current thread: %d", counter_attach_current_thread);
             log_warn("Attached to current thread multiple times!");
@@ -174,11 +175,12 @@ void attatch_current_thread(JNIEnv **env) {
 /**
  * Callback function called when a frame has been sent, or otherwise discarded.
  *
- * @param _hdlc HDLC instance data allocated by hdlc_init()
+ * @param hdlc HDLC instance data allocated by hdlc_init()
  * @param frame parameter from hdlc_send_frame()
  * @param len parameter from hdlc_send_frame()
  */
-void hdlc_frame_sent_cb(hdlc_data_t *_hdlc, const uint8_t *frame, uint32_t len) {
+void hdlc_frame_sent_cb(hdlc_data_t *hdlc, const uint8_t *frame, uint32_t len)
+{
     // TX is only logged when acknowledged, because that was easy to implement
     if (1) {
         log_debug("hdlc transferred frame %d bytes\n", len);
@@ -186,15 +188,16 @@ void hdlc_frame_sent_cb(hdlc_data_t *_hdlc, const uint8_t *frame, uint32_t len) 
     // Connect to current thread if not already connected
     JNIEnv *env;
     attatch_current_thread(&env);
+    uint32_t instance = get_hdlc_instance_id(hdlc);
 
     // Building raw data array copy and call static method in Java
     jbyteArray rawDataCopy = (*env)->NewByteArray(env, len);
-    (*env)->SetByteArrayRegion(env, rawDataCopy, 0, len, (const jbyte *) frame);
+    (*env)->SetByteArrayRegion(env, rawDataCopy, 0, len, (const jbyte *)frame);
     (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_frame_sent_cb_id, rawDataCopy,
-                                 len);
+                                 len, instance);
     (*env)->DeleteLocalRef(env, rawDataCopy);
-    // Free data allocated in Java_dk_mydefence_mdif_1example_hdlc_Hdlc_hdlc_1send_1frame
-    free((void *) frame);
+    // Free data allocated in Java_dk_mydefence_mdif_1impl_hdlc_Hdlc_hdlc_1send_1frame
+    free((void *)frame);
 }
 
 /**
@@ -204,23 +207,26 @@ void hdlc_frame_sent_cb(hdlc_data_t *_hdlc, const uint8_t *frame, uint32_t len) 
  *  delivered in the same order they are sent, with the exception that UI frames
  *  may overtake data frames.
  *
- *  @param _hdlc HDLC instance data allocated by hdlc_init()
+ *  @param hdlc HDLC instance data allocated by hdlc_init()
  *  @param frame Pointer to a received HDLC frame. The pointer is invalid
  *  after this function returns.
  *  @param len Length of the frame
  */
-void hdlc_recv_frame_cb(hdlc_data_t *_hdlc, uint8_t *frame, uint32_t len) {
+void hdlc_recv_frame_cb(hdlc_data_t *hdlc, uint8_t *frame, uint32_t len)
+{
     log_debug("hdlc recv frame %d bytes\n", len);
 
     // Connect to current thread if not already connected
     JNIEnv *env;
     attatch_current_thread(&env);
 
+    uint32_t instance = get_hdlc_instance_id(hdlc);
+
     // Building raw data array copy and call static method in Java
     jbyteArray rawDataCopy = (*env)->NewByteArray(env, len);
-    (*env)->SetByteArrayRegion(env, rawDataCopy, 0, len, (const jbyte *) frame);
+    (*env)->SetByteArrayRegion(env, rawDataCopy, 0, len, (const jbyte *)frame);
     (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_recv_frame_cb_id, rawDataCopy,
-                                 len);
+                                 len, instance);
     (*env)->DeleteLocalRef(env, rawDataCopy);
 }
 
@@ -234,17 +240,20 @@ void hdlc_recv_frame_cb(hdlc_data_t *_hdlc, uint8_t *frame, uint32_t len) {
  * hdlc_frame_sent_cb(). hdlc_send_frame() and hdcl_send_frame_unacknowledged()
  * will fail until hdlc_connected_cb() is called.
  *
- * @param _hdlc HDLC instance data allocated by hdlc_init()
+ * @param hdlc HDLC instance data allocated by hdlc_init()
  */
-void hdlc_reset_cb(hdlc_data_t *_hdlc, hdlc_reset_cause_t cause) {
+void hdlc_reset_cb(hdlc_data_t *hdlc, hdlc_reset_cause_t cause)
+{
     log_debug("hdlc reset\n");
 
     // Connect to current thread if not already connected
     JNIEnv *env;
     attatch_current_thread(&env);
+    uint32_t instance = get_hdlc_instance_id(hdlc);
+    log_debug("(%d) hdlc reset\n", instance);
 
     // Building raw data array copy and call static method in Java
-    (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_reset_cb_id);
+    (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_reset_cb_id, instance);
 }
 
 /**
@@ -254,17 +263,18 @@ void hdlc_reset_cb(hdlc_data_t *_hdlc, hdlc_reset_cause_t cause) {
  *
  * @param hdlc HDLC instance data allocated by hdlc_init()
  */
-void hdlc_connected_cb(hdlc_data_t *hdlc) {
+void hdlc_connected_cb(hdlc_data_t *hdlc)
+{
     log_debug("hdlc connected\n");
 
     // Connect to current thread if not already connected
     JNIEnv *env;
     attatch_current_thread(&env);
+    uint32_t instance = get_hdlc_instance_id(hdlc);
 
     // Building raw data array copy and call static method in Java
-    (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_connected_cb_id);
+    (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_connected_cb_id, instance);
 }
-
 
 /**
  * Called by hdlc to transmit raw serial data.
@@ -282,15 +292,17 @@ void hdlc_connected_cb(hdlc_data_t *hdlc) {
  * @param count length of data
  * @return < 0 in case of error, otherwise number of bytes sent (== count).
  */
-int hdlc_os_tx(hdlc_data_t *_hdlc, const uint8_t *buf, uint32_t count) {
+int hdlc_os_tx(hdlc_data_t *hdlc, const uint8_t *buf, uint32_t count)
+{
     // Connect to current thread if not already connected
     JNIEnv *env;
     attatch_current_thread(&env);
+    uint32_t instance = get_hdlc_instance_id(hdlc);
 
     // Building raw data array copy and call static method in Java
     jbyteArray rawDataCopy = (*env)->NewByteArray(env, count);
-    (*env)->SetByteArrayRegion(env, rawDataCopy, 0, count, (const jbyte *) buf);
-    (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_os_tx_id, rawDataCopy);
+    (*env)->SetByteArrayRegion(env, rawDataCopy, 0, count, (const jbyte *)buf);
+    (*env)->CallStaticVoidMethod(env, g_ctx.jniHdlcClz, g_ctx.hdlc_os_tx_id, rawDataCopy, instance);
     (*env)->DeleteLocalRef(env, rawDataCopy);
     return count;
 }
@@ -302,9 +314,23 @@ int hdlc_os_tx(hdlc_data_t *_hdlc, const uint8_t *buf, uint32_t count) {
  * @param thiz Java object
  * @return JNIEXPORT
  */
-void initialize_hdlc_wrapper(JNIEnv *env, jobject thiz) {
+void initialize_hdlc_wrapper(JNIEnv *env, jobject thiz, jint instance)
+{
     log_info("Initialize HDLC");
-    hdlc_java_init(); // calls hdlc_init()
+    hdlc_java_init(instance); // calls hdlc_init()
+}
+
+/**
+ * Java calls into this function to stop HDLC
+ *
+ * @param env JNIEnv pointer
+ * @param thiz Java object
+ * @return JNIEXPORT
+ */
+void stop_hdlc_wrapper(JNIEnv *env, jobject thiz, jint instance)
+{
+    log_info("Stop HDLC");
+    hdlc_java_stop(instance); // calls hdlc_os_stop_timer()
 }
 
 /**
@@ -315,9 +341,12 @@ void initialize_hdlc_wrapper(JNIEnv *env, jobject thiz) {
  * @param buffer byte array received from serial
  * @param count number of bytes in buffer
  */
-void hdlc_os_rx_wrapper(JNIEnv *env, jobject thiz, jbyteArray buffer, jint count) {
+void hdlc_os_rx_wrapper(JNIEnv *env, jobject thiz, jbyteArray buffer, jint count, jint instance)
+{
+    log_info("hdlc_os_rx_wrapper called with %d bytes", count);
     jbyte *buf = (*env)->GetByteArrayElements(env, buffer, NULL);
-    hdlc_os_rx(hdlc, (uint8_t *) buf, count);
+    hdlc_data_t *hdlc = get_hdlc_data(instance);
+    hdlc_os_rx(hdlc, (uint8_t *)buf, count);
     (*env)->ReleaseByteArrayElements(env, buffer, buf, 0);
 }
 
@@ -332,9 +361,10 @@ void hdlc_os_rx_wrapper(JNIEnv *env, jobject thiz, jbyteArray buffer, jint count
  * @param frame byte array to be sent using HDLC
  * @param len number of bytes in frame
  */
-void hdlc_send_frame_wrapper(JNIEnv *env, jobject thiz, jbyteArray frame, jint len) {
+void hdlc_send_frame_wrapper(JNIEnv *env, jobject thiz, jbyteArray frame, jint len, jint instance)
+{
     jbyte *buf = (*env)->GetByteArrayElements(env, frame, NULL);
-    log_debug("Sending frame data %d bytes", len);
+    log_info("Sending frame data %d bytes", len);
     // Call to Get<*>ArrayElements must always be matched with a Release<*>ArrayElements. This
     // will free the data to java garbage collector and also free any allocated data used in
     // Get<*>ArrayElements.
@@ -343,6 +373,7 @@ void hdlc_send_frame_wrapper(JNIEnv *env, jobject thiz, jbyteArray frame, jint l
     // to free the data to java garbage collector using ReleaseByteArrayElements()
     uint8_t *msg = malloc(len);
     memcpy(msg, buf, len);
+    hdlc_data_t *hdlc = get_hdlc_data(instance);
     hdlc_send_frame(hdlc, msg, len);
     (*env)->ReleaseByteArrayElements(env, frame, buf, 0);
 }

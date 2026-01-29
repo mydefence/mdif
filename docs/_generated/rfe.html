@@ -294,7 +294,7 @@ defined in the RfeService through RPC patterns.</p>
 <td><p><a class="reference internal" href="#mdif-rfe-ControllerType"><span class="xref myst">ControllerType</span></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>config</p></td>
+<tr class="row-odd"><td><p>config_deprecated</p></td>
 <td><p><a class="reference internal" href="#mdif-rfe-Config"><span class="xref myst">Config</span></a></p></td>
 <td><p></p></td>
 </tr>
@@ -304,6 +304,10 @@ defined in the RfeService through RPC patterns.</p>
 </tr>
 <tr class="row-odd"><td><p>temperature_status</p></td>
 <td><p><a class="reference internal" href="#mdif-rfe-TemperatureStatus"><span class="xref myst">TemperatureStatus</span></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>config</p></td>
+<td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -328,6 +332,10 @@ defined in the RfeService through RPC patterns.</p>
 <tr class="row-odd"><td><p>freq_band_list</p></td>
 <td><p><a class="reference internal" href="#mdif-rfe-FreqBand"><span class="xref myst">FreqBand</span></a></p></td>
 <td><p>List of frequency bands to start trasmitting on</p></td>
+</tr>
+<tr class="row-even"><td><p>controller_type</p></td>
+<td><p><a class="reference internal" href="#mdif-rfe-ControllerType"><span class="xref myst">ControllerType</span></a></p></td>
+<td><p>Sender type composing the request. Used internally and can be left unset.</p></td>
 </tr>
 </tbody>
 </table>
@@ -478,6 +486,10 @@ The configuration is a bit field, and each bit must be explicitly tested</p>
 <tr class="row-even"><td><p>CONFIG_LOW_POWER</p></td>
 <td><p>128</p></td>
 <td><p>Device is in low power mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONFIG_SEMI_AUTOMATIC</p></td>
+<td><p>256</p></td>
+<td><p>Device is in semi-automatic mode. That is, the device is controlled by an external entity but the user must manually approve each start request</p></td>
 </tr>
 </tbody>
 </table>

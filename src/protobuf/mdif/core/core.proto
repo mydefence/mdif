@@ -55,10 +55,12 @@
 /*
   Message allocation for the Core component are in the range:
 
-  | Start | End  | Radix |
-  |-------|------|-------|
-  | 0x01  | 0x1F | Hex   |
-  | 1     |   31 | Dec   |
+  | Start | End   | Radix |
+  |-------|-------|-------|
+  | 0x01  | 0x1F  | Hex   |
+  | 1     |   31  | Dec   |
+  | 0x100 | 0x1FF | Hex   |
+  | 256   |   511 | Dec   |
 
  */
 syntax = "proto3";
@@ -79,18 +81,47 @@ import "mdif/common.proto";
 enum DeviceType {
     reserved 4 to 7, 10, 11;
     NOTSET = 0;
-    WINGMAN = 1; // Wingman man-borne RF sensor
-    WATCHDOG = 2; // Watchdog fixed RF direction finding sensor
-    WOLFPACK = 3; // Wolfpack fixed 360 degree RF direction finding sensor
-    PITBULL = 8; // Pitbull man-borne RF effector
-    DOBERMANN = 9; // Dobermann fixed RF effector
+    WINGMAN = 1;         // Wingman man-borne RF sensor
+    WATCHDOG = 2;        // Watchdog fixed RF direction finding sensor
+    WOLFPACK = 3;        // Wolfpack fixed 360 degree RF direction finding sensor
+    PITBULL = 8;         // Pitbull man-borne RF effector
+    DOBERMANN = 9;       // Dobermann fixed RF effector
     DOBERMANN_DUAL = 12; // Dobermann dual fixed 90 degree RF effector
-    DOBERMANN360 = 13; // Dobermann 360 degree RF effector
-    FALCON = 14; // Falcon air-borne RF direction finding sensor
+    DOBERMANN360 = 13;   // Dobermann 360 degree RF effector
+    FALCON = 14;         // Falcon air-borne RF direction finding sensor
+    HOST = 99;           // Host device
+}
+
+enum AccessoryId {
+    ACCESSORY_INVALID = 0; //
+    ACCESSORY_MASTER = 1;  //
+
+    ACCESSORY_CONSOLE = 10; //
+    reserved 11;
+    ACCESSORY_AA100 = 12; //
+    reserved 13;
+    ACCESSORY_PITBULL = 14; //
+    ACCESSORY_FUTTE = 15;   //
+    ACCESSORY_AUDIO = 16;   //
+    reserved 17, 18;
+    ACCESSORY_VIBRATOR = 19; //
+    reserved 20, 21;
+    ACCESSORY_AA120 = 22; //
+    reserved 23;
+    ACCESSORY_AA150 = 24; //
+    reserved 25;
+    ACCESSORY_DLC = 26;          //
+    ACCESSORY_HDLC = 27;         //
+    ACCESSORY_HDLC_MASTER = 28;  //
+    ACCESSORY_HDLC_PITBULL = 29; //
+    ACCESSORY_HDLC_OTHER = 30;   //
+    reserved 31;
+    ACCESSORY_AA180 = 32;   //
 }
 
 // Defines the IP configuration
-message IpConfig {
+message IpConfig
+{
     // The IP address of the device. 4 bytes. 192.168.0.13 is encoded as
     // ip[0]=192, ip[1]=168, ip[2]=0, ip[3]=13
     bytes ip = 1;
@@ -116,15 +147,16 @@ enum SysTimeStatus {
 enum GnssFixType {
     reserved 1, 4, 5;
     // No fix available.
-    GNSS_FIX_NONE      = 0;
+    GNSS_FIX_NONE = 0;
     // 2-dimensional fix.
-    GNSS_FIX_2D        = 2;
+    GNSS_FIX_2D = 2;
     // 3-dimensional fix.
-    GNSS_FIX_3D        = 3;
+    GNSS_FIX_3D = 3;
 }
 
 // Defines a GNSS status
-message GnssStatus {
+message GnssStatus
+{
     reserved 1, 4, 5, 10, 11, 12;
     // Validity of the reported position.
     bool pos_valid = 2;
@@ -180,7 +212,8 @@ message GnssStatus {
 //
 //    [Magnetic declination](https://www.ncei.noaa.gov/products/magnetic-declination)
 //
-message CompassHeading {
+message CompassHeading
+{
     // Indicates presence of calibration data.
     // Note that moving a device to a new mount or location will require a new calibration.
     bool calibrated = 1;
@@ -199,6 +232,16 @@ enum DhcpEnable {
     DHCP_NO_CHANGE = 0;
     DHCP_DISABLE = 1;
     DHCP_ENABLE = 2;
+}
+
+message CompositeInfo
+{
+    // Parent serial
+    string parent_serial = 1;
+    // Number of zones
+    uint32 num_zones = 2;
+    // Zone id
+    uint32 zone_id = 3;
 }
 
 /*************************************
@@ -220,7 +263,8 @@ message PingRes {}
 message ResetReq {}
 
 // Reset response
-message ResetRes {
+message ResetRes
+{
     // The status of the reset request
     common.Status status = 1;
 }
@@ -233,7 +277,8 @@ message GetDeviceInfoReq {}
 // Device info
 //
 // Used in GetDeviceInfoRes and DeviceAnnounceInd
-message DeviceInfo {
+message DeviceInfo
+{
     // Serial number of the device
     string serial_number = 1;
     // The type of device
@@ -248,6 +293,16 @@ message DeviceInfo {
     bool compass_present = 6;
     // Can GNSS settings be configured for this device.
     bool gnss_configurable = 7;
+    // The connection index of the device
+    uint32 connection_index = 8;
+    // Battery available in the device
+    bool battery_present = 9;
+    // Build date of the device
+    string build_date = 10;
+    // Device MAC address
+    string mac = 11;
+    // Composit info
+    CompositeInfo composite_info = 12;
 }
 
 // Request battery status
@@ -255,8 +310,23 @@ message DeviceInfo {
 // The device will respond with a GetBatteryStatusRes message.
 message GetBatteryStatusReq {}
 
+// Charging state of the battery
+enum ChargingState {
+    // Battery is not charging
+    DISCHARGING = 0;
+    // Charger connected but battery is full
+    NOT_CHARGING_FULL = 1;
+    // Battery is charging
+    CHARGING = 2;
+    // Charger connected but battery is too hot to charge
+    NOT_CHARGING_NTC_HOT = 3;
+    // Charger connected but battery is too cold to charge
+    NOT_CHARGING_NTC_COLD = 4;
+}
+
 // Battery status response
-message GetBatteryStatusRes {
+message GetBatteryStatusRes
+{
     // The status of the request
     common.Status status = 1;
     // Is the battery low
@@ -265,6 +335,12 @@ message GetBatteryStatusRes {
     bool bat_charging = 3;
     // The battery voltage
     float bat_volt = 4;
+    // Battery temperature in degrees Celsius
+    float temperature = 5;
+    // Charging state
+    ChargingState charging_state = 6;
+    // Remaining battery percentage
+    int32 remaining_percent = 7;
 }
 
 // Request IP configuration
@@ -273,7 +349,8 @@ message GetBatteryStatusRes {
 message GetIpConfigReq {}
 
 // IP configuration response
-message GetIpConfigRes {
+message GetIpConfigRes
+{
     // The status of the request
     common.Status status = 1;
     // The current IP configuration
@@ -291,7 +368,8 @@ message GetIpConfigRes {
 // The device will respond with a SetIpConfigRes message. Depending on the
 // connection used to send the request and the IP configuration set, the
 // response may not be received.
-message SetIpConfigReq {
+message SetIpConfigReq
+{
     // Persist the IP configuration to NVM
     bool persist = 1;
     // The IP configuration to set
@@ -301,7 +379,8 @@ message SetIpConfigReq {
 }
 
 // Set IP configuration response
-message SetIpConfigRes {
+message SetIpConfigRes
+{
     // The status of the request
     common.Status status = 1;
 }
@@ -309,7 +388,8 @@ message SetIpConfigRes {
 // Request GNSS and compass data stream
 //
 // The device will respond with a GnssCompassStreamRes message.
-message GnssCompassStreamReq {
+message GnssCompassStreamReq
+{
     // Enable or disable the stream.
     // The device will include only the elements of the stream that it supports,
     // as indicated in GetDeviceInfoRes.
@@ -335,7 +415,8 @@ message GnssCompassStreamReq {
 // GNSS and compass stream response
 //
 // Indicates whether the stream was started successfully.
-message GnssCompassStreamRes {
+message GnssCompassStreamRes
+{
     // The status of the request.
     common.Status status = 1;
     // Error description string
@@ -343,7 +424,8 @@ message GnssCompassStreamRes {
 }
 
 // GNSS and compass stream data indication
-message GnssCompassStreamInd {
+message GnssCompassStreamInd
+{
     // GNSS status
     GnssStatus gnss_status = 1;
     // Compass heading
@@ -365,7 +447,8 @@ message CompassCalibrateReq {}
 // Compass calibration response.
 //
 // Indicates whether the calibration was started successfully.
-message CompassCalibrateRes {
+message CompassCalibrateRes
+{
     // The status of the request
     common.Status status = 1;
 }
@@ -374,7 +457,8 @@ message CompassCalibrateRes {
 //
 // On succesful completion, the new calibration values automatically replace the previous set
 // in non-volatile memory.
-message CompassCalibrationCompleteInd {
+message CompassCalibrationCompleteInd
+{
     // The status of the calibration
     common.Status status = 1;
     // Calculated offset for X axis (Internal use only)
@@ -391,7 +475,8 @@ message CompassCalibrationCompleteInd {
 // This happens when the device detects that is has moved a full circle within max 128 samples
 // at the period set in GnssCompassStreamReq.
 // The new calibration values are volatile, and will be reset on a power-cycle.
-message CompassCalibrationAdjustedInd {
+message CompassCalibrationAdjustedInd
+{
     // Difference in heading for the latest measurement, due to calibration adjustment.
     float heading_diff = 1;
     // The updated calibration data. Internal use only.
@@ -411,16 +496,108 @@ message CompassCalibrationAdjustedInd {
 message CompassCalibrationStoreReq {}
 
 // Indicates if the calibration data has been written succesfully.
-message CompassCalibrationStoreRes {
+message CompassCalibrationStoreRes
+{
     common.Status status = 1;
+}
+
+// Indication that a device has been removed from the network.
+message DisconnectInd
+{
+    string serial_number = 1;
+}
+
+// Wraps a message for a specific device in the network.
+//
+// If the receiving device is not in the network then this message is sent back
+// to sender indicating status=ERR_NOT_READY
+message WrapperMsgInd
+{
+    string receiver = 1;
+    string sender = 2;
+    common.Status status = 3;
+    uint32 length = 4;
+    bytes payload = 5;
 }
 
 // Api Error indication
 //
 // This message is used to indicate an error in the API. E.g if a request is not
 // properly decoded.
-message ApiErrorInd {
+message ApiErrorInd
+{
     string error = 1;
+}
+
+// Response on GetAccessoriesList request or indication of change in attached accessories
+//
+// The device will respond with a AccessoriesList message. If the port is in use, the
+// accessory id will be set to the corresponding accessory and set to ACCESSORY_INVALID
+// if nothing is attached on the given port.
+message AccessoriesList
+{
+    // The accessory attached to the first port
+    repeated AccessoryId mpc = 1;
+    repeated string str_mpc = 2;
+}
+
+// Get attached accessories request
+//
+// The device will respond with a AccessoriesList message.
+message GetAccessoriesListReq {}
+
+// Persistent settings which can be changed in devices
+enum PersistentSetting {
+    // Audio volume (value from 0-10). Uses first int_value in Set/GetPersistentSettingReq to set/get volume
+    AUDIO_VOLUME = 0;
+    // LED enable (0 or 1). Uses first int_value in Set/GetPersistentSettingReq to set/get led enable
+    LED_ENABLE = 1;
+    // Vibrator enable (0 or 1). Uses first int_value in Set/GetPersistentSettingReq to set/get vibrator enable
+    VIBRATOR_ENABLE = 2;
+    // Audio enable (0 or 1), Uses first int_value in Set/GetPersistentSettingReq to set/get audio enable
+    AUDIO_ENABLE = 3;
+    // ECM semi-automatic mode (0 or 1). Uses first int_value in Set/GetPersistentSettingReq to set/get ECM semi-automatic enable
+    ECM_SEMIAUTOMATIC_ENABLE = 4;
+}
+
+// Change a persistent setting in device
+//
+// Settings set here are stored in non-volatile memory and will be persistent on
+// power-cycle.
+// Note that not all settings are available on all devices.
+message SetPersistentSettingReq
+{
+    // The setting to change
+    PersistentSetting setting = 1;
+    // The string value to set
+    string str_value = 2;
+    // The integer value to set
+    repeated int32 int_value = 3;
+}
+
+// Response to SetPersistentSettingReq
+message SetPersistentSettingRes
+{
+    // The status of the request
+    common.Status status = 1;
+}
+
+// Request a persistent setting from device
+message GetPersistentSettingReq
+{
+    // The settings which can be queried
+    PersistentSetting setting = 1;
+}
+
+// Response to GetPersistentSettingReq
+message GetPersistentSettingRes
+{
+    // The status of the request
+    common.Status status = 1;
+    // The string value of the setting
+    string str_value = 2;
+    // The integer value of the setting
+    repeated int32 int_value = 3;
 }
 
 // Core wire format message
@@ -432,8 +609,10 @@ message ApiErrorInd {
 // defined in the CoreService through RPC patterns.
 //
 // Indications (ind) are pushed without a request at any time
-message CoreMsg {
-    oneof msg {
+message CoreMsg
+{
+    oneof msg
+    {
         // Request Ping response
         PingReq ping_req = 1;
         // Ping response
@@ -478,30 +657,58 @@ message CoreMsg {
         CompassCalibrationStoreRes compass_calibration_store_res = 21;
         // Device Announce Indication
         DeviceInfo device_announce_ind = 22;
-
+        // Device has been removed indication
+        DisconnectInd disconnect_ind = 23;
+        // Wrapper message indication
+        WrapperMsgInd wrapper_msg_ind = 24;
+        // Battery status indication
+        GetBatteryStatusRes battery_status_ind = 25;
+        // Get attached accessories request
+        GetAccessoriesListReq get_accessories_req = 26;
+        // List of attached accessories response
+        AccessoriesList get_accessories_res = 27;
+        // List of attached accessories indication
+        AccessoriesList accessories_list_ind = 28;
+        // Set persistent setting request
+        SetPersistentSettingReq set_persistent_setting_req = 29;
+        // Set persistent setting response
+        SetPersistentSettingRes set_persistent_setting_res = 30;
         // Api Error indication
-        ApiErrorInd api_error_ind = 0x1F;
+        ApiErrorInd api_error_ind = 31;
+
+        // Get persistent setting request
+        GetPersistentSettingReq get_persistent_setting_req = 256;
+        // Get persistent setting response
+        GetPersistentSettingRes get_persistent_setting_res = 257;
     }
 }
 
 // Defines the relationship between requests and responses in the Core component
-service CoreService {
+service CoreService
+{
     // Used to ping the target device
-    rpc Ping (PingReq) returns (PingRes);
+    rpc Ping(PingReq) returns (PingRes);
     // Used to reset the device
-    rpc Reset (ResetReq) returns (ResetRes);
+    rpc Reset(ResetReq) returns (ResetRes);
     // Used to get the device info
-    rpc GetDeviceInfo (GetDeviceInfoReq) returns (DeviceInfo);
+    rpc GetDeviceInfo(GetDeviceInfoReq) returns (DeviceInfo);
     // Used to get the battery status
-    rpc GetBatteryStatus (GetBatteryStatusReq) returns (GetBatteryStatusRes);
+    rpc GetBatteryStatus(GetBatteryStatusReq) returns (GetBatteryStatusRes);
     // Used to get the IP configuration
-    rpc GetIpConfig (GetIpConfigReq) returns (GetIpConfigRes);
+    rpc GetIpConfig(GetIpConfigReq) returns (GetIpConfigRes);
     // Used to set the IP configuration
-    rpc SetIpConfig (SetIpConfigReq) returns (SetIpConfigRes);
+    rpc SetIpConfig(SetIpConfigReq) returns (SetIpConfigRes);
     // Used to enable or disable streaming of GNSS and compass data.
-    rpc GnssCompassStream (GnssCompassStreamReq) returns (GnssCompassStreamRes);
+    rpc GnssCompassStream(GnssCompassStreamReq) returns (GnssCompassStreamRes);
     // Used to calibrate compass
-    rpc CompassCalibrate (CompassCalibrateReq) returns (CompassCalibrateRes);
+    rpc CompassCalibrate(CompassCalibrateReq) returns (CompassCalibrateRes);
     // Used to store current compass calibration
-    rpc CompassCalibrationStore (CompassCalibrationStoreReq) returns (CompassCalibrationStoreRes);
+    rpc CompassCalibrationStore(CompassCalibrationStoreReq) returns (CompassCalibrationStoreRes);
+    // Used to get a list of attached accessories
+    rpc GetAccessoriesList(GetAccessoriesListReq) returns (AccessoriesList);
+    // Used to set a persistent setting
+    rpc SetPersistentSetting(SetPersistentSettingReq) returns (SetPersistentSettingRes);
+    // Used to get a persistent setting
+    rpc GetPersistentSetting(GetPersistentSettingReq) returns (GetPersistentSettingRes);
+    // Used to set LED mode on Wolfpack
 }

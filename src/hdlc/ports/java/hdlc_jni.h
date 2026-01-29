@@ -54,8 +54,11 @@
 #ifndef _JAVA_HDLC_JNI_H_
 #define _JAVA_HDLC_JNI_H_
 
-void initialize_hdlc_wrapper(JNIEnv *env, jobject thiz);
-void hdlc_os_rx_wrapper(JNIEnv *env, jobject thiz, jbyteArray buffer, jint count);
-void hdlc_send_frame_wrapper(JNIEnv *env, jobject thiz, jbyteArray frame, jint len);
+void initialize_hdlc_wrapper(JNIEnv *env, jobject thiz, jint instance);
+void stop_hdlc_wrapper(JNIEnv *env, jobject thiz, jint instance);
+void hdlc_os_rx_wrapper(JNIEnv *env, jobject thiz, jbyteArray buffer, jint count, jint instance);
+void hdlc_send_frame_wrapper(JNIEnv *env, jobject thiz, jbyteArray frame, jint len, jint instance);
+
+extern int log_level;
 
 #endif // _JAVA_HDLC_JNI_H_

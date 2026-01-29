@@ -5,6 +5,27 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 repository adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.0] - 2026-01-27
+
+### Supported devices
+-   RF Sensor devices running firmware v4.3.1 or later
+-   RF Effector devices running firmware v2.1.0 or later
+
+### Added
+-   Support for querying a device about its currently connected accessories.
+-   Support for querying the battery status of a device.
+-   Support for persistent setting of audio volume, vibration and LED settings.
+-   Support for addressing specific devices on a serial/HDLC daisy-chain.
+-   New semi-automatic mode for RF effector.
+-   Support for muting threats from RF sensors.
+-   Signal interference is now signaled from RF sensors.
+
+### Changed
+
+- Deprecated the msg_timestamp fields of the RFS messages RfsThreatInd and WifiThreatInd.
+- Changed remaining timestamp values in RFS messages to use the Well-known Types timestamp.
+  - https://protobuf.dev/reference/protobuf/google.protobuf/#timestamp
+
 ## [1.3.0] - 2024-08-13
 
 ### Added
@@ -13,8 +34,8 @@ repository adheres to [Semantic Versioning](http://semver.org/).
 -   Other minor improvements to Linux demo clients
 
 ### Fixed
--   Android_demo: Class GetDeviceInfoRes replaced by DeviceInfo
--   Android_demo: hdlc_reset_cb arguments adjusted
+-   Android_demo: Class GetDeviceInfoRes replaced by DeviceInfo.
+-   Android_demo: hdlc_reset_cb arguments adjusted.
 
 ## [1.2.0] - 2024-03-25
 
@@ -32,7 +53,7 @@ repository adheres to [Semantic Versioning](http://semver.org/).
     timing accuracy estimates for GNSS and device system time.
 -   GetDeviceInfo now reports on the configurability of GNSS on a device.
 -   Support for subscribing to remote ID messages from RF sensor devices.
--   Support for start/stop and querying state of RFE devices
+-   Support for start/stop and querying state of RFE devices.
 
 ### Changed
 

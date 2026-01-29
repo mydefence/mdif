@@ -56,14 +56,18 @@
 
 #if defined(__ANDROID__)
 #include <android/log.h>
+#include <jni.h>
+#include "hdlc_jni.h"
 
-#define LOG_TAG "MD HDLC"
+#define LOG_TAG "MD_HDLC"
 
-#define log_trace(fmt,...)        __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_debug(fmt,...)        __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_info(fmt,...)        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_warn(fmt,...)        __android_log_print(ANDROID_LOG_WARN, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_error(fmt,...)        __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, fmt, ##__VA_ARGS__)
-#define log_fatal(fmt,...)        __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, fmt, ##__VA_ARGS__)
+// Log level set through JNI interface
+
+#define log_trace(fmt,...)       do { if (log_level <= ANDROID_LOG_VERBOSE) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, fmt, ##__VA_ARGS__); } while (0)
+#define log_debug(fmt,...)       do { if (log_level <= ANDROID_LOG_DEBUG) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, fmt, ##__VA_ARGS__); } while (0)
+#define log_info(fmt,...)        do { if (log_level <= ANDROID_LOG_INFO) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, fmt, ##__VA_ARGS__); } while (0)
+#define log_warn(fmt,...)        do { if (log_level <= ANDROID_LOG_WARN) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, fmt, ##__VA_ARGS__); } while (0)
+#define log_error(fmt,...)       do { if (log_level <= ANDROID_LOG_ERROR) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, fmt, ##__VA_ARGS__); } while (0)
+#define log_fatal(fmt,...)       do { if (log_level <= ANDROID_LOG_FATAL) __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, fmt, ##__VA_ARGS__); } while (0)
 #endif
 #endif // LOG_H

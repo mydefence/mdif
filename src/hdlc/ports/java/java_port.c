@@ -74,94 +74,129 @@
 
 #define SIG SIGRTMIN
 
-static pthread_t timer_thread;
-static pthread_mutex_t hdlc_mutex;
+typedef struct hdlc_instance_t {
+    hdlc_data_t *hdlc;
+    uint32_t instance_id;
+    struct itimerspec its_start;
+    struct itimerspec its_stop;
+    pthread_t timer_thread;
+    pthread_mutex_t hdlc_mutex;
+    int8_t shutdown;
+    int timeout_fd;
+} hdlc_instance_t;
 
-static struct itimerspec its_start = {
-    .it_value.tv_sec = 0,
-    .it_value.tv_nsec = 0, // set in init
-    .it_interval.tv_sec = 0,
-    .it_interval.tv_nsec = 0,
-};
-static struct itimerspec its_stop = {
-    .it_value.tv_sec = 0,
-    .it_value.tv_nsec = 0,
-    .it_interval.tv_sec = 0,
-    .it_interval.tv_nsec = 0,
-};
-static int timeout_fd;
+static void *timer_thread_func(void *inst);
 
-static void *timer_thread_func(void *ptr);
+static hdlc_instance_t hdlc_instance_data[HDLC_NUM_INSTANCES] = {0};
 
-// This port only supports single instance of hdlc. This instance data must be
-// used on all calls to hdlc functions. It will be valid after hdlc_java_init().
-hdlc_data_t *hdlc;
-
-void hdlc_java_init()
+void hdlc_java_init(uint32_t instance_id)
 {
-    its_start.it_value.tv_nsec = JAVA_HDLC_TIMEOUT_MS * 1000000;
-
-    if (pthread_mutex_init(&hdlc_mutex, NULL) != 0) {
-        log_fatal("mutex init has failed");
-        exit(1);
+    if (instance_id >= HDLC_NUM_INSTANCES) {
+        log_error("hdlc instance %d is not supported", instance_id);
+        return; // Invalid instance ID
     }
+    hdlc_instance_t *inst = &hdlc_instance_data[instance_id];
+    inst->shutdown = 0;
+    if (inst->hdlc == NULL) {
+        log_info("hdlc instance %d initializing", instance_id);
+        inst->its_start.it_value.tv_nsec = JAVA_HDLC_TIMEOUT_MS * 1000000;
+        inst->instance_id = instance_id;
 
-    timeout_fd = timerfd_create(CLOCK_REALTIME, 0);
-    if (timeout_fd == -1) {
-        perror("timerfd_create");
-        exit(1);
-    }
-    if (pthread_create(&timer_thread, NULL, timer_thread_func, NULL) != 0) {
-        perror("pthread_create");
-        exit(1);
-    }
+        if (pthread_mutex_init(&inst->hdlc_mutex, NULL) != 0) {
+            log_fatal("mutex init has failed");
+            exit(1);
+        }
 
-    hdlc = hdlc_init(NULL);
+        inst->timeout_fd = timerfd_create(CLOCK_REALTIME, 0);
+        if (inst->timeout_fd == -1) {
+            perror("timerfd_create");
+            exit(1);
+        }
+        if (pthread_create(&inst->timer_thread, NULL, timer_thread_func, inst) != 0) {
+            perror("pthread_create");
+            exit(1);
+        }
+        // timer_thread_func may start before hdlc_init() returns in which case
+        // inst->hdlc won't be set yet. This is handled in the timer thread
+        inst->hdlc = hdlc_init(inst);
+    } else {
+        log_info("hdlc re-starting");
+        // hdlc_os_link_lost() will restart the timer
+        hdlc_os_link_lost(inst->hdlc);
+    }
+}
+
+void hdlc_java_stop(uint32_t instance_id)
+{
+    hdlc_instance_t *inst = &hdlc_instance_data[instance_id];
+    inst->shutdown = 1; // Exit timer thread loop
+    hdlc_os_stop_timer(inst->hdlc);
 }
 
 static void *timer_thread_func(void *ptr)
 {
+    hdlc_instance_t *inst = (hdlc_instance_t *)ptr;
     while (1) {
         uint64_t exp;
 
-        if (read(timeout_fd, &exp, sizeof(uint64_t)) == -1) {
+        if (read(inst->timeout_fd, &exp, sizeof(uint64_t)) == -1) {
             perror("read");
             exit(1);
         }
 
-        if (hdlc) {
-            hdlc_os_timeout(hdlc);
+        if (inst->shutdown == 1) {
+            continue;
+        }
+
+        if (inst->hdlc) {
+            hdlc_os_timeout(inst->hdlc);
         } else {
             // This is possible during startup if hdlc_init() has not yet
             // returned. Try again later.
             log_warn("hdlc not initialized (timeout)");
-            hdlc_os_start_timer(NULL);
+            hdlc_os_start_timer(inst->hdlc);
         }
     }
 }
 
-void hdlc_os_start_timer(hdlc_data_t *_hdlc)
+void hdlc_os_start_timer(hdlc_data_t *hdlc)
 {
-    if (timerfd_settime(timeout_fd, 0, &its_start, NULL) == -1) {
+    hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
+    if (timerfd_settime(inst->timeout_fd, 0, &inst->its_start, NULL) == -1) {
         perror("timerfd_settime (start)");
-        exit(1);
     }
 }
 
-void hdlc_os_stop_timer(hdlc_data_t *_hdlc)
+void hdlc_os_stop_timer(hdlc_data_t *hdlc)
 {
-    if (timerfd_settime(timeout_fd, 0, &its_stop, NULL) == -1) {
+    hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
+    if (timerfd_settime(inst->timeout_fd, 0, &inst->its_stop, NULL) == -1) {
         perror("timerfd_settime (stop)");
-        exit(1);
     }
 }
 
 void hdlc_os_enter_critical_section(hdlc_data_t *hdlc)
 {
-    pthread_mutex_lock(&hdlc_mutex);
+    hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
+    pthread_mutex_lock(&inst->hdlc_mutex);
 }
 
 void hdlc_os_exit_critical_section(hdlc_data_t *hdlc)
 {
-    pthread_mutex_unlock(&hdlc_mutex);
+    hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
+    pthread_mutex_unlock(&inst->hdlc_mutex);
+}
+
+hdlc_data_t *get_hdlc_data(uint32_t instance_id)
+{
+    if (instance_id >= HDLC_NUM_INSTANCES) {
+        log_error("hdlc instance %d is not supported", instance_id);
+        return NULL;
+    }
+    return hdlc_instance_data[instance_id].hdlc;
+}
+
+uint32_t get_hdlc_instance_id(hdlc_data_t *hdlc)
+{
+    return ((hdlc_instance_t *)hdlc->user_data)->instance_id;
 }

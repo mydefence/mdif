@@ -690,11 +690,9 @@ static void reset(hdlc_intdata_t *hi, hdlc_reset_cause_t cause)
         "retrans timeout",    // HDLC_RESET_CAUSE_TIMEOUT_RETRANSMIT
         "peer initiated",     // HDLC_RESET_CAUSE_PEER_INITIATED
     };
-    const char *reason = reasons[cause];
-
     static_assert(sizeof(reasons) / sizeof(reasons[0]) == HDLC_RESET_CAUSE_NUMBER_OF_CAUSES, "reasons array size mismatch");
 
-    log_info("HDLC reset (%s)!", reason);
+    log_info("HDLC reset (%s)!", reasons[cause]);
 
     struct txq_tailhead temp_freeq = hi->dlc.txq;
     hdlc_reset(hi); // state = RST_REQUIRED

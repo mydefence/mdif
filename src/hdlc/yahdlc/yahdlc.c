@@ -39,7 +39,7 @@ void yahdlc_escape_value(char value, char *dest, int *dest_index)
 
 yahdlc_control_t yahdlc_get_control_type(unsigned char control)
 {
-    yahdlc_control_t value;
+    yahdlc_control_t value = {0};
 
     // Check if the frame is a S-frame (or U-frame)
     if (control & (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT)) {
