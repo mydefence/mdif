@@ -58,16 +58,14 @@ import android.util.Log;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dk.mydefence.mdif.rfs.Rfs;
-import dk.mydefence.mdif_example.hdlc.Hdlc;
+import dk.mydefence.android.hdlcservice.hdlc.Hdlc;
 
 public class MdifRfs {
     private static final String TAG = "MD MdifRfs";
-    private final Hdlc mHdlc;
     private final IMdifRfs mCallback;
 
     MdifRfs(Hdlc hdlc, IMdifRfs callback) {
         mCallback = callback;
-        mHdlc = hdlc;
     }
 
     public Mdif.MdifStatus decode(byte[] buffer) {
@@ -91,6 +89,8 @@ public class MdifRfs {
                 case WIFI_THREAT_IND:
                     mCallback.onGetWifiThreatInd(rfs.getWifiThreatInd());
                     break;
+                case REMOTE_ID_IND:
+                    mCallback.onGetRemoteIdInd(rfs.getRemoteIdInd());
                 default:
                     Log.d(TAG, "Unknown MDIF message received: " + value + " (" + value.getNumber() + ")");
                     return Mdif.MdifStatus.DECODE_ERR_NO_DECODER;

@@ -69,8 +69,8 @@
  * @return JNIEXPORT
  */
 JNIEXPORT void JNICALL
-Java_dk_mydefence_mdif_1example_hdlc_Hdlc_initializeHdlc(JNIEnv *env, jobject thiz) {
-    initialize_hdlc_wrapper(env, thiz);
+Java_dk_mydefence_android_hdlcservice_hdlc_Hdlc_initializeHdlc(JNIEnv *env, jobject thiz, jint instance) {
+    initialize_hdlc_wrapper(env, thiz, instance);
 }
 
 /**
@@ -85,9 +85,10 @@ Java_dk_mydefence_mdif_1example_hdlc_Hdlc_initializeHdlc(JNIEnv *env, jobject th
  * @param count number of bytes in buffer
  */
 JNIEXPORT void JNICALL
-Java_dk_mydefence_mdif_1example_hdlc_Hdlc_hdlc_1os_1rx(JNIEnv *env, jobject thiz, jbyteArray buffer,
-                                                       jint count) {
-    hdlc_os_rx_wrapper(env, thiz, buffer, count);
+Java_dk_mydefence_android_hdlcservice_hdlc_Hdlc_hdlc_1os_1rx(JNIEnv *env, jobject thiz, jbyteArray buffer,
+                                                       jint count,
+                                                       jint instance) {
+    hdlc_os_rx_wrapper(env, thiz, buffer, count, instance);
 }
 
 /**
@@ -105,8 +106,9 @@ Java_dk_mydefence_mdif_1example_hdlc_Hdlc_hdlc_1os_1rx(JNIEnv *env, jobject thiz
  * @param len number of bytes in frame
  */
 JNIEXPORT void JNICALL
-Java_dk_mydefence_mdif_1example_hdlc_Hdlc_hdlc_1send_1frame(JNIEnv *env, jobject thiz,
+Java_dk_mydefence_android_hdlcservice_hdlc_Hdlc_hdlc_1send_1frame(JNIEnv *env, jobject thiz,
                                                             jbyteArray frame,
-                                                            jint len) {
-    hdlc_send_frame_wrapper(env, thiz, frame, len);
+                                                            jint len,
+                                                            jint instance) {
+    hdlc_send_frame_wrapper(env, thiz, frame, len, instance);
 }

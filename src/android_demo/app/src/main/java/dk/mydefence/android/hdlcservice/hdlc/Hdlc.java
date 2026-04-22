@@ -29,7 +29,7 @@
  *               ,,,,,                                                         *
  *                    ,,,,,                                                    *
  *                                                                             *
- * Program/file : IHdlc.java                                                   *
+ * Program/file : Hdlc.java                                                    *
  *                                                                             *
  * Description  : Android implementation of OS abstraction interface for hdlc  *
  *              :                                                              *
@@ -51,16 +51,113 @@
  *                                                                             *
  *                                                                             *
  *******************************************************************************/
-package dk.mydefence.mdif_example.hdlc;
+package dk.mydefence.android.hdlcservice.hdlc;
 
-public interface IHdlc {
-    void onHdlcFrame(byte[] frame);
+import android.content.Context;
+import android.util.Log;
 
-    void onHdlcConnected();
+import androidx.annotation.Keep;
 
-    void onHdlcDisconnected();
+import dk.mydefence.mdif_example.serial.IUsbOnData;
+import dk.mydefence.mdif_example.serial.UsbCommunication;
 
-    void onHdlcConnecting();
+/**
+ * Processing USB data into HDLC frames which are then passed on
+ * to MDIF.
+ * <p>
+ * This class function as a connection between USB and HDLC.
+ */
+public class Hdlc {
+    private static final String TAG = "MD HDLC Impl";
 
-    void onHdlcFrameSent(byte[] frame);
+    private static UsbCommunication mUsbCom;
+    private static IHdlc mCallback = null;
+
+    public Hdlc(Context context, IHdlc callback) {
+        mCallback = callback;
+        mUsbCom = new UsbCommunication(context, mCallbackUsb);
+        initializeHdlc(0);
+        mCallback.onHdlcConnecting();
+    }
+
+    /**
+     * Raw data received on USB. Pass it on to HDLC
+     */
+    IUsbOnData mCallbackUsb = new IUsbOnData() {
+        @Override
+        public void onData(byte[] bytes) {
+            hdlc_os_rx(bytes, bytes.length, 0);
+        }
+    };
+
+    public void onResume() {
+        mUsbCom.onResume();
+    }
+
+    public void onPause() {
+        mUsbCom.onPause();
+    }
+
+    public void onDestroy() {
+        mUsbCom.onDestroy();
+    }
+
+    // ------------------------------------------
+    // JNI interfaces
+    // ------------------------------------------
+
+    @Keep
+    static void hdlc_frame_sent_cb(byte[] frame, int len, int instance) {
+        Log.d(TAG, "hdlc_frame_sent_cb. " + len + " bytes or " + frame.length + " as byte array length");
+        mCallback.onHdlcFrameSent(frame);
+    }
+
+    @Keep
+    static void hdlc_recv_frame_cb(byte[] frame, int len, int instance) {
+        Log.d(TAG, "hdlc_recv_frame_cb. " + len + " bytes or " + frame.length + " as byte array length");
+        mCallback.onHdlcFrame(frame);
+    }
+
+    @Keep
+    static void hdlc_connected_cb(int instance) {
+        Log.d(TAG, "hdlc_connected_cb");
+        mCallback.onHdlcConnected();
+    }
+
+    public native void hdlc_send_frame(byte[] frame, int len, int instance);
+
+    @Keep
+    static void hdlc_reset_cb(int instance) {
+        Log.d(TAG, "hdlc_reset_cb");
+        mCallback.onHdlcDisconnected();
+    }
+
+
+    /**
+     * JNI call to initialize HDLC
+     */
+    native void initializeHdlc(int instance);
+
+    /**
+     * JNI callback when package has been received through HDLC
+     * <p>
+     * The package is sent to MDIF to be processed
+     *
+     * @param buffer
+     */
+    @Keep
+    static void hdlc_os_tx(byte[] buffer, int instance) {
+        Log.d(TAG, "hdlc_os_tx");
+        mUsbCom.write(buffer);
+    }
+
+    /**
+     * Called by integration when new raw serial data is received.
+     *
+     * @param buffer byte array holding received bytes
+     * @param count  number of bytes in array
+     */
+    @Keep
+    native void hdlc_os_rx(byte[] buffer, int count, int instance);
+
 }

@@ -5,6 +5,12 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 repository adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.1] - 2026-04-22
+
+### Fixed
+-   Android_demo: fix reported issue [#1 - Android demo, jni wrapper has
+    mismatch parameters to hdlc.h](https://github.com/mydefence/mdif/issues/1)
+
 ## [1.4.0] - 2026-01-29
 
 ### Supported devices

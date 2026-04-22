@@ -65,4 +65,6 @@ public interface IMdifRfs {
     void onGetStopRes(Rfs.StopRes stopRes);
 
     void onGetDroneInfoRes(Rfs.GetDroneInfoRes getDroneInfoRes);
+
+    void onGetRemoteIdInd(Rfs.RemoteIdInd remoteIdInd);
 }

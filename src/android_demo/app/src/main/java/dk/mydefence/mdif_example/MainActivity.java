@@ -59,6 +59,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.protobuf.ByteString;
+
 import dk.mydefence.mdif.core.Core;
 import dk.mydefence.mdif.rfs.Rfs;
 
@@ -170,6 +172,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onGetDroneInfoRes(Rfs.GetDroneInfoRes getDroneInfoRes) {
 
+        }
+
+        @Override
+        public void onGetRemoteIdInd(Rfs.RemoteIdInd remoteIdInd) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Remote ID\n");
+            sb.append("ID: ");
+            sb.append(remoteIdInd.getId());
+            ByteString mac = remoteIdInd.getMacAdr();
+            sb.append(", MAC:");
+            for (byte b : mac.toByteArray()) {
+                sb.append(String.format(" %02X", b));
+            }
+            sb.append(", Remote ID data: ");
+            sb.append(remoteIdInd.getPayload().size());
+            sb.append(" bytes");
+            updateTextViewOnUiThread(alertsView, "Threat Ind\n\n" + sb.toString());
         }
     };
 

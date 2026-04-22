@@ -56,8 +56,8 @@ package dk.mydefence.mdif_example;
 import android.content.Context;
 import android.util.Log;
 
-import dk.mydefence.mdif_example.hdlc.Hdlc;
-import dk.mydefence.mdif_example.hdlc.IHdlc;
+import dk.mydefence.android.hdlcservice.hdlc.Hdlc;
+import dk.mydefence.android.hdlcservice.hdlc.IHdlc;
 
 public class Mdif {
     private static final String TAG = "MD Mdif";

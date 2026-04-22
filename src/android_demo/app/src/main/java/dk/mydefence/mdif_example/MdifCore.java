@@ -58,7 +58,7 @@ import android.util.Log;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dk.mydefence.mdif.core.Core;
-import dk.mydefence.mdif_example.hdlc.Hdlc;
+import dk.mydefence.android.hdlcservice.hdlc.Hdlc;
 
 public class MdifCore {
 
@@ -125,7 +125,7 @@ public class MdifCore {
         // Get byte array
         Log.d(TAG, "Sending frame of length: " + frame.length);
         // Send it
-        mHdlc.hdlc_send_frame(frame, frame.length);
+        mHdlc.hdlc_send_frame(frame, frame.length, 0);
     }
 
 }
