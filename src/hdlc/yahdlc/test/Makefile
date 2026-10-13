@@ -1,6 +1,9 @@
 OBJS = yahdlc_test.cpp.o fcs.o yahdlc.o
 CPPFLAGS=-g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror -I../
 
+# Prerequisites:
+# sudo apt install libboost-test-dev
+
 %.cpp.o: %.cpp
 	@$(CXX) $(CPPFLAGS) -c -o $@ $<
 

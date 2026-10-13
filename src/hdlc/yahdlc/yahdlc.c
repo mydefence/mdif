@@ -225,6 +225,9 @@ int yahdlc_frame_data(yahdlc_control_t *control, const char *src,
     if (!control || (!src && (src_len > 0)) || !dest || !dest_len) {
         return -EINVAL;
     }
+    if (src_len > YAHDLC_MAX_FRAME_LEN) {
+        return -EINVAL;
+    }
 
     // Start by adding the start flag sequence
     dest[dest_index++] = YAHDLC_FLAG_SEQUENCE;

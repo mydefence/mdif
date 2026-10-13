@@ -144,6 +144,19 @@ void hdlc_os_enter_critical_section(hdlc_data_t *hdlc);
 /// it may provide empty functions
 void hdlc_os_exit_critical_section(hdlc_data_t *hdlc);
 
+#ifdef MDIF_FRAGMENT_SUPPORT
+/// Called by the fragmentation layer to serialize fragmented-message state.
+///
+/// Lock ordering is one-way only: code may acquire the fragmentation lock and
+/// then call into core HDLC code that acquires hdlc_os_enter_critical_section()
+/// internally, but code already holding the core HDLC lock must never acquire
+/// the fragmentation lock.
+void hdlc_os_enter_fragment_critical_section(hdlc_data_t *hdlc);
+
+/// Called by the fragmentation layer to release the fragmentation-state lock.
+void hdlc_os_exit_fragment_critical_section(hdlc_data_t *hdlc);
+#endif
+
 #ifndef HDLC_RETRANSMIT_CNT
 /// Number of retransmissions to attempt before resetting the link.
 ///

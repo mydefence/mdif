@@ -8,6 +8,8 @@ BOOST_AUTO_TEST_CASE(yahdlcTestFrameDataInvalidInputs) {
   yahdlc_control_t control;
   unsigned int frame_length = 0;
   char send_data[8] ={}, frame_data[8];
+  char oversized_data[YAHDLC_MAX_FRAME_LEN + 1] = {};
+  char max_frame_data[YAHDLC_MAX_ENCODED_LEN];
 
   // Check invalid control field parameter
   ret = yahdlc_frame_data(NULL, send_data, sizeof(send_data), frame_data,
@@ -30,6 +32,11 @@ BOOST_AUTO_TEST_CASE(yahdlcTestFrameDataInvalidInputs) {
   // Check invalid destination buffer length parameter
   ret = yahdlc_frame_data(&control, send_data, sizeof(send_data), frame_data,
   NULL);
+  BOOST_CHECK_EQUAL(ret, -EINVAL);
+
+  // Check oversized source buffer length
+  ret = yahdlc_frame_data(&control, oversized_data, sizeof(oversized_data),
+                          max_frame_data, &frame_length);
   BOOST_CHECK_EQUAL(ret, -EINVAL);
 }
 

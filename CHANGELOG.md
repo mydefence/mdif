@@ -5,6 +5,22 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 repository adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.2] - 2026-09-29
+
+### Supported devices
+-   RF Sensor devices running firmware v4.6.0 or later
+
+### Added
+-   Fields to RfsThreat indications reporting subtype, fingerprint data (MyDefence internal-use) and band information for a threat. 
+-   Fields to WifiThreat indications reporting band information for the threat and location capability of the detection itself.
+-   Support for subscribing to specific threat types using StartReq.
+
+### Changed
+-   Deprecated current band, power and last seen fields in RfsThreat indication in favour of the new Bandstats message, holding up to the three latest observations of a threat with equivalent fields.  
+-   Deprecated power field in WifiThreat indication in favour of the new Bandstats message holding up to the three latest observations of the WiFi threat.
+-   Deprecated the remote ID stream in favour of the new subscription service.
+
+
 ## [1.4.1] - 2026-04-22
 
 ### Fixed

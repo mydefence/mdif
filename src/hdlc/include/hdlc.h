@@ -83,6 +83,8 @@ typedef enum {
     HDLC_RESET_CAUSE_TIMEOUT_RETRANSMIT,
     /// Reset due to peer initiated reset
     HDLC_RESET_CAUSE_PEER_INITIATED,
+    /// Reset due to peer protocol state being inconsistent with our window
+    HDLC_RESET_CAUSE_PROTOCOL_ERROR,
 
     /// Not a real reset cause, but the number of reset causes
     /// Add new reset causes before this
@@ -184,6 +186,7 @@ void hdlc_recv_frame_cb(hdlc_data_t *h, uint8_t *frame, uint32_t len);
 /// 1. In case of retransmission timeout (see HDLC_RETRANSMIT_CNT in hdlc_os.h)
 /// 2. If integration indicates loss of link or frees the HDLC instance
 /// 3. If HDLC SABM frame is received from peer
+/// 4. If a peer frame carries impossible protocol state, such as an invalid ACK
 ///
 /// This is followed by cleanup of the current TX queue including calling
 /// hdlc_frame_sent_cb(). hdlc_send_frame() and hdcl_send_frame_unacknowledged()

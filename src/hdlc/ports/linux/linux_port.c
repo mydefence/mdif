@@ -76,6 +76,9 @@
 
 static pthread_t rx_thread, timer_thread;
 static pthread_mutex_t hdlc_mutex;
+#ifdef MDIF_FRAGMENT_SUPPORT
+static pthread_mutex_t fragment_mutex;
+#endif
 
 enum rx_thread_running_t rx_thread_running;
 
@@ -109,6 +112,12 @@ void hdlc_linux_init()
         log_fatal("mutex init has failed");
         exit(1);
     }
+#ifdef MDIF_FRAGMENT_SUPPORT
+    if (pthread_mutex_init(&fragment_mutex, NULL) != 0) {
+        log_fatal("fragment mutex init has failed");
+        exit(1);
+    }
+#endif
 
     timeout_fd = timerfd_create(CLOCK_REALTIME, 0);
     if (timeout_fd == -1) {
@@ -268,6 +277,18 @@ void hdlc_os_exit_critical_section(hdlc_data_t *hdlc)
 {
     pthread_mutex_unlock(&hdlc_mutex);
 }
+
+#ifdef MDIF_FRAGMENT_SUPPORT
+void hdlc_os_enter_fragment_critical_section(hdlc_data_t *hdlc)
+{
+    pthread_mutex_lock(&fragment_mutex);
+}
+
+void hdlc_os_exit_fragment_critical_section(hdlc_data_t *hdlc)
+{
+    pthread_mutex_unlock(&fragment_mutex);
+}
+#endif
 
 int serial_open(const char *serial_device)
 {

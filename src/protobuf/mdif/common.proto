@@ -76,5 +76,6 @@ enum Status {
     ERR_NOT_IMPLEMENTED = 4; // The request is not implemented
     ERR_NOT_READY = 5; // The device is not ready to process the request
     ERR_SIZE = 6; // The device cannot process the size
+    BUSY = 7; // The device is busy and cannot process the incomming request
 }
 

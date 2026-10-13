@@ -68,6 +68,7 @@ package mdif.fwu;
 // [MD START java_declaration]
 option java_package = "dk.mydefence.mdif.fwu";
 // [MD END java_declaration]
+option optimize_for = CODE_SIZE;
 
 import "mdif/common.proto";
 

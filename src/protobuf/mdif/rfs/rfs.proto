@@ -101,6 +101,7 @@ service RfsService {
 //
 // Indications (ind) are pushed without a request at any time
 message RfsMsg {
+    reserved 0x0084, 0x0085;
     oneof msg {
         // Request RFS start
         StartReq start_req                     = 0x0080;
@@ -110,9 +111,6 @@ message RfsMsg {
         StopReq stop_req                       = 0x0082;
         // RFS stop response
         StopRes stop_res                       = 0x0083;
-        // use GetDroneInfoReq instead
-        GetDronelistReq get_dronelist_req      = 0x0084 [ deprecated = true ];
-        GetDronelistRes get_dronelist_res      = 0x0085 [ deprecated = true ];
         // Get individual drone info
         GetDroneInfoReq get_drone_info_req     = 0x0086;
         // Individual drone info response
@@ -124,9 +122,9 @@ message RfsMsg {
         // Threat stopped indication
         ThreatStoppedInd threat_stopped_ind    = 0x008A;
         // Remote drone ID stream start - Request
-        RemoteIdStreamReq remote_id_stream_req = 0x008B;
+        RemoteIdStreamReq remote_id_stream_req = 0x008B [deprecated = true];
         // Remote Drone ID stream start - Response
-        RemoteIdStreamRes remote_id_stream_res = 0x008C;
+        RemoteIdStreamRes remote_id_stream_res = 0x008C [deprecated = true];
         // Remote Drone ID detection - Indication
         RemoteIdInd remote_id_ind              = 0x008D;
         // Request to mute a detection
@@ -177,7 +175,7 @@ enum ScanBand {
 
 // Enumeration of the categories of threats that may be reported.
 enum ThreatCategory {
-    CategoryInvalid             = 0;    // Invalid.
+    CategoryInvalid             = 0; // Invalid.
     CategoryDrone = 1; // Drone / UAV.
     CategoryController       = 2; // Controller / ground station.
     CategoryDroneOrController = 3; // Drone or controller. Source indeterminate.
@@ -195,14 +193,21 @@ enum State {
 }
 
 enum RidTransportType {
-    TRANSPORT_UNKNOWN              = 0;  // Bluetooth classic transport
-    TRANSPORT_BEACON               = 1;  // Wi-Fi beacon transport
-    TRANSPORT_NAN                  = 2;  // Wi-Fi NaN transport
-    TRANSPORT_BT_CLASSIC           = 3;  // Bluetooth classic transport
-    TRANSPORT_BT_EXT               = 4;  // Bluetooth extended transport, THIS IS NOT PART OF THE REMOTE ID STANDARD, see ASTM-F3411 (section 5.4.7.1)
-    TRANSPORT_BT_CLASSIC_CODED_PHY = 5;  // Bluetooth classic coded PHY transport
-    TRANSPORT_BT_EXT_CODED_PHY     = 6;  // Bluetooth extended coded PHY transport
+    TRANSPORT_UNKNOWN              = 0; // Bluetooth classic transport
+    TRANSPORT_BEACON               = 1; // Wi-Fi beacon transport
+    TRANSPORT_NAN                  = 2; // Wi-Fi NaN transport
+    TRANSPORT_BT_CLASSIC           = 3; // Bluetooth classic transport
+    TRANSPORT_BT_EXT               = 4; // Bluetooth extended transport, THIS IS NOT PART OF THE REMOTE ID STANDARD, see ASTM-F3411 (section 5.4.7.1)
+    TRANSPORT_BT_CLASSIC_CODED_PHY = 5; // Bluetooth classic coded PHY transport
+    TRANSPORT_BT_EXT_CODED_PHY     = 6; // Bluetooth extended coded PHY transport
 
+}
+
+enum RfsDetectionLocationCapability {
+    LOC_CAP_PRESENCE   = 0; // Detection is present. No further information.
+    LOC_CAP_ZONE       = 1; // Detection is present in a defined zone.
+    LOC_CAP_DIRECTION  = 2; // Detection direction is possible.
+    LOC_CAP_LOCATION   = 3; // Detection location is possible.
 }
 
 /*************************************
@@ -233,20 +238,22 @@ message GetDroneInfoRes {
     // Id to next drone, 0 indicates end of library.
     uint32 next_drone_type_id = 3;
 }
-// Get drone descriptions for all drones in target device library.
-// Deprecated, use GetDroneInfoReq instead
-message GetDronelistReq {
-    option deprecated = true;
-}
-// Response to GetDronelistReq
-// Deprecated
-message GetDronelistRes {
-    option deprecated             = true;
-    common.Status status          = 1;
-    repeated DroneInfo drone_info = 2;
-}
+
 // Request RFS start detection.
-message StartReq {}
+// All types of indications will be enabled by default, and can be disabled by setting the appropriate disable flag to true in this message.
+// If detection is already started, flags will be updated without restarting detection. To update flags, send a new start request with the appropiate flags.
+// To subscribe another instance, the StartReq must be sent with the flags set to false to get the desired indications on the new connection.
+// Stopping RFS from another connection stops detection globally, but does not clear existing per-connection indication subscriptions. Indications will resume after RFS is started again.
+message StartReq {
+    bool rfs_threat_ind_disable = 1; // Unregister for RfsThreatInd indications on this connection.
+    // Unregister to receive fingerprint data in RfsThreatInd messages on ALL connections.
+    // Note that fingerprint data may still be empty, if the sensor does not have valid system time.
+    bool rfs_threat_ind_fingerprint_disable = 2;
+    bool remote_id_ind_disable = 3; // Unregister for receive RemoteIdInd indications on this connection.
+    bool wifi_threat_ind_disable = 4; // Unregister for receive WifiThreatInd indications on this connection.
+    bool mute_ind_disable = 5; // Unregister for MuteInd indications on this connection.
+}
+
 // Response to StartReq
 message StartRes {
     common.Status status = 1;
@@ -258,14 +265,15 @@ message StopRes {
     common.Status status = 1;
 }
 
-// Request RFS start detection.
+// Request RFS state.
 message StateReq {}
 // Response to StartReq
 message StateRes {
     common.Status status = 1;
     State state          = 2;
 }
-// Post rfs threat indication.
+
+// Threat indication from the detection framework.
 message RfsThreatInd {
     reserved 3, 7, 8;
     message RelativeBearing {
@@ -275,42 +283,84 @@ message RfsThreatInd {
         float var_bearing = 3; // Variance in bearing.
         google.protobuf.Timestamp ts = 5; // Timestamp when bearing was last updated.
     }
-    uint32 id = 1; // ID of detection. Unique for this sensor, not across sensors.
+    message BandStats {
+        ScanBand band = 1; // Name of the band
+        float power = 2; // First-order IIR average of power on this band, alpha 0.25. [dB]
+        google.protobuf.Timestamp last_seen = 3; // Most recent observation on this band.
+        uint64 freq_min = 4; // Lowest frequency in Hz observed in this band
+        uint64 freq_max = 5; // Highest frequency in Hz observed in this band
+    }
+    /* Finterprint data for internal Mydefence use. */
+    message FingerPrintData {
+        message Anchor {
+            google.protobuf.Timestamp timestamp = 1; // Timestamp of the segment nearest to the anchor epoch in microseconds
+            double freq = 2; // Frequency of the observed segment (Hz)
+            int32 channel_id = 3; // Channel ID if the detector defines a channel map, otherwise -1
+        }
+
+        message AnchorInfo {
+            uint64 hop_timing_us = 2; // Hop timing in microseconds
+            repeated Anchor anchors = 4; // Array of anchor information
+        }
+
+        message ChanEstSample {
+            google.protobuf.Timestamp timestamp = 1; // Timestamp of the latest observation in a subband in seconds
+            double freq = 2; // Center frequency of the observed segment (Hz)
+            uint32 sb_num = 3; // Subband sequence number
+        }
+
+        message ChanEst {
+            double min_chan_sep = 1; // Minimum separation of center frequencies [Hz] for a distinct channel
+            repeated ChanEstSample samples = 2; // Array of observations of detection center frequency
+        }
+        AnchorInfo anchor_info = 3; // Anchor point feature information for fingerprinting
+        ChanEst chan_est = 4; // Channel estimation fingerprint feature
+    }
+    uint32 id = 1; // ID of detection. Unique for this sensor at runtime, not across sensors. The same threat reappearing will have the same ID. ID's are reset on device restart and will start from 1.
     uint32 type_id = 2; // Detection type id. May be be used to look up description with GetDroneInfoReq.
-    float power = 4; // Power at time of reporting, dB.
-    repeated ScanBand current_band = 5; // Band(s) where detection occurs.
+    float power = 4 [deprecated = true]; // Use BandStats[0].power field.
+    repeated ScanBand current_band = 5 [deprecated = true]; // Use BandStats field.
     RelativeBearing relative_bearing = 6; // Relative bearing from device to threat.
     google.protobuf.Timestamp start_ts = 9; // Earliest observation of this detection.
-    google.protobuf.Timestamp last_seen_ts = 10; // Latest observation time of this detection.
+    google.protobuf.Timestamp last_seen_ts = 10 [deprecated = true]; // Use BandStats[0].last_seen field.
     bool muted = 11; // Mute status of this threat.
+    uint32 sub_type_id = 12; // Sub-type of the emitter (where applicable). May be be used to look up description with GetDroneInfoReq.
+    repeated BandStats band_stats = 13; // Statistics for current bands. Will always contain at least one band. See element 0 for current power and band, and timestamp of latest observation.
+    RfsDetectionLocationCapability location_type = 14; // The location capabilityfor this detection.
+    FingerPrintData fingerprint_data = 15; // Fingerprint data for this threat, if requested and available. For internal Mydefence use.
 }
-// Post wifi threat indication.
+
+// Threat indication from the WiFi sniffer.
 message WifiThreatInd {
     reserved 3, 5, 8;
-    uint32 id = 1; // ID of detection. Unique for this sensor, not across sensors.
+    uint32 id = 1; // ID of detection. Unique for this sensor at runtime, not across sensors. The same threat reappearing will have the same ID. ID's are reset on device restart and will start from 1.
     uint32 type_id = 2; // Detection type id. May be used to look up more info with GetDroneInfoReq.
-    float power = 4; // Received signal strength indication. dB.
+    float power = 4 [deprecated = true]; // Use BandStats[0].power field which is equal to Received signal strength indication in dB.
     uint32 channel = 6; // Wifi channel as per international standards 802.11 a/b/g/n.
-    bytes mac_adr = 7; // Mac address of wifi threat.
+    bytes mac_adr = 7; // // MAC address of the Wi‑Fi threat as raw bytes. // Example byte sequence: "p\263\325;\357\377"
     google.protobuf.Timestamp start_ts = 9; // Earliest observation of this detection.
     bool muted = 10; // Mute status of this threat.
+    RfsDetectionLocationCapability location_type = 11; // The location capability for this detection.
+    repeated RfsThreatInd.BandStats band_stats = 12; // Statistics for current Wi-Fi bands. Will always contain at least one band. See element 0 for current power and band, and timestamp of latest observation.
 }
 // Post stop of threat indication.
 message ThreatStoppedInd {
     reserved 2;
-    uint32 id           = 1; // Instance of detection thread.
+    uint32 id           = 1; // ID of detection. Unique for this sensor, not across sensors.
 }
 
+// Deprecated. Use the remote_id_ind_disable flag in StartReq.
 // Request that remote ID results be streamed from the device.
 message RemoteIdStreamReq {
     // Enable or disable the stream.
-    bool enable = 1;
+    bool enable = 1 [deprecated = true];
 }
 
+// Deprecated.
 // Response to RemoteIdStreamReq.
 message RemoteIdStreamRes {
     // Status of the request.
-    common.Status status = 1;
+    common.Status status = 1 [deprecated = true];
 }
 
 // Remote ID indication with binary message pack.
@@ -375,7 +425,7 @@ message WpLedIdentifyRes {
 // Single band of signal interference status
 message SignalInterferenceBand {
     ScanBand band = 1;
-    int32 interference_status = 2;  // 0 = no interference, 1 = interference detected
+    int32 interference_status = 2; // 0 = no interference, 1 = interference detected
     int32 min_gain = 3;
     int32 max_gain = 4;
     int32 avg_gain = 5;

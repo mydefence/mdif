@@ -61,9 +61,9 @@
   | 192   |  223 | Dec   |
 
  */
- syntax = "proto3";
+syntax = "proto3";
 
- package mdif.rfe;
+package mdif.rfe;
 
 // [MD START java_declaration]
 option java_package = "dk.mydefence.mdif.rfe";
@@ -72,14 +72,14 @@ option java_package = "dk.mydefence.mdif.rfe";
 import "mdif/common.proto";
 
 // Defines the relationship between requests and responses in the RFE component
- service RfeService {
+service RfeService {
     // Use to start the RF effector
-    rpc Start (StartReq) returns (StartRes);
+    rpc Start(StartReq) returns (StartRes);
     // Use to stop the RF effector
-    rpc Stop (StopReq) returns (StopRes);
+    rpc Stop(StopReq) returns (StopRes);
     // Use to get the current state of the RF effector
-    rpc GetStateInfo (GetStateInfoReq) returns (StateInfo);
- }
+    rpc GetStateInfo(GetStateInfoReq) returns (StateInfo);
+}
 
 // Rfe wire format messages
 //
@@ -93,19 +93,19 @@ import "mdif/common.proto";
 message RfeMsg {
     oneof msg {
         // Request RFE start
-        StartReq start_req=0x00C0;
+        StartReq start_req                 = 0x00C0;
         // RFE start response
-        StartRes start_res=0x00C1;
+        StartRes start_res                 = 0x00C1;
         // Request RFE stop
-        StopReq stop_req=0x00C2;
+        StopReq stop_req                   = 0x00C2;
         // RFE stop response
-        StopRes stop_res=0x00C3;
+        StopRes stop_res                   = 0x00C3;
         // Request RFE state
-        GetStateInfoReq get_state_info_req=0x00C4;
+        GetStateInfoReq get_state_info_req = 0x00C4;
         // RFE state response
-        StateInfo get_state_info_res=0x00C5;
+        StateInfo get_state_info_res       = 0x00C5;
         // RFE state indication
-        StateInfo state_info_ind=0x00C6;
+        StateInfo state_info_ind           = 0x00C6;
     }
 }
 
@@ -114,9 +114,9 @@ message RfeMsg {
  ************************************/
 
 // Defines the frequency bands that can be used for RFE
- enum FreqBand {
+enum FreqBand {
     // GPS (L1, 1.5GHz) + GLONASS (L1, 1.6GHz)
-    FREQ_BAND_GNSS = 0;
+    FREQ_BAND_GNSS    = 0;
     // 2.4 GHz band
     FREQ_BAND_2_4_GHZ = 1;
     // 5.2 GHz band
@@ -129,66 +129,66 @@ message RfeMsg {
 enum BatteryStatus {
     BATTERY_STATUS_UNDEFINED = 0;
     // Battery status is normal
-    BATTERY_STATUS_NORMAL = 1;
+    BATTERY_STATUS_NORMAL    = 1;
     // Battery status is low, still operating as normal
-    BATTERY_STATUS_LOW = 2;
+    BATTERY_STATUS_LOW       = 2;
 }
 
 // Defines the temperature status
 enum TemperatureStatus {
     TEMPERATURE_STATUS_UNDEFINED = 0;
     // Temperature status is normal
-    TEMPERATURE_STATUS_NORMAL = 1;
+    TEMPERATURE_STATUS_NORMAL    = 1;
     // Temperature status is high, output power is reduced
-    TEMPERATURE_STATUS_HIGH = 2;
+    TEMPERATURE_STATUS_HIGH      = 2;
     // Temperature status is too high, transmission is stopped
-    TEMPERATURE_STATUS_TO_HIGH = 3;
+    TEMPERATURE_STATUS_TO_HIGH   = 3;
 }
 
 // Defines the status on the the requested frequency band
 enum TxStatus {
-    TX_STATUS_UNDEFINED = 0;
-     // Frequency band accepted
-    TX_STATUS_ACCEPT = 1;
-     // The requested frequency band can not be jammed due to hardware limitations
-    TX_STATUS_FREQ_NOT_POSSIBLE = 2;
-     // The requested frequency band is not allowed.
-    TX_STATUS_FREQ_NOT_ALLOWED = 3;
+    TX_STATUS_UNDEFINED           = 0;
+    // Frequency band accepted
+    TX_STATUS_ACCEPT              = 1;
+    // The requested frequency band can not be jammed due to hardware limitations
+    TX_STATUS_FREQ_NOT_POSSIBLE   = 2;
+    // The requested frequency band is not allowed.
+    TX_STATUS_FREQ_NOT_ALLOWED    = 3;
     // Only part of the requested frequency band will be jammed due to resource limitations
-    TX_STATUS_PARTIAL = 4;
+    TX_STATUS_PARTIAL             = 4;
     // The requested frequency band can not be jammed due to resource limitations
     TX_STATUS_RESOURCE_LIMITATION = 5;
     // No jamming due to temperature
-    TX_STATUS_OVERHEAT = 6;
+    TX_STATUS_OVERHEAT            = 6;
     // No jamming due to battery status
-    TX_STATUS_BATTERY_LOW = 7;
+    TX_STATUS_BATTERY_LOW         = 7;
     // No jamming due to manual mode
-    TX_STATUS_MANUAL_MODE = 8;
+    TX_STATUS_MANUAL_MODE         = 8;
     // Currently unavailable - shutting down, FWU etc.
-    TX_STATUS_UNAVAILABLE = 9;
+    TX_STATUS_UNAVAILABLE         = 9;
 }
 
 // Defines the configuration of the RFE device
 // The configuration is a bit field, and each bit must be explicitly tested
 enum Config {
-    CONFIG_UNDEFINED = 0;
+    CONFIG_UNDEFINED      = 0;
     // Device is hutting down
-    CONFIG_SHUTDOWN = 1;
+    CONFIG_SHUTDOWN       = 1;
     // Device is transmitting
-    CONFIG_TRANSMITTING = 2;
+    CONFIG_TRANSMITTING   = 2;
     // Device is in automatic mode. That is, the device is controlled by an
     // external entity
-    CONFIG_AUTOMATIC = 4;
+    CONFIG_AUTOMATIC      = 4;
     // Device is configured to transmit on GNSS band
-    CONFIG_TX_GNSS = 8;
+    CONFIG_TX_GNSS        = 8;
     // Device is configured to transmit on 2.4 GHz band
-    CONFIG_TX_2G4 = 16;
+    CONFIG_TX_2G4         = 16;
     // Device is configured to transmit on 5.2 GHz band
-    CONFIG_TX_5G2 = 32;
+    CONFIG_TX_5G2         = 32;
     // Device is configured to transmit on 5.8 GHz band
-    CONFIG_TX_5G8 = 64;
+    CONFIG_TX_5G8         = 64;
     // Device is in low power mode
-    CONFIG_LOW_POWER = 128;
+    CONFIG_LOW_POWER      = 128;
     // Device is in semi-automatic mode. That is, the device is controlled by an
     // external entity but the user must manually approve each start request
     CONFIG_SEMI_AUTOMATIC = 256;
@@ -197,19 +197,29 @@ enum Config {
 // Defines the type of controller
 // If device is in automatic mode a controller must operate the device
 enum ControllerType {
-    CONTROLLER_TYPE_UNDEFINED = 0;
+    CONTROLLER_TYPE_UNDEFINED   = 0;
+    // No controller is detected by the RFE device
     CONTROLLER_TYPE_NOT_PRESENT = 1;
-    CONTROLLER_TYPE_WINGMAN = 2;
-    CONTROLLER_TYPE_OTHER = 3;
+    // Wingman is controlling RFE device
+    CONTROLLER_TYPE_WINGMAN     = 2;
+    // Any other type of controller not covered by the previous types e.g. ATAK
+    // or PC.
+    CONTROLLER_TYPE_OTHER       = 3;
 }
 
 // Defines the state of the RFE device
 message RfeState {
-    ControllerType controller_type = 1;
-    Config config_deprecated = 2;
-    BatteryStatus battery_status = 3;
+    // Type of controller currently operating the RFE device
+    ControllerType controller_type       = 1;
+    // Current configuration of the RFE device (deprecated, use config instead)
+    Config config_deprecated             = 2 [deprecated = true];
+    // Current battery status of the RFE device
+    BatteryStatus battery_status         = 3;
+    // Current temperature status of the RFE device
     TemperatureStatus temperature_status = 4;
-    uint32 config = 5;
+    // Current configuration of the RFE device as a bit mask using the Config
+    // enum values. Each bit represents a specific configuration option.
+    uint32 config                        = 5;
 }
 
 /*************************************
@@ -221,22 +231,21 @@ message StartReq {
     // If clear_list is set to true, any currently active frequency bands will
     // be cleared. If it is set to false, the frequency bands in the
     // freq_band_list will be added to the active frequency bands.
-    bool clear_list = 1;
-    // List of frequency bands to start trasmitting on
+    bool clear_list                  = 1;
+    // List of frequency bands to transmit on. Pitbull/Doberman can only
+    // transmit on one band at a time, except when combining 2G4 and 5G bands
+    // (dual band).
     repeated FreqBand freq_band_list = 2;
     // Sender type composing the request. Used internally and can be left unset.
-    ControllerType controller_type = 3;
+    ControllerType controller_type   = 3;
 }
 // Response to StartReq
 message StartRes {
-    // Status of the request
-    // If only a single device is connected, then the status reflects the actual
-    // status of the device. If multiple devices are connected (daisy chained),
-    // then the status indicates if the request was accepted and relayed to the
-    // next device in the chain.
-    common.Status status = 1;
-    // List of statuses for each requested frequency band. The list is always
-    // relative to the first device in the chain.
+    // Status of the StartReq request.
+    common.Status status             = 1;
+    // List of statuses for each requested frequency band. The length and order
+    // corresponds to the length and order of frequency bands in the StartReq
+    // message.
     repeated TxStatus tx_status_list = 2;
 }
 // Request RFE stop.
@@ -252,8 +261,8 @@ message GetStateInfoReq {}
 
 // Response to GetStateInfoReq and indication of RFE state
 message StateInfo {
-    // State of the first device in the chain.
-    RfeState local = 1;
-    // State of the last device in the chain.
+    // State of the first device in the chain
+    RfeState local  = 1;
+    // State of the last device in the chain (if any)
     RfeState remote = 2;
 }

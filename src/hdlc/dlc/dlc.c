@@ -299,6 +299,10 @@ hdlc_result_t hdlc_send_frame_unacknowledged(hdlc_data_t *h, const uint8_t *fram
 
     log_info("hdlc_send_frame len=%d", len);
     dbg_dump("hdlc_send_frame", frame, len);
+    if (len > HDLC_MAX_FRAME_LEN) {
+        log_error("HDLC frame length %d too long", len);
+        return HDLC_FRAME_TOO_LONG;
+    }
 
     uint8_t hdlcbuf[YAHDLC_MAX_ENCODED_LEN];
     unsigned int hdlclen;
@@ -333,28 +337,49 @@ hdlc_result_t hdlc_send_frame_unacknowledged(hdlc_data_t *h, const uint8_t *fram
 
 // Handle received ack for our send data. Must be followed by call to
 // rx_ack_cleanup() after unlocking mutex!
-static void rx_ack(hdlc_intdata_t *hi, uint8_t ack_seq_no)
+enum rx_ack_result {
+    RX_ACK_OUTDATED,
+    RX_ACK_PROGRESS,
+    RX_ACK_INVALID,
+};
+
+static enum rx_ack_result rx_ack(hdlc_intdata_t *hi, uint8_t ack_seq_no)
 {
     assert(ack_seq_no < 8);
     struct txq_entry *txq_head = TAILQ_FIRST(&hi->dlc.txq);
 
     if (txq_head == NULL) {
         log_info("rx_ack %d but txq is empty", ack_seq_no);
-        return;
+        return RX_ACK_OUTDATED;
     }
+
+    if (!hi->dlc.tx_outstanding || txq_head->seq_no == -1) {
+        log_info("rx_ack %d but no frames are outstanding", ack_seq_no);
+        return RX_ACK_OUTDATED;
+    }
+
     // ack_seq_no is next expected data sequence number, i.e. ack of the
     // previous seq no. So if it is identical to the first on our tx queue, it
     // was an ack for the previously sent and previously acked data.
     if (ack_seq_no == txq_head->seq_no) {
         log_info("rx_ack %d outdated", ack_seq_no);
-        return;
+        return RX_ACK_OUTDATED;
     }
 
     log_info("rx_ack %d, head seq %d, queue length %d", ack_seq_no, txq_head->seq_no, hi->ext.hdlc_tx_queue_size);
 
+    unsigned int acked_cnt = ((unsigned int)ack_seq_no - (unsigned int)txq_head->seq_no) & 7U;
+    if (acked_cnt > hi->dlc.tx_outstanding) {
+        log_warn("rx_ack %d invalid. head seq %d, outstanding %d", ack_seq_no, txq_head->seq_no, hi->dlc.tx_outstanding);
+        return RX_ACK_INVALID;
+    }
+
     // acked fragments are moved from tx queue to temporary list, so we can free
     // and callback with mutex unlocked.
-    while (txq_head) {
+    while (acked_cnt--) {
+        txq_head = TAILQ_FIRST(&hi->dlc.txq);
+        assert(txq_head);
+        assert(txq_head->seq_no != -1);
         log_debug("txq remove %d", txq_head->seq_no);
         struct txq_entry *next = TAILQ_NEXT(txq_head, q);
         TAILQ_REMOVE(&hi->dlc.txq, txq_head, q);
@@ -368,9 +393,6 @@ static void rx_ack(hdlc_intdata_t *hi, uint8_t ack_seq_no)
         hi->ext.hdlc_tx_queue_size--;
         assert(hi->dlc.tx_outstanding);
         hi->dlc.tx_outstanding--;
-        if (!txq_head || txq_head->seq_no == ack_seq_no || txq_head->seq_no == -1) {
-            break;
-        }
     }
 
     // Even though this frame may have been retransmitted a number of times, we
@@ -411,6 +433,8 @@ static void rx_ack(hdlc_intdata_t *hi, uint8_t ack_seq_no)
             send_ack_frame(hi);
         }
     }
+
+    return RX_ACK_PROGRESS;
 }
 
 // Must be called after rx_ack() and after releasing mutex, in order to free
@@ -595,7 +619,12 @@ void hdlc_os_rx(hdlc_data_t *h, const uint8_t *buf, uint32_t count)
         switch (hi->yahdlc.control.frame) {
         case YAHDLC_FRAME_DATA: {
             int in_order = hi->dlc.expected_rx_seq_no == hi->yahdlc.control.send_seq_no;
-            rx_ack(hi, hi->yahdlc.control.recv_seq_no);
+            enum rx_ack_result ack_res = rx_ack(hi, hi->yahdlc.control.recv_seq_no);
+            if (ack_res == RX_ACK_INVALID) {
+                need_nack = 0;
+                reset(hi, HDLC_RESET_CAUSE_PROTOCOL_ERROR);
+                break;
+            }
             if (in_order) {
                 hdlc_stat.rx++;
                 hi->dlc.state = ACTIVE;
@@ -623,7 +652,10 @@ void hdlc_os_rx(hdlc_data_t *h, const uint8_t *buf, uint32_t count)
             break;
         case YAHDLC_FRAME_ACK:
             hdlc_stat.rx_ack++;
-            rx_ack(hi, hi->yahdlc.control.recv_seq_no);
+            if (rx_ack(hi, hi->yahdlc.control.recv_seq_no) == RX_ACK_INVALID) {
+                reset(hi, HDLC_RESET_CAUSE_PROTOCOL_ERROR);
+                break;
+            }
             dbg_validate_state(hi, __FUNCTION__);
             hdlc_os_exit_critical_section(&hi->ext);
             rx_ack_cleanup(hi);
@@ -631,7 +663,10 @@ void hdlc_os_rx(hdlc_data_t *h, const uint8_t *buf, uint32_t count)
         case YAHDLC_FRAME_NACK:
             hdlc_stat.rx_nack++;
 
-            rx_ack(hi, hi->yahdlc.control.recv_seq_no);
+            if (rx_ack(hi, hi->yahdlc.control.recv_seq_no) == RX_ACK_INVALID) {
+                reset(hi, HDLC_RESET_CAUSE_PROTOCOL_ERROR);
+                break;
+            }
             // Currently retransmission is only triggered by timeout to keep
             // things simple.
             hdlc_os_exit_critical_section(&hi->ext);
@@ -689,6 +724,7 @@ static void reset(hdlc_intdata_t *hi, hdlc_reset_cause_t cause)
         "keep-alive timeout", // HDLC_RESET_CAUSE_TIMEOUT_KEEP_ALIVE
         "retrans timeout",    // HDLC_RESET_CAUSE_TIMEOUT_RETRANSMIT
         "peer initiated",     // HDLC_RESET_CAUSE_PEER_INITIATED
+        "protocol error",     // HDLC_RESET_CAUSE_PROTOCOL_ERROR
     };
     static_assert(sizeof(reasons) / sizeof(reasons[0]) == HDLC_RESET_CAUSE_NUMBER_OF_CAUSES, "reasons array size mismatch");
 

@@ -204,6 +204,10 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p>6</p></td>
 <td><p>The device cannot process the size</p></td>
 </tr>
+<tr class="row-odd"><td><p>BUSY</p></td>
+<td><p>7</p></td>
+<td><p>The device is busy and cannot process the incomming request</p></td>
+</tr>
 </tbody>
 </table>
  <!-- end enums -->
@@ -331,23 +335,23 @@ defined in the RfeService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>controller_type</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-ControllerType">ControllerType</a></p></td>
-<td><p></p></td>
+<td><p>Type of controller currently operating the RFE device</p></td>
 </tr>
 <tr class="row-odd"><td><p>config_deprecated</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-Config">Config</a></p></td>
-<td><p></p></td>
+<td><p><strong>Deprecated.</strong> Current configuration of the RFE device (deprecated, use config instead)</p></td>
 </tr>
 <tr class="row-even"><td><p>battery_status</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-BatteryStatus">BatteryStatus</a></p></td>
-<td><p></p></td>
+<td><p>Current battery status of the RFE device</p></td>
 </tr>
 <tr class="row-odd"><td><p>temperature_status</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-TemperatureStatus">TemperatureStatus</a></p></td>
-<td><p></p></td>
+<td><p>Current temperature status of the RFE device</p></td>
 </tr>
 <tr class="row-even"><td><p>config</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
-<td><p></p></td>
+<td><p>Current configuration of the RFE device as a bit mask using the Config enum values. Each bit represents a specific configuration option.</p></td>
 </tr>
 </tbody>
 </table>
@@ -370,7 +374,7 @@ defined in the RfeService through RPC patterns.</p>
 </tr>
 <tr class="row-odd"><td><p>freq_band_list</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-FreqBand">FreqBand</a></p></td>
-<td><p>List of frequency bands to start trasmitting on</p></td>
+<td><p>List of frequency bands to transmit on. Pitbull/Doberman can only transmit on one band at a time, except when combining 2G4 and 5G bands (dual band).</p></td>
 </tr>
 <tr class="row-even"><td><p>controller_type</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-ControllerType">ControllerType</a></p></td>
@@ -393,11 +397,11 @@ defined in the RfeService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>status</p></td>
 <td><p><a class="reference external" href="#mdif-common-Status">mdif.common.Status</a></p></td>
-<td><p>Status of the request If only a single device is connected, then the status reflects the actual status of the device. If multiple devices are connected (daisy chained), then the status indicates if the request was accepted and relayed to the next device in the chain.</p></td>
+<td><p>Status of the StartReq request.</p></td>
 </tr>
 <tr class="row-odd"><td><p>tx_status_list</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-TxStatus">TxStatus</a></p></td>
-<td><p>List of statuses for each requested frequency band. The list is always relative to the first device in the chain.</p></td>
+<td><p>List of statuses for each requested frequency band. The length and order corresponds to the length and order of frequency bands in the StartReq message.</p></td>
 </tr>
 </tbody>
 </table>
@@ -416,11 +420,11 @@ defined in the RfeService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>local</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-RfeState">RfeState</a></p></td>
-<td><p>State of the first device in the chain.</p></td>
+<td><p>State of the first device in the chain</p></td>
 </tr>
 <tr class="row-odd"><td><p>remote</p></td>
 <td><p><a class="reference external" href="#mdif-rfe-RfeState">RfeState</a></p></td>
-<td><p>State of the last device in the chain.</p></td>
+<td><p>State of the last device in the chain (if any)</p></td>
 </tr>
 </tbody>
 </table>
@@ -552,15 +556,15 @@ If device is in automatic mode a controller must operate the device</p>
 </tr>
 <tr class="row-odd"><td><p>CONTROLLER_TYPE_NOT_PRESENT</p></td>
 <td><p>1</p></td>
-<td><p></p></td>
+<td><p>No controller is detected by the RFE device</p></td>
 </tr>
 <tr class="row-even"><td><p>CONTROLLER_TYPE_WINGMAN</p></td>
 <td><p>2</p></td>
-<td><p></p></td>
+<td><p>Wingman is controlling RFE device</p></td>
 </tr>
 <tr class="row-odd"><td><p>CONTROLLER_TYPE_OTHER</p></td>
 <td><p>3</p></td>
-<td><p></p></td>
+<td><p>Any other type of controller not covered by the previous types e.g. ATAK or PC.</p></td>
 </tr>
 </tbody>
 </table>

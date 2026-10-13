@@ -69,6 +69,7 @@ package mdif.core;
 
 // [MD START java_declaration]
 option java_package = "dk.mydefence.mdif.core";
+option optimize_for = CODE_SIZE;
 // [MD END java_declaration]
 
 import "mdif/common.proto";
@@ -89,6 +90,9 @@ enum DeviceType {
     DOBERMANN_DUAL = 12; // Dobermann dual fixed 90 degree RF effector
     DOBERMANN360 = 13;   // Dobermann 360 degree RF effector
     FALCON = 14;         // Falcon air-borne RF direction finding sensor
+    AA185 = 15;          // External wide band antenna with DRID
+    BOXER = 16;          // Boxer fixed RF effector
+    AA181 = 17;          // External wide band antenna with DRID
     HOST = 99;           // Host device
 }
 
@@ -116,7 +120,14 @@ enum AccessoryId {
     ACCESSORY_HDLC_PITBULL = 29; //
     ACCESSORY_HDLC_OTHER = 30;   //
     reserved 31;
-    ACCESSORY_AA180 = 32;   //
+    ACCESSORY_AA180 = 32; //
+    reserved 33 to 35;
+    ACCESSORY_HDLC_AA185 = 36;
+    ACCESSORY_AA124 = 37; //
+    reserved 38 to 44;
+    ACCESSORY_AA154 = 45; //
+    reserved 46;
+    ACCESSORY_HDLC_AA181 = 47; //
 }
 
 // Defines the IP configuration
@@ -300,9 +311,12 @@ message DeviceInfo
     // Build date of the device
     string build_date = 10;
     // Device MAC address
-    string mac = 11;
+    // Deprecated. Use mac_address field.
+    string mac = 11 [deprecated = true];
     // Composit info
     CompositeInfo composite_info = 12;
+    // Device MAC address
+    bytes mac_address = 13;
 }
 
 // Request battery status
@@ -395,7 +409,9 @@ message GnssCompassStreamReq
     // as indicated in GetDeviceInfoRes.
     // A device without GNSS does not support the stream.
     bool enable = 1;
-    // Period between GNSS updates in miliseconds. Valid range 250-1000.
+    // Period between GNSS updates in miliseconds.
+    // Minimum value is 250ms.
+    // Periods >1000ms will be trunctated to the nearest 1000ms.
     // The compass updates are tied to the GNSS update rate.
     // Note on Wolfpack 210:
     // A WP210 is composite in nature - there are four zones, each addressable via MDIF as its

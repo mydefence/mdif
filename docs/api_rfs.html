@@ -63,8 +63,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#droneinfo">DroneInfo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#getdroneinforeq">GetDroneInfoReq</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#getdroneinfores">GetDroneInfoRes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#getdronelistreq">GetDronelistReq</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#getdronelistres">GetDronelistRes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#getsignalinterferencereq">GetSignalInterferenceReq</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#muteind">MuteInd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mutereq">MuteReq</a></li>
@@ -74,6 +72,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#remoteidstreamres">RemoteIdStreamRes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rfsmsg">RfsMsg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rfsthreatind">RfsThreatInd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-bandstats">RfsThreatInd.BandStats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-fingerprintdata">RfsThreatInd.FingerPrintData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-fingerprintdata-anchor">RfsThreatInd.FingerPrintData.Anchor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-fingerprintdata-anchorinfo">RfsThreatInd.FingerPrintData.AnchorInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-fingerprintdata-chanest">RfsThreatInd.FingerPrintData.ChanEst</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-fingerprintdata-chanestsample">RfsThreatInd.FingerPrintData.ChanEstSample</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rfsthreatind-relativebearing">RfsThreatInd.RelativeBearing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#signalinterference">SignalInterference</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#signalinterferenceband">SignalInterferenceBand</a></li>
@@ -87,6 +91,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#wifithreatind">WifiThreatInd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#wpledidentifyreq">WpLedIdentifyReq</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#wpledidentifyres">WpLedIdentifyRes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rfsdetectionlocationcapability">RfsDetectionLocationCapability</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ridtransporttype">RidTransportType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#scanband">ScanBand</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#startmode">StartMode</a></li>
@@ -160,8 +165,6 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference external" href="#mdif-rfs-DroneInfo">DroneInfo</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-GetDroneInfoReq">GetDroneInfoReq</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-GetDroneInfoRes">GetDroneInfoRes</a></p></li>
-<li><p><a class="reference external" href="#mdif-rfs-GetDronelistReq">GetDronelistReq</a></p></li>
-<li><p><a class="reference external" href="#mdif-rfs-GetDronelistRes">GetDronelistRes</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-GetSignalInterferenceReq">GetSignalInterferenceReq</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-MuteInd">MuteInd</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-MuteReq">MuteReq</a></p></li>
@@ -171,6 +174,12 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference external" href="#mdif-rfs-RemoteIdStreamRes">RemoteIdStreamRes</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-RfsMsg">RfsMsg</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd">RfsThreatInd</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-BandStats">RfsThreatInd.BandStats</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData">RfsThreatInd.FingerPrintData</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-Anchor">RfsThreatInd.FingerPrintData.Anchor</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-AnchorInfo">RfsThreatInd.FingerPrintData.AnchorInfo</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-ChanEst">RfsThreatInd.FingerPrintData.ChanEst</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-ChanEstSample">RfsThreatInd.FingerPrintData.ChanEstSample</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-RelativeBearing">RfsThreatInd.RelativeBearing</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-SignalInterference">SignalInterference</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-SignalInterferenceBand">SignalInterferenceBand</a></p></li>
@@ -184,6 +193,7 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <li><p><a class="reference external" href="#mdif-rfs-WifiThreatInd">WifiThreatInd</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-WpLedIdentifyReq">WpLedIdentifyReq</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-WpLedIdentifyRes">WpLedIdentifyRes</a></p></li>
+<li><p><a class="reference external" href="#mdif-rfs-RfsDetectionLocationCapability">RfsDetectionLocationCapability</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-RidTransportType">RidTransportType</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-ScanBand">ScanBand</a></p></li>
 <li><p><a class="reference external" href="#mdif-rfs-StartMode">StartMode</a></p></li>
@@ -239,6 +249,10 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <tr class="row-even"><td><p>ERR_SIZE</p></td>
 <td><p>6</p></td>
 <td><p>The device cannot process the size</p></td>
+</tr>
+<tr class="row-odd"><td><p>BUSY</p></td>
+<td><p>7</p></td>
+<td><p>The device is busy and cannot process the incomming request</p></td>
 </tr>
 </tbody>
 </table>
@@ -408,36 +422,6 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 </tr>
 </tbody>
 </table>
-<p><a name="mdif-rfs-GetDronelistReq"></a></p>
-</section>
-<section id="getdronelistreq">
-<h4>GetDronelistReq<a class="headerlink" href="#getdronelistreq" title="Permalink to this heading"></a></h4>
-<p>Get drone descriptions for all drones in target device library.
-Deprecated, use GetDroneInfoReq instead</p>
-<p><a name="mdif-rfs-GetDronelistRes"></a></p>
-</section>
-<section id="getdronelistres">
-<h4>GetDronelistRes<a class="headerlink" href="#getdronelistres" title="Permalink to this heading"></a></h4>
-<p>Response to GetDronelistReq
-Deprecated</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Field</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>status</p></td>
-<td><p><a class="reference external" href="#mdif-common-Status">mdif.common.Status</a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>drone_info</p></td>
-<td><p><a class="reference external" href="#mdif-rfs-DroneInfo">DroneInfo</a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
 <p><a name="mdif-rfs-GetSignalInterferenceReq"></a></p>
 </section>
 <section id="getsignalinterferencereq">
@@ -559,7 +543,8 @@ Setting id = 0 and type_id = 0 when all active threats are already muted, will u
 </section>
 <section id="remoteidstreamreq">
 <h4>RemoteIdStreamReq<a class="headerlink" href="#remoteidstreamreq" title="Permalink to this heading"></a></h4>
-<p>Request that remote ID results be streamed from the device.</p>
+<p>Deprecated. Use the remote_id_ind_disable flag in StartReq.
+Request that remote ID results be streamed from the device.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
@@ -570,7 +555,7 @@ Setting id = 0 and type_id = 0 when all active threats are already muted, will u
 <tbody>
 <tr class="row-even"><td><p>enable</p></td>
 <td><p><a class="reference external" href="#bool">bool</a></p></td>
-<td><p>Enable or disable the stream.</p></td>
+<td><p><strong>Deprecated.</strong> Enable or disable the stream.</p></td>
 </tr>
 </tbody>
 </table>
@@ -578,7 +563,8 @@ Setting id = 0 and type_id = 0 when all active threats are already muted, will u
 </section>
 <section id="remoteidstreamres">
 <h4>RemoteIdStreamRes<a class="headerlink" href="#remoteidstreamres" title="Permalink to this heading"></a></h4>
-<p>Response to RemoteIdStreamReq.</p>
+<p>Deprecated.
+Response to RemoteIdStreamReq.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
@@ -589,7 +575,7 @@ Setting id = 0 and type_id = 0 when all active threats are already muted, will u
 <tbody>
 <tr class="row-even"><td><p>status</p></td>
 <td><p><a class="reference external" href="#mdif-common-Status">mdif.common.Status</a></p></td>
-<td><p>Status of the request.</p></td>
+<td><p><strong>Deprecated.</strong> Status of the request.</p></td>
 </tr>
 </tbody>
 </table>
@@ -627,14 +613,6 @@ defined in the RfsService through RPC patterns.</p>
 <td><p><a class="reference external" href="#mdif-rfs-StopRes">StopRes</a></p></td>
 <td><p>RFS stop response</p></td>
 </tr>
-<tr class="row-even"><td><p>get_dronelist_req</p></td>
-<td><p><a class="reference external" href="#mdif-rfs-GetDronelistReq">GetDronelistReq</a></p></td>
-<td><p><strong>Deprecated.</strong> use GetDroneInfoReq instead</p></td>
-</tr>
-<tr class="row-odd"><td><p>get_dronelist_res</p></td>
-<td><p><a class="reference external" href="#mdif-rfs-GetDronelistRes">GetDronelistRes</a></p></td>
-<td><p><strong>Deprecated.</strong></p></td>
-</tr>
 <tr class="row-even"><td><p>get_drone_info_req</p></td>
 <td><p><a class="reference external" href="#mdif-rfs-GetDroneInfoReq">GetDroneInfoReq</a></p></td>
 <td><p>Get individual drone info</p></td>
@@ -657,11 +635,11 @@ defined in the RfsService through RPC patterns.</p>
 </tr>
 <tr class="row-odd"><td><p>remote_id_stream_req</p></td>
 <td><p><a class="reference external" href="#mdif-rfs-RemoteIdStreamReq">RemoteIdStreamReq</a></p></td>
-<td><p>Remote drone ID stream start - Request</p></td>
+<td><p><strong>Deprecated.</strong> Remote drone ID stream start - Request</p></td>
 </tr>
 <tr class="row-even"><td><p>remote_id_stream_res</p></td>
 <td><p><a class="reference external" href="#mdif-rfs-RemoteIdStreamRes">RemoteIdStreamRes</a></p></td>
-<td><p>Remote Drone ID stream start - Response</p></td>
+<td><p><strong>Deprecated.</strong> Remote Drone ID stream start - Response</p></td>
 </tr>
 <tr class="row-odd"><td><p>remote_id_ind</p></td>
 <td><p><a class="reference external" href="#mdif-rfs-RemoteIdInd">RemoteIdInd</a></p></td>
@@ -713,7 +691,7 @@ defined in the RfsService through RPC patterns.</p>
 </section>
 <section id="rfsthreatind">
 <h4>RfsThreatInd<a class="headerlink" href="#rfsthreatind" title="Permalink to this heading"></a></h4>
-<p>Post rfs threat indication.</p>
+<p>Threat indication from the detection framework.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
@@ -724,7 +702,7 @@ defined in the RfsService through RPC patterns.</p>
 <tbody>
 <tr class="row-even"><td><p>id</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
-<td><p>ID of detection. Unique for this sensor, not across sensors.</p></td>
+<td><p>ID of detection. Unique for this sensor at runtime, not across sensors. The same threat reappearing will have the same ID. ID’s are reset on device restart and will start from 1.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type_id</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
@@ -732,11 +710,11 @@ defined in the RfsService through RPC patterns.</p>
 </tr>
 <tr class="row-even"><td><p>power</p></td>
 <td><p><a class="reference external" href="#float">float</a></p></td>
-<td><p>Power at time of reporting, dB.</p></td>
+<td><p><strong>Deprecated.</strong> Use BandStats[0].power field.</p></td>
 </tr>
 <tr class="row-odd"><td><p>current_band</p></td>
 <td><p><a class="reference external" href="#mdif-rfs-ScanBand">ScanBand</a></p></td>
-<td><p>Band(s) where detection occurs.</p></td>
+<td><p><strong>Deprecated.</strong> Use BandStats field.</p></td>
 </tr>
 <tr class="row-even"><td><p>relative_bearing</p></td>
 <td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-RelativeBearing">RfsThreatInd.RelativeBearing</a></p></td>
@@ -748,11 +726,180 @@ defined in the RfsService through RPC patterns.</p>
 </tr>
 <tr class="row-even"><td><p>last_seen_ts</p></td>
 <td><p><a class="reference external" href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></p></td>
-<td><p>Latest observation time of this detection.</p></td>
+<td><p><strong>Deprecated.</strong> Use BandStats[0].last_seen field.</p></td>
 </tr>
 <tr class="row-odd"><td><p>muted</p></td>
 <td><p><a class="reference external" href="#bool">bool</a></p></td>
 <td><p>Mute status of this threat.</p></td>
+</tr>
+<tr class="row-even"><td><p>sub_type_id</p></td>
+<td><p><a class="reference external" href="#uint32">uint32</a></p></td>
+<td><p>Sub-type of the emitter (where applicable). May be be used to look up description with GetDroneInfoReq.</p></td>
+</tr>
+<tr class="row-odd"><td><p>band_stats</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-BandStats">RfsThreatInd.BandStats</a></p></td>
+<td><p>Statistics for current bands. Will always contain at least one band. See element 0 for current power and band, and timestamp of latest observation.</p></td>
+</tr>
+<tr class="row-even"><td><p>location_type</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsDetectionLocationCapability">RfsDetectionLocationCapability</a></p></td>
+<td><p>The location capabilityfor this detection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>fingerprint_data</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData">RfsThreatInd.FingerPrintData</a></p></td>
+<td><p>Fingerprint data for this threat, if requested and available. For internal Mydefence use.</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-BandStats"></a></p>
+</section>
+<section id="rfsthreatind-bandstats">
+<h4>RfsThreatInd.BandStats<a class="headerlink" href="#rfsthreatind-bandstats" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>band</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-ScanBand">ScanBand</a></p></td>
+<td><p>Name of the band</p></td>
+</tr>
+<tr class="row-odd"><td><p>power</p></td>
+<td><p><a class="reference external" href="#float">float</a></p></td>
+<td><p>First-order IIR average of power on this band, alpha 0.25. [dB]</p></td>
+</tr>
+<tr class="row-even"><td><p>last_seen</p></td>
+<td><p><a class="reference external" href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></p></td>
+<td><p>Most recent observation on this band.</p></td>
+</tr>
+<tr class="row-odd"><td><p>freq_min</p></td>
+<td><p><a class="reference external" href="#uint64">uint64</a></p></td>
+<td><p>Lowest frequency in Hz observed in this band</p></td>
+</tr>
+<tr class="row-even"><td><p>freq_max</p></td>
+<td><p><a class="reference external" href="#uint64">uint64</a></p></td>
+<td><p>Highest frequency in Hz observed in this band</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-FingerPrintData"></a></p>
+</section>
+<section id="rfsthreatind-fingerprintdata">
+<h4>RfsThreatInd.FingerPrintData<a class="headerlink" href="#rfsthreatind-fingerprintdata" title="Permalink to this heading"></a></h4>
+<p>Finterprint data for internal Mydefence use.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>anchor_info</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-AnchorInfo">RfsThreatInd.FingerPrintData.AnchorInfo</a></p></td>
+<td><p>Anchor point feature information for fingerprinting</p></td>
+</tr>
+<tr class="row-odd"><td><p>chan_est</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-ChanEst">RfsThreatInd.FingerPrintData.ChanEst</a></p></td>
+<td><p>Channel estimation fingerprint feature</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-FingerPrintData-Anchor"></a></p>
+</section>
+<section id="rfsthreatind-fingerprintdata-anchor">
+<h4>RfsThreatInd.FingerPrintData.Anchor<a class="headerlink" href="#rfsthreatind-fingerprintdata-anchor" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><a class="reference external" href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></p></td>
+<td><p>Timestamp of the segment nearest to the anchor epoch in microseconds</p></td>
+</tr>
+<tr class="row-odd"><td><p>freq</p></td>
+<td><p><a class="reference external" href="#double">double</a></p></td>
+<td><p>Frequency of the observed segment (Hz)</p></td>
+</tr>
+<tr class="row-even"><td><p>channel_id</p></td>
+<td><p><a class="reference external" href="#int32">int32</a></p></td>
+<td><p>Channel ID if the detector defines a channel map, otherwise -1</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-FingerPrintData-AnchorInfo"></a></p>
+</section>
+<section id="rfsthreatind-fingerprintdata-anchorinfo">
+<h4>RfsThreatInd.FingerPrintData.AnchorInfo<a class="headerlink" href="#rfsthreatind-fingerprintdata-anchorinfo" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>hop_timing_us</p></td>
+<td><p><a class="reference external" href="#uint64">uint64</a></p></td>
+<td><p>Hop timing in microseconds</p></td>
+</tr>
+<tr class="row-odd"><td><p>anchors</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-Anchor">RfsThreatInd.FingerPrintData.Anchor</a></p></td>
+<td><p>Array of anchor information</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-FingerPrintData-ChanEst"></a></p>
+</section>
+<section id="rfsthreatind-fingerprintdata-chanest">
+<h4>RfsThreatInd.FingerPrintData.ChanEst<a class="headerlink" href="#rfsthreatind-fingerprintdata-chanest" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>min_chan_sep</p></td>
+<td><p><a class="reference external" href="#double">double</a></p></td>
+<td><p>Minimum separation of center frequencies [Hz] for a distinct channel</p></td>
+</tr>
+<tr class="row-odd"><td><p>samples</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-FingerPrintData-ChanEstSample">RfsThreatInd.FingerPrintData.ChanEstSample</a></p></td>
+<td><p>Array of observations of detection center frequency</p></td>
+</tr>
+</tbody>
+</table>
+<p><a name="mdif-rfs-RfsThreatInd-FingerPrintData-ChanEstSample"></a></p>
+</section>
+<section id="rfsthreatind-fingerprintdata-chanestsample">
+<h4>RfsThreatInd.FingerPrintData.ChanEstSample<a class="headerlink" href="#rfsthreatind-fingerprintdata-chanestsample" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><a class="reference external" href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></p></td>
+<td><p>Timestamp of the latest observation in a subband in seconds</p></td>
+</tr>
+<tr class="row-odd"><td><p>freq</p></td>
+<td><p><a class="reference external" href="#double">double</a></p></td>
+<td><p>Center frequency of the observed segment (Hz)</p></td>
+</tr>
+<tr class="row-even"><td><p>sb_num</p></td>
+<td><p><a class="reference external" href="#uint32">uint32</a></p></td>
+<td><p>Subband sequence number</p></td>
 </tr>
 </tbody>
 </table>
@@ -859,7 +1006,41 @@ an indication.</p>
 </section>
 <section id="startreq">
 <h4>StartReq<a class="headerlink" href="#startreq" title="Permalink to this heading"></a></h4>
-<p>Request RFS start detection.</p>
+<p>Request RFS start detection.
+All types of indications will be enabled by default, and can be disabled by setting the appropriate disable flag to true in this message.
+If detection is already started, flags will be updated without restarting detection. To update flags, send a new start request with the appropiate flags.
+To subscribe another instance, the StartReq must be sent with the flags set to false to get the desired indications on the new connection.
+Stopping RFS from another connection stops detection globally, but does not clear existing per-connection indication subscriptions. Indications will resume after RFS is started again.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>rfs_threat_ind_disable</p></td>
+<td><p><a class="reference external" href="#bool">bool</a></p></td>
+<td><p>Unregister for RfsThreatInd indications on this connection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rfs_threat_ind_fingerprint_disable</p></td>
+<td><p><a class="reference external" href="#bool">bool</a></p></td>
+<td><p>Unregister to receive fingerprint data in RfsThreatInd messages on ALL connections. Note that fingerprint data may still be empty, if the sensor does not have valid system time.</p></td>
+</tr>
+<tr class="row-even"><td><p>remote_id_ind_disable</p></td>
+<td><p><a class="reference external" href="#bool">bool</a></p></td>
+<td><p>Unregister for receive RemoteIdInd indications on this connection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>wifi_threat_ind_disable</p></td>
+<td><p><a class="reference external" href="#bool">bool</a></p></td>
+<td><p>Unregister for receive WifiThreatInd indications on this connection.</p></td>
+</tr>
+<tr class="row-even"><td><p>mute_ind_disable</p></td>
+<td><p><a class="reference external" href="#bool">bool</a></p></td>
+<td><p>Unregister for MuteInd indications on this connection.</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-rfs-StartRes"></a></p>
 </section>
 <section id="startres">
@@ -883,7 +1064,7 @@ an indication.</p>
 </section>
 <section id="statereq">
 <h4>StateReq<a class="headerlink" href="#statereq" title="Permalink to this heading"></a></h4>
-<p>Request RFS start detection.</p>
+<p>Request RFS state.</p>
 <p><a name="mdif-rfs-StateRes"></a></p>
 </section>
 <section id="stateres">
@@ -946,7 +1127,7 @@ an indication.</p>
 <tbody>
 <tr class="row-even"><td><p>id</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
-<td><p>Instance of detection thread.</p></td>
+<td><p>ID of detection. Unique for this sensor, not across sensors.</p></td>
 </tr>
 </tbody>
 </table>
@@ -954,7 +1135,7 @@ an indication.</p>
 </section>
 <section id="wifithreatind">
 <h4>WifiThreatInd<a class="headerlink" href="#wifithreatind" title="Permalink to this heading"></a></h4>
-<p>Post wifi threat indication.</p>
+<p>Threat indication from the WiFi sniffer.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
@@ -965,7 +1146,7 @@ an indication.</p>
 <tbody>
 <tr class="row-even"><td><p>id</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
-<td><p>ID of detection. Unique for this sensor, not across sensors.</p></td>
+<td><p>ID of detection. Unique for this sensor at runtime, not across sensors. The same threat reappearing will have the same ID. ID’s are reset on device restart and will start from 1.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type_id</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
@@ -973,7 +1154,7 @@ an indication.</p>
 </tr>
 <tr class="row-even"><td><p>power</p></td>
 <td><p><a class="reference external" href="#float">float</a></p></td>
-<td><p>Received signal strength indication. dB.</p></td>
+<td><p><strong>Deprecated.</strong> Use BandStats[0].power field which is equal to Received signal strength indication in dB.</p></td>
 </tr>
 <tr class="row-odd"><td><p>channel</p></td>
 <td><p><a class="reference external" href="#uint32">uint32</a></p></td>
@@ -981,7 +1162,7 @@ an indication.</p>
 </tr>
 <tr class="row-even"><td><p>mac_adr</p></td>
 <td><p><a class="reference external" href="#bytes">bytes</a></p></td>
-<td><p>Mac address of wifi threat.</p></td>
+<td><p>MAC address of the Wi‑Fi threat as raw bytes. // Example byte sequence: “p\263\325;\357\377”</p></td>
 </tr>
 <tr class="row-odd"><td><p>start_ts</p></td>
 <td><p><a class="reference external" href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></p></td>
@@ -990,6 +1171,14 @@ an indication.</p>
 <tr class="row-even"><td><p>muted</p></td>
 <td><p><a class="reference external" href="#bool">bool</a></p></td>
 <td><p>Mute status of this threat.</p></td>
+</tr>
+<tr class="row-odd"><td><p>location_type</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsDetectionLocationCapability">RfsDetectionLocationCapability</a></p></td>
+<td><p>The location capability for this detection.</p></td>
+</tr>
+<tr class="row-even"><td><p>band_stats</p></td>
+<td><p><a class="reference external" href="#mdif-rfs-RfsThreatInd-BandStats">RfsThreatInd.BandStats</a></p></td>
+<td><p>Statistics for current Wi-Fi bands. Will always contain at least one band. See element 0 for current power and band, and timestamp of latest observation.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1034,6 +1223,36 @@ Identify = 0 will disable the green flash.</p>
 </tbody>
 </table>
  <!-- end messages -->
+<p><a name="mdif-rfs-RfsDetectionLocationCapability"></a></p>
+</section>
+<section id="rfsdetectionlocationcapability">
+<h4>RfsDetectionLocationCapability<a class="headerlink" href="#rfsdetectionlocationcapability" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Number</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LOC_CAP_PRESENCE</p></td>
+<td><p>0</p></td>
+<td><p>Detection is present. No further information.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOC_CAP_ZONE</p></td>
+<td><p>1</p></td>
+<td><p>Detection is present in a defined zone.</p></td>
+</tr>
+<tr class="row-even"><td><p>LOC_CAP_DIRECTION</p></td>
+<td><p>2</p></td>
+<td><p>Detection direction is possible.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOC_CAP_LOCATION</p></td>
+<td><p>3</p></td>
+<td><p>Detection location is possible.</p></td>
+</tr>
+</tbody>
+</table>
 <p><a name="mdif-rfs-RidTransportType"></a></p>
 </section>
 <section id="ridtransporttype">

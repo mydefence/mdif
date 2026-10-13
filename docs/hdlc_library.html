@@ -173,6 +173,12 @@ header file <code class="file docutils literal notranslate"><span class="pre">sr
 </dd></dl>
 
 <dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18hdlc_reset_cause_t31HDLC_RESET_CAUSE_PROTOCOL_ERRORE">
+<span id="_CPPv3N18hdlc_reset_cause_t31HDLC_RESET_CAUSE_PROTOCOL_ERRORE"></span><span id="_CPPv2N18hdlc_reset_cause_t31HDLC_RESET_CAUSE_PROTOCOL_ERRORE"></span><span class="target" id="hdlc_8h_1a292ff56f4abc411b3e29c5bcc1f37a8cace23136c7080c066fe98f002a31896ab"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_RESET_CAUSE_PROTOCOL_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N18hdlc_reset_cause_t31HDLC_RESET_CAUSE_PROTOCOL_ERRORE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Reset due to peer protocol state being inconsistent with our window. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N18hdlc_reset_cause_t33HDLC_RESET_CAUSE_NUMBER_OF_CAUSESE">
 <span id="_CPPv3N18hdlc_reset_cause_t33HDLC_RESET_CAUSE_NUMBER_OF_CAUSESE"></span><span id="_CPPv2N18hdlc_reset_cause_t33HDLC_RESET_CAUSE_NUMBER_OF_CAUSESE"></span><span class="target" id="hdlc_8h_1a292ff56f4abc411b3e29c5bcc1f37a8cad9b4ddb5c0d9669248b0107cd4237d99"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HDLC_RESET_CAUSE_NUMBER_OF_CAUSES</span></span></span><a class="headerlink" href="#_CPPv4N18hdlc_reset_cause_t33HDLC_RESET_CAUSE_NUMBER_OF_CAUSESE" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Not a real reset cause, but the number of reset causes Add new reset causes before this. </p>
@@ -261,6 +267,7 @@ header file <code class="file docutils literal notranslate"><span class="pre">sr
 <li><p>In case of retransmission timeout (see HDLC_RETRANSMIT_CNT in hdlc_os.h)</p></li>
 <li><p>If integration indicates loss of link or frees the HDLC instance</p></li>
 <li><p>If HDLC SABM frame is received from peer</p></li>
+<li><p>If a peer frame carries impossible protocol state, such as an invalid ACK</p></li>
 </ol>
 </p>
 <p>This is followed by cleanup of the current TX queue including calling <a class="reference internal" href="#hdlc_8h_1a5198d75ce6e7ff5ec772199e8cbd7f81"><span class="std std-ref">hdlc_frame_sent_cb()</span></a>. <a class="reference internal" href="#hdlc_8h_1af433bd7d18beaefafc0eb1771b5f4856"><span class="std std-ref">hdlc_send_frame()</span></a> and hdcl_send_frame_unacknowledged() will fail until <a class="reference internal" href="#hdlc_8h_1a71893b40975f693afd8ea77be881f885"><span class="std std-ref">hdlc_connected_cb()</span></a> is called.</p>

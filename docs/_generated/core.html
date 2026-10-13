@@ -193,6 +193,10 @@ https://github.com/pseudomuto/protoc-gen-doc/blob/master/resources/markdown.tmpl
 <td><p>6</p></td>
 <td><p>The device cannot process the size</p></td>
 </tr>
+<tr class="row-odd"><td><p>BUSY</p></td>
+<td><p>7</p></td>
+<td><p>The device is busy and cannot process the incomming request</p></td>
+</tr>
 </tbody>
 </table>
  <!-- end enums -->
@@ -758,11 +762,15 @@ defined in the CoreService through RPC patterns.</p>
 </tr>
 <tr class="row-even"><td><p>mac</p></td>
 <td><p><a class="reference internal" href="#string"><span class="xref myst">string</span></a></p></td>
-<td><p>Device MAC address</p></td>
+<td><p><strong>Deprecated.</strong> Device MAC address Deprecated. Use mac_address field.</p></td>
 </tr>
 <tr class="row-odd"><td><p>composite_info</p></td>
 <td><p><a class="reference internal" href="#mdif-core-CompositeInfo"><span class="xref myst">CompositeInfo</span></a></p></td>
 <td><p>Composit info</p></td>
+</tr>
+<tr class="row-even"><td><p>mac_address</p></td>
+<td><p><a class="reference internal" href="#bytes"><span class="xref myst">bytes</span></a></p></td>
+<td><p>Device MAC address</p></td>
 </tr>
 </tbody>
 </table>
@@ -976,7 +984,7 @@ defined in the CoreService through RPC patterns.</p>
 </tr>
 <tr class="row-odd"><td><p>period</p></td>
 <td><p><a class="reference internal" href="#uint32"><span class="xref myst">uint32</span></a></p></td>
-<td><p>Period between GNSS updates in miliseconds. Valid range 250-1000. The compass updates are tied to the GNSS update rate. Note on Wolfpack 210: A WP210 is composite in nature - there are four zones, each addressable via MDIF as its own device. The GNSS and compass stream setup in this case is split across two zones. In the GetDeviceInfoRes message, one zone will reply compass_present=true and gnss_configurable=false. Enable the stream on this device to receive compass headings. Another zone will reply compass_present=false and gnss_configurable=true. Enable the stream on this device to change the GNSS timing.</p></td>
+<td><p>Period between GNSS updates in miliseconds. Minimum value is 250ms. Periods &gt;1000ms will be trunctated to the nearest 1000ms. The compass updates are tied to the GNSS update rate. Note on Wolfpack 210: A WP210 is composite in nature - there are four zones, each addressable via MDIF as its own device. The GNSS and compass stream setup in this case is split across two zones. In the GetDeviceInfoRes message, one zone will reply compass_present=true and gnss_configurable=false. Enable the stream on this device to receive compass headings. Another zone will reply compass_present=false and gnss_configurable=true. Enable the stream on this device to change the GNSS timing.</p></td>
 </tr>
 <tr class="row-even"><td><p>auto_update_calibration</p></td>
 <td><p><a class="reference internal" href="#bool"><span class="xref myst">bool</span></a></p></td>
@@ -1379,6 +1387,22 @@ to sender indicating status=ERR_NOT_READY</p>
 <td><p>32</p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-even"><td><p>ACCESSORY_HDLC_AA185</p></td>
+<td><p>36</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_AA124</p></td>
+<td><p>37</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>ACCESSORY_AA154</p></td>
+<td><p>45</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>ACCESSORY_HDLC_AA181</p></td>
+<td><p>47</p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 <p><a name="mdif-core-ChargingState"></a></p>
@@ -1465,7 +1489,19 @@ to sender indicating status=ERR_NOT_READY</p>
 <td><p>14</p></td>
 <td><p>Falcon air-borne RF direction finding sensor</p></td>
 </tr>
-<tr class="row-odd"><td><p>HOST</p></td>
+<tr class="row-odd"><td><p>AA185</p></td>
+<td><p>15</p></td>
+<td><p>External wide band antenna with DRID</p></td>
+</tr>
+<tr class="row-even"><td><p>BOXER</p></td>
+<td><p>16</p></td>
+<td><p>Boxer fixed RF effector</p></td>
+</tr>
+<tr class="row-odd"><td><p>AA181</p></td>
+<td><p>17</p></td>
+<td><p>External wide band antenna with DRID</p></td>
+</tr>
+<tr class="row-even"><td><p>HOST</p></td>
 <td><p>99</p></td>
 <td><p>Host device</p></td>
 </tr>

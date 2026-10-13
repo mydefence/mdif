@@ -99,7 +99,7 @@ void yahdlc_get_data_reset_with_state(yahdlc_state_t *state);
  *
  * @param[in] control Control field structure with frame type and sequence number
  * @param[in] src Source buffer with data
- * @param[in] src_len Source buffer length
+ * @param[in] src_len Source buffer length. Must not exceed YAHDLC_MAX_FRAME_LEN.
  * @param[out] dest Destination buffer (should be bigger than source buffer)
  * @param[out] dest_len Destination buffer length
  * @retval 0 Success

@@ -81,6 +81,9 @@ typedef struct hdlc_instance_t {
     struct itimerspec its_stop;
     pthread_t timer_thread;
     pthread_mutex_t hdlc_mutex;
+#ifdef MDIF_FRAGMENT_SUPPORT
+    pthread_mutex_t fragment_mutex;
+#endif
     int8_t shutdown;
     int timeout_fd;
 } hdlc_instance_t;
@@ -106,6 +109,12 @@ void hdlc_java_init(uint32_t instance_id)
             log_fatal("mutex init has failed");
             exit(1);
         }
+#ifdef MDIF_FRAGMENT_SUPPORT
+        if (pthread_mutex_init(&inst->fragment_mutex, NULL) != 0) {
+            log_fatal("fragment mutex init has failed");
+            exit(1);
+        }
+#endif
 
         inst->timeout_fd = timerfd_create(CLOCK_REALTIME, 0);
         if (inst->timeout_fd == -1) {
@@ -186,6 +195,20 @@ void hdlc_os_exit_critical_section(hdlc_data_t *hdlc)
     hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
     pthread_mutex_unlock(&inst->hdlc_mutex);
 }
+
+#ifdef MDIF_FRAGMENT_SUPPORT
+void hdlc_os_enter_fragment_critical_section(hdlc_data_t *hdlc)
+{
+    hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
+    pthread_mutex_lock(&inst->fragment_mutex);
+}
+
+void hdlc_os_exit_fragment_critical_section(hdlc_data_t *hdlc)
+{
+    hdlc_instance_t *inst = (hdlc_instance_t *)hdlc->user_data;
+    pthread_mutex_unlock(&inst->fragment_mutex);
+}
+#endif
 
 hdlc_data_t *get_hdlc_data(uint32_t instance_id)
 {
